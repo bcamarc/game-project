@@ -70,40 +70,39 @@ func _physics_process(delta):
 		elif direction.x != 0 and jumpCount == 0:
 			sprite.play("Run")
 
-	if count > 40 and mana >= 10 and Input.is_action_just_pressed("fireSpell"):
+	if count > 40 and get_node("../Stats").total_magic >= 10 and Input.is_action_just_pressed("fireSpell"):
 		var spell = fireSpell.instantiate()
 		spell.global_position = global_position
 		get_tree().current_scene.add_child(spell)
 		count = 0
-		mana -= 10
+		get_node("../Stats").total_magic -= 10
 
-	if count2 > 60 and mana >= 40 and Input.is_action_just_pressed("thunderSpell"):
+	if count2 > 60 and get_node("../Stats").total_magic >= 40 and Input.is_action_just_pressed("thunderSpell"):
 		var spell2 = thunderSpell.instantiate()
 		spell2.global_position = global_position
 		get_tree().current_scene.add_child(spell2)
 		count2 = 0
-		mana -= 40
+		get_node("../Stats").total_magic -= 40
 
-	if count4 > 40 and mana >= 20 and Input.is_action_just_pressed("iceSpell"):
+	if count4 > 40 and get_node("../Stats").total_magic >= 20 and Input.is_action_just_pressed("iceSpell"):
 		var spell3 = iceSpell.instantiate()
 		spell3.global_position = global_position
 		get_tree().current_scene.add_child(spell3)
 		count4 = 0
-		mana -= 20
+		get_node("../Stats").total_magic -= 20
 
-	if count3 % 35 == 0 and mana < 100:
+	if count3 % 35 == 0 and get_node("../Stats").total_magic < get_node("../Stats").max_magic:
 		if boosted:
-			mana += 3.5
+			get_node("../Stats").total_magic += 4.5
 		else:
-			mana += 2
-		mana += 3
+			get_node("../Stats").total_magic += 3
 
 	if count5 > 400 and mana >= 70 and Input.is_action_just_pressed("holySpell"):
 		var spell4 = holySpell.instantiate()
 		spell4.global_position = global_position
 		get_tree().current_scene.add_child(spell4)
 		count5 = 0
-		mana -= 70
+		get_node("../Stats").total_magic -= 70
 		get_node("../Stats").add_hp(15)
 		boosted = true
 		get_node("../Stats").total_speed += 100

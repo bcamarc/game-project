@@ -28,7 +28,7 @@ var total_damage := 0
 var total_defense := 0
 var total_speed := 0
 var total_magic := 0
-
+var max_magic := 0
 
 var equipment = {
 	"weapon": null,
@@ -40,6 +40,8 @@ var equipment = {
 func _ready() -> void:
 	check_exp()
 	hide()
+	update_stats()
+	total_magic = max_magic
 	
 	
 func _process(delta: float) -> void:
@@ -102,6 +104,7 @@ func update_stats():
 	total_damage = base_damage + strength * 2
 	total_defense = base_defense + vitality * 1
 	total_speed = base_speed + dexterity * 2
+	max_magic = base_magic + intellegience * 2
 
 	for item in equipment.values():
 		if item != null:
