@@ -1,0 +1,149 @@
+[gd_scene load_steps=13 format=3 uid="uid://djxmtycproxvm"]
+
+[ext_resource type="Script" uid="uid://b1ximvd4rs866" path="res://stats.gd" id="1_qkx3n"]
+[ext_resource type="Texture2D" uid="uid://6vptby3n8jbw" path="res://baseStats.png" id="2_tgj6n"]
+[ext_resource type="FontFile" uid="uid://c754ljh615rfv" path="res://Roboto/Bpmf_Huninn/BpmfHuninn-Regular.ttf" id="3_r4or0"]
+[ext_resource type="Script" uid="uid://un24lpgu5mos" path="res://statsStrength.gd" id="4_tgj6n"]
+[ext_resource type="Script" uid="uid://d05i8exk5sg2o" path="res://vit_label.gd" id="5_r4or0"]
+[ext_resource type="Script" uid="uid://dp5yslf8ua5as" path="res://int_label.gd" id="6_af2q3"]
+[ext_resource type="Script" uid="uid://shwu0pt2pfkn" path="res://int_label_2.gd" id="7_agoph"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgj6n"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r4or0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_af2q3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_agoph"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m8qmt"]
+
+[node name="Stats" type="CanvasLayer"]
+script = ExtResource("1_qkx3n")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchor_right = 0.072000004
+anchor_bottom = 0.187
+offset_left = 114.0
+offset_top = 101.0
+offset_right = 71.05599
+offset_bottom = 19.823997
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_left = 138.0
+offset_top = 21.0
+offset_right = 325.0
+offset_bottom = 270.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_tgj6n")
+
+[node name="TextureRect" type="TextureRect" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 144.0
+offset_top = -103.000015
+offset_right = 788.0
+offset_bottom = 501.0
+scale = Vector2(0.5872658, 0.5216272)
+texture = ExtResource("2_tgj6n")
+
+[node name="STRButton" type="Button" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 266.0
+offset_top = 15.0
+offset_right = 334.0
+offset_bottom = 67.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_styles/normal = SubResource("StyleBoxTexture_r4or0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_af2q3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_agoph")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_m8qmt")
+
+[node name="STRLabel" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 207.0
+offset_top = 17.0
+offset_right = 254.0
+offset_bottom = 59.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("4_tgj6n")
+
+[node name="VITLabel" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 205.0
+offset_top = 55.0
+offset_right = 252.0
+offset_bottom = 97.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("5_r4or0")
+
+[node name="VITButton" type="Button" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 268.0
+offset_top = 51.0
+offset_right = 336.0
+offset_bottom = 103.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_styles/normal = SubResource("StyleBoxTexture_r4or0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_af2q3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_agoph")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_m8qmt")
+
+[node name="INTButton" type="Button" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 267.0
+offset_top = 88.0
+offset_right = 335.0
+offset_bottom = 140.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_styles/normal = SubResource("StyleBoxTexture_r4or0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_af2q3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_agoph")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_m8qmt")
+
+[node name="INTLabel" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 204.0
+offset_top = 89.0
+offset_right = 251.0
+offset_bottom = 131.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("6_af2q3")
+
+[node name="DEXButton" type="Button" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 267.0
+offset_top = 121.0
+offset_right = 335.0
+offset_bottom = 173.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_styles/normal = SubResource("StyleBoxTexture_r4or0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_af2q3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_agoph")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_m8qmt")
+
+[node name="DEXLabel" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 204.0
+offset_top = 126.0
+offset_right = 251.0
+offset_bottom = 168.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("7_agoph")
+
+[connection signal="pressed" from="Control/Panel/STRButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Control/Panel/VITButton" to="." method="_on_vit_button_pressed"]
+[connection signal="pressed" from="Control/Panel/INTButton" to="." method="_on_int_button_pressed"]
+[connection signal="pressed" from="Control/Panel/DEXButton" to="." method="_on_int_button_2_pressed"]

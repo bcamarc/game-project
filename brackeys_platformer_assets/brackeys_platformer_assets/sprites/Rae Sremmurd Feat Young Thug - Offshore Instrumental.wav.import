@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bfm3ax3reul5"
+path="res://.godot/imported/Rae Sremmurd Feat Young Thug - Offshore Instrumental.wav-7d99dc12d6ec394e06aec0694a893f99.sample"
+
+[deps]
+
+source_file="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/Rae Sremmurd Feat Young Thug - Offshore Instrumental.wav"
+dest_files=["res://.godot/imported/Rae Sremmurd Feat Young Thug - Offshore Instrumental.wav-7d99dc12d6ec394e06aec0694a893f99.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

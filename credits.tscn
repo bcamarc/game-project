@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dl6ry4lkljgcm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5rx0"]
+
+[node name="TextEdit" type="TextEdit"]
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_t5rx0")
+text = "THANK YOU FOR PLAYING! Made by Andrew Goddard and Marc Soto"

@@ -1,0 +1,223 @@
+[gd_scene load_steps=19 format=3 uid="uid://wi1p8mdgpg7y"]
+
+[ext_resource type="Script" uid="uid://cbm1s2vos1s3n" path="res://zombie.gd" id="1_jmu02"]
+[ext_resource type="Texture2D" uid="uid://dcorswmsxddmf" path="res://art/zombie_5.png" id="3_jmu02"]
+[ext_resource type="Texture2D" uid="uid://4au2q5vu11xq" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Ability_FX.png" id="8_fpxwj"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jmu02"]
+radius = 24.0
+height = 88.3
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_td46n"]
+size = Vector2(76, 84.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4vphq"]
+size = Vector2(263, 115)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4vphq"]
+atlas = ExtResource("8_fpxwj")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8dpi"]
+atlas = ExtResource("8_fpxwj")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3c1k"]
+atlas = ExtResource("8_fpxwj")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7t4v"]
+atlas = ExtResource("8_fpxwj")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ak8cb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4vphq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8dpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3c1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7t4v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4vphq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8dpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3c1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7t4v")
+}],
+"loop": false,
+"name": &"ability",
+"speed": 7.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg0vc"]
+bg_color = Color(0.94036186, 5.3425133e-06, 3.85046e-07, 1)
+
+[sub_resource type="Animation" id="Animation_lnshm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_i82o5"]
+resource_name = "attack"
+length = 0.125
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_x5rsa"]
+resource_name = "hurt"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_ogcpr"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 3]
+}
+
+[sub_resource type="Animation" id="Animation_7nqyo"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.499),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jw3ev"]
+_data = {
+&"RESET": SubResource("Animation_lnshm"),
+&"attack": SubResource("Animation_i82o5"),
+&"hurt": SubResource("Animation_x5rsa"),
+&"idle": SubResource("Animation_ogcpr"),
+&"walk": SubResource("Animation_7nqyo")
+}
+
+[node name="TestMonster" type="CharacterBody2D" groups=["slime"]]
+position = Vector2(383, 253)
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_jmu02")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(9, -21)
+shape = SubResource("CapsuleShape2D_jmu02")
+
+[node name="attackArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 7
+collision_mask = 3
+
+[node name="attackBox" type="CollisionShape2D" parent="attackArea"]
+position = Vector2(11, -18.75)
+shape = SubResource("RectangleShape2D_td46n")
+
+[node name="abilityArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 7
+collision_mask = 3
+
+[node name="abilityBox" type="CollisionShape2D" parent="abilityArea"]
+visible = false
+position = Vector2(-1, -43)
+shape = SubResource("RectangleShape2D_4vphq")
+
+[node name="slimeFx" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(25.000004, -37)
+scale = Vector2(1.7, 1.7)
+sprite_frames = SubResource("SpriteFrames_ak8cb")
+animation = &"ability"
+frame = 7
+frame_progress = 1.0
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -7.0
+offset_top = -61.0
+offset_right = 33.0
+offset_bottom = -57.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_bg0vc")
+max_value = 50.0
+show_percentage = false
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(7, 11)
+target_position = Vector2(36, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(25, -21)
+scale = Vector2(1.78, 1.78)
+texture = ExtResource("3_jmu02")
+hframes = 2
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_jw3ev")
+}
+
+[connection signal="body_entered" from="attackArea" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="attackArea" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="abilityArea" to="." method="_on_ability_area_body_entered"]
+[connection signal="body_exited" from="abilityArea" to="." method="_on_ability_area_body_exited"]

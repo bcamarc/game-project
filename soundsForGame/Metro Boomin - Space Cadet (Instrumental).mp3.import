@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b0fxd02fokf52"
+path="res://.godot/imported/Metro Boomin - Space Cadet (Instrumental).mp3-b12c990c6697d789dd98c4f03544cde0.mp3str"
+
+[deps]
+
+source_file="res://soundsForGame/Metro Boomin - Space Cadet (Instrumental).mp3"
+dest_files=["res://.godot/imported/Metro Boomin - Space Cadet (Instrumental).mp3-b12c990c6697d789dd98c4f03544cde0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

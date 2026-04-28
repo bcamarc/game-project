@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bokxe88tvxkd7"
+path="res://.godot/imported/Future - Thought It Was a Drought (Official Instrumental) [prod. Metro Boomin].mp3-57e237f1653dddbc3be262d8f7ac9bd7.mp3str"
+
+[deps]
+
+source_file="res://soundsForGame/Future - Thought It Was a Drought (Official Instrumental) [prod. Metro Boomin].mp3"
+dest_files=["res://.godot/imported/Future - Thought It Was a Drought (Official Instrumental) [prod. Metro Boomin].mp3-57e237f1653dddbc3be262d8f7ac9bd7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

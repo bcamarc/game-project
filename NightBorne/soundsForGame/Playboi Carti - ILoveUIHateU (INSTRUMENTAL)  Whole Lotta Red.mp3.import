@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cbdpgfmlbpd31"
+path="res://.godot/imported/Playboi Carti - ILoveUIHateU (INSTRUMENTAL)  Whole Lotta Red.mp3-d41e770cd44e9eaca2a47fca63de0fa5.mp3str"
+
+[deps]
+
+source_file="res://NightBorne/soundsForGame/Playboi Carti - ILoveUIHateU (INSTRUMENTAL)  Whole Lotta Red.mp3"
+dest_files=["res://.godot/imported/Playboi Carti - ILoveUIHateU (INSTRUMENTAL)  Whole Lotta Red.mp3-d41e770cd44e9eaca2a47fca63de0fa5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

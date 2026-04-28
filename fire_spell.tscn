@@ -1,0 +1,124 @@
+[gd_scene load_steps=19 format=3 uid="uid://wu3boinhiw8n"]
+
+[ext_resource type="Texture2D" uid="uid://bq32vewv573r1" path="res://GodotMagic/Fire Effect 1/Fire Effect 1/Firebolt SpriteSheet.png" id="1_6nh58"]
+[ext_resource type="Script" uid="uid://dlsie7ijyxs42" path="res://fire_spell.gd" id="2_4hxm0"]
+[ext_resource type="Texture2D" uid="uid://c30n32u7evtpd" path="res://Enemy_Galore_I/GodotMagic/Fire Effect 1/Fire Effect 1/Firebolt SpriteSheet.png" id="2_fusjo"]
+[ext_resource type="Texture2D" uid="uid://b2ps4cjwcxb" path="res://Enemy_Galore_I/Golem/Armored/Golem_Armor_Ability.png" id="3_fusjo"]
+[ext_resource type="AudioStream" uid="uid://032e2o3cymmj" path="res://GodotSound/fire-magic-5-378639.mp3" id="5_xgyrp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fusjo"]
+atlas = ExtResource("1_6nh58")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgyrp"]
+atlas = ExtResource("1_6nh58")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rl1y3"]
+atlas = ExtResource("1_6nh58")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnrgt"]
+atlas = ExtResource("1_6nh58")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r14t2"]
+atlas = ExtResource("2_fusjo")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dyks"]
+atlas = ExtResource("2_fusjo")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2gl5"]
+atlas = ExtResource("2_fusjo")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p8xmi"]
+atlas = ExtResource("2_fusjo")
+region = Rect2(384, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vkqda"]
+atlas = ExtResource("2_fusjo")
+region = Rect2(432, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_178lb"]
+atlas = ExtResource("2_fusjo")
+region = Rect2(480, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ec8op"]
+atlas = ExtResource("3_fusjo")
+region = Rect2(192, 144, 64, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r14t2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fusjo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgyrp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rl1y3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qnrgt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r14t2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dyks")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p2gl5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p8xmi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vkqda")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_178lb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ec8op")
+}],
+"loop": false,
+"name": &"destroyed",
+"speed": 9.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dyks"]
+size = Vector2(25, 9)
+
+[node name="FireSpell" type="AnimatedSprite2D"]
+position = Vector2(474, 286)
+scale = Vector2(1.2, 1.2)
+sprite_frames = SubResource("SpriteFrames_r14t2")
+animation = &"destroyed"
+autoplay = "default"
+script = ExtResource("2_4hxm0")
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(1.2, 1.2)
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(8.5, 5.5)
+scale = Vector2(1.2, 1.2)
+shape = SubResource("RectangleShape2D_7dyks")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_xgyrp")
+autoplay = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=0 format=3 uid="uid://cwrkcg3t8lws4"]
+
+[node name="Label" type="Label"]
+offset_right = 792.0
+offset_bottom = 23.0
+text = "THANK YOU FOR PLAYING! Made by Andrew Goddard and Marc Soto"

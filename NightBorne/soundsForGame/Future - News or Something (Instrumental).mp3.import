@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://eq3b3vyntp8j"
+path="res://.godot/imported/Future - News or Something (Instrumental).mp3-b68ea8d75f5262a3fbc1080f49f3303e.mp3str"
+
+[deps]
+
+source_file="res://NightBorne/soundsForGame/Future - News or Something (Instrumental).mp3"
+dest_files=["res://.godot/imported/Future - News or Something (Instrumental).mp3-b68ea8d75f5262a3fbc1080f49f3303e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

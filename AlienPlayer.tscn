@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://bksfhvf7h258r"]
+
+[ext_resource type="Script" uid="uid://chbegw6mdi5y3" path="res://alien_player.gd" id="1_g2b4y"]
+[ext_resource type="Texture2D" uid="uid://diylggm1jy2cj" path="res://KnightSprites/without_outline/IDLE.png" id="2_g2b4y"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bpkdr"]
+radius = 7.0
+height = 25.599998
+
+[sub_resource type="Animation" id="Animation_pmswm"]
+resource_name = "Idle"
+length = 0.9
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AlienPlayer:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_g2b4y"]
+resource_name = "Run"
+length = 0.3
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_rg7ch"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AlienPlayer:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uyq1d"]
+_data = {
+&"Idle": SubResource("Animation_pmswm"),
+&"RESET": SubResource("Animation_rg7ch"),
+&"Run": SubResource("Animation_g2b4y")
+}
+
+[node name="Knight" type="CharacterBody2D"]
+position = Vector2(2.0000305, 2.0000153)
+scale = Vector2(2.5, 2.5)
+collision_mask = 7
+script = ExtResource("1_g2b4y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.40001488, -5.722046e-06)
+shape = SubResource("CapsuleShape2D_bpkdr")
+
+[node name="AlienPlayer" type="Sprite2D" parent="."]
+position = Vector2(-1.5258789e-05, -0.40000618)
+texture = ExtResource("2_g2b4y")
+hframes = 7
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_uyq1d")
+}
+autoplay = "Idle"

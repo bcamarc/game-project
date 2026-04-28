@@ -1,0 +1,120 @@
+[gd_scene load_steps=11 format=3 uid="uid://by8c335tsvfu1"]
+
+[ext_resource type="Script" uid="uid://batume02rel5p" path="res://player.gd" id="1_kpjcp"]
+[ext_resource type="Texture2D" uid="uid://1v4mgt4ptim6" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/knight.png" id="1_xhfnw"]
+[ext_resource type="Script" uid="uid://btp55rll0pkxh" path="res://knight.gd" id="3_kne1u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kne1u"]
+size = Vector2(12.999992, 19.000008)
+
+[sub_resource type="Animation" id="Animation_dtqjt"]
+resource_name = "Idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Knight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.025000002, -0.16666667, 0, 0, 2, -0.025000002, -0.16666667, 0, 0, 3, -0.024999997, -0.16666667, 0, 0),
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45)
+}
+
+[sub_resource type="Animation" id="Animation_e80uo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Knight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_tdg3f"]
+resource_name = "Run"
+length = 2.65
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Knight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
+"points": PackedFloat32Array(16, -0.25, 0, 0.25, 0, 17, -0.025000002, -0.16666667, 0, 0, 18, -0.025000002, -0.16666667, 0, 0, 18, -0.024999997, 0, 0, 0, 20, -0.025000006, -0.33333334, 0, 0, 21, -0.024999997, -0.16666667, 0, 0, 22, -0.025065362, -0.16666666, 0, 0, 23, -0.02493463, -0.16666667, 0, 0, 24, -0.025000017, -0.16666667, 0, 0, 25, -0.024999997, -0.16666667, 0, 0, 26, -0.024999997, -0.16666667, 0, 0, 27, -0.024999997, -0.16666667, 0, 0, 27, -0.024999997, 0, 0, 0, 28, -0.025000017, -0.16666667, 0, 0, 29, -0.024999976, -0.16666667, 0, 0, 30, -0.025000017, -0.16666667, 0, 0, 31, -0.025000017, -0.16666667, 0, 0),
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9003922, 1.05, 1.2, 1.35, 1.5, 1.65, 1.8, 1.95, 2.1, 2.25, 2.4)
+}
+
+[sub_resource type="Animation" id="Animation_kne1u"]
+resource_name = "knightAnimation"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Knight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.29974627, 0.4492869),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_cxr5p"]
+resource_name = "run"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Knight:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.026497556, -0.16666667, 0, 0, 2, -0.024954978, -0.16666667, 0, 0),
+"times": PackedFloat32Array(0, 0.16666667, 0.31639653)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cxr5p"]
+_data = {
+&"Idle": SubResource("Animation_dtqjt"),
+&"RESET": SubResource("Animation_e80uo"),
+&"Run": SubResource("Animation_tdg3f"),
+&"knightAnimation": SubResource("Animation_kne1u"),
+&"run": SubResource("Animation_cxr5p")
+}
+
+[node name="Node2D" type="CharacterBody2D"]
+position = Vector2(507, 361)
+script = ExtResource("1_kpjcp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(75.5, -4.5)
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_kne1u")
+
+[node name="Knight" type="Sprite2D" parent="."]
+position = Vector2(76.999985, -12.000004)
+scale = Vector2(3, 3)
+texture = ExtResource("1_xhfnw")
+hframes = 8
+vframes = 8
+script = ExtResource("3_kne1u")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_cxr5p")
+}
+autoplay = "knightAnimation"

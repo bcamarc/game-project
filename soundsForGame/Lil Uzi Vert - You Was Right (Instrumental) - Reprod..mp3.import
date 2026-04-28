@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dmkk0a588qp0r"
+path="res://.godot/imported/Lil Uzi Vert - You Was Right (Instrumental) - Reprod..mp3-b03491630ef9d1c658f66231b31054fb.mp3str"
+
+[deps]
+
+source_file="res://soundsForGame/Lil Uzi Vert - You Was Right (Instrumental) - Reprod..mp3"
+dest_files=["res://.godot/imported/Lil Uzi Vert - You Was Right (Instrumental) - Reprod..mp3-b03491630ef9d1c658f66231b31054fb.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
