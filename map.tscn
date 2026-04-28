@@ -1,8 +1,8 @@
-[gd_scene load_steps=38 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=37 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
-[ext_resource type="Script" path="res://tile_map.gd" id="2_71pa8"]
+[ext_resource type="Script" uid="uid://ctty4ww42hm7l" path="res://tile_map.gd" id="2_71pa8"]
 [ext_resource type="Texture2D" uid="uid://dq6tmws0kv0kx" path="res://spaceBackground2.jpg" id="2_urblq"]
 [ext_resource type="Texture2D" uid="uid://dfoej6gn5j6qg" path="res://spaceCadetTextures.png" id="3_6qsgm"]
 [ext_resource type="Script" uid="uid://ijkp8l5x7632" path="res://layer_0.gd" id="4_0t07s"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://djxmtycproxvm" path="res://stats.tscn" id="9_gqbix"]
 [ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="10_ooc2g"]
 [ext_resource type="Script" uid="uid://dcmmqgjxio6fi" path="res://mana_bar.gd" id="12_6qsgm"]
-[ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="15_2wwcf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wijl4"]
 resource_name = "ground_tile"
@@ -441,6 +440,3 @@ theme_override_styles/background = SubResource("StyleBoxFlat_0t07s")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ooc2g")
 show_percentage = false
 script = ExtResource("12_6qsgm")
-
-[node name="CharacterBody2D" parent="." instance=ExtResource("15_2wwcf")]
-position = Vector2(778, -17)
