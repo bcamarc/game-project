@@ -20,10 +20,10 @@ var base_health := 100
 var base_damage := 10
 var base_defense := 5
 var base_speed := 250
-var base_magic := 0
+var base_magic := 50
 
 
-var total_health := 0
+var total_health := 1
 var total_damage := 0
 var total_defense := 0
 var total_speed := 0
@@ -48,6 +48,7 @@ func _process(delta: float) -> void:
 			hide()
 		else:
 			show()
+	update_stats()
 	
 	
 
@@ -97,10 +98,10 @@ func _on_int_button_2_pressed() -> void:
 
 
 func update_stats():
-	total_health = 50 + vitality * 10
-	total_damage = 5 + strength * 2
-	total_defense = 2 + vitality * 1
-	total_speed = 100 + dexterity * 2
+	total_health = base_health + vitality * 10
+	total_damage = base_damage + strength * 2
+	total_defense = base_defense + vitality * 1
+	total_speed = base_speed + dexterity * 2
 
 	for item in equipment.values():
 		if item != null:

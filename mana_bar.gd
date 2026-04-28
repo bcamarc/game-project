@@ -1,5 +1,4 @@
 extends ProgressBar  
 
 func _process(delta: float) -> void:
-	#value = $"../../../Knight".mana
-	value = 50
+	value = $"../../../Stats".total_magic

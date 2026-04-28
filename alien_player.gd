@@ -22,10 +22,12 @@ var able_to_attack := false
 @onready var sprite = get_node("./KnightSprite")
 
 func _ready() -> void:
+	print("aoiefawoifn")
 	pass
 
 
 func _physics_process(delta):
+
 	alienPos = global_position
 	count += 1
 	count2 += 1

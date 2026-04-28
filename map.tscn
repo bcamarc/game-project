@@ -1,9 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=36 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
 [ext_resource type="Script" uid="uid://ctty4ww42hm7l" path="res://tile_map.gd" id="2_71pa8"]
-[ext_resource type="Texture2D" uid="uid://dq6tmws0kv0kx" path="res://spaceBackground2.jpg" id="2_urblq"]
 [ext_resource type="Texture2D" uid="uid://dfoej6gn5j6qg" path="res://spaceCadetTextures.png" id="3_6qsgm"]
 [ext_resource type="Script" uid="uid://ijkp8l5x7632" path="res://layer_0.gd" id="4_0t07s"]
 [ext_resource type="Script" uid="uid://b5qrvhb1pgexx" path="res://coins_folder.gd" id="6_ooc2g"]
@@ -377,11 +376,6 @@ script = ExtResource("2_71pa8")
 
 [node name="Sprite2D" type="Sprite2D" parent="TileMapLayer/ParallaxBackground"]
 
-[node name="SpaceBackground" type="Sprite2D" parent="TileMapLayer/ParallaxBackground"]
-position = Vector2(546.00006, 330.00003)
-scale = Vector2(1.7208408, 1.8361111)
-texture = ExtResource("2_urblq")
-
 [node name="Layer0" type="TileMapLayer" parent="TileMapLayer"]
 use_parent_material = true
 tile_set = SubResource("TileSet_e0an3")
@@ -401,7 +395,7 @@ script = ExtResource("6_ooc2g")
 [node name="Knight" parent="." instance=ExtResource("10_ooc2g")]
 
 [node name="Camera2D" type="Camera2D" parent="Knight"]
-position = Vector2(16.799992, 11.999995)
+position = Vector2(-1.2000122, -6.67572e-06)
 scale = Vector2(0.99999994, 0.99999994)
 
 [node name="ProgressBar" type="ProgressBar" parent="Knight/Camera2D"]
