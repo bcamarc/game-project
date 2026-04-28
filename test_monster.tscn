@@ -1,7 +1,7 @@
-[gd_scene load_steps=50 format=3 uid="uid://ev10xsblqhen"]
+[gd_scene load_steps=50 format=3 uid="uid://dmssemijldie6"]
 
 [ext_resource type="Texture2D" uid="uid://c054upq5mcymj" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Hit.png" id="1_bb12q"]
-[ext_resource type="Script" uid="uid://xwjhoy68i1ku" path="res://test_monster.gd" id="1_td46n"]
+[ext_resource type="Script" path="res://test_monster.gd" id="1_td46n"]
 [ext_resource type="Texture2D" uid="uid://du1yxafgijiel" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Ability.png" id="2_cj5g0"]
 [ext_resource type="Texture2D" uid="uid://drn33nc0rfde6" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Idle.png" id="2_td46n"]
 [ext_resource type="Texture2D" uid="uid://bj63fpkhdwuoo" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Run.png" id="3_cj5g0"]
