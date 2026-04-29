@@ -6,7 +6,7 @@ func _ready() -> void:
 	noise.seed = randi()
 	noise.frequency = 0.01
 	set_cell(a, 0, Vector2i(0, 0), 0)
-	for x in range(70):
+	for x in range(700):
 		var height = int(noise.get_noise_1d(x) * 10 + 20 / 2)
 		for y in range(height, 20):
 			set_cell(Vector2i(x, y-1), 0, Vector2i(0, 1), 0)
