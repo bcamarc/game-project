@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://rgwaqgm0nbeu"]
+
+[ext_resource type="Script" uid="uid://y7o2farf6ub5" path="res://character_slot.gd" id="1_bekhx"]
+
+[node name="character_slot" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bekhx")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

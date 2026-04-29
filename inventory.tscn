@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3swrpf7cs1ve"]
+[gd_scene load_steps=8 format=3 uid="uid://b3swrpf7cs1ve"]
 
 [ext_resource type="Script" uid="uid://cqrwl80xv7ed2" path="res://inventory.gd" id="1_psafj"]
 [ext_resource type="Texture2D" uid="uid://cgewfx6ebp2g1" path="res://equipment.png" id="2_5tt2m"]
 [ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="3_5tt2m"]
 [ext_resource type="Script" uid="uid://dwp7bro166sjl" path="res://weapons_panel.gd" id="4_dw5ng"]
 [ext_resource type="PackedScene" uid="uid://bh31s74cqt4rb" path="res://inventory_slot.tscn" id="5_0xmy5"]
+[ext_resource type="PackedScene" uid="uid://rgwaqgm0nbeu" path="res://character_slot.tscn" id="6_0xmy5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mrqgh"]
 
@@ -63,3 +64,9 @@ theme_override_constants/h_separation = 44
 theme_override_constants/v_separation = 44
 columns = 5
 metadata/_edit_use_anchors_ = true
+
+[node name="character_slot" parent="." instance=ExtResource("6_0xmy5")]
+offset_left = 429.80002
+offset_top = 282.2
+offset_right = 429.80002
+offset_bottom = 282.2
