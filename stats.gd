@@ -24,6 +24,7 @@ var base_magic := 50
 
 
 var total_health := 1
+var max_health := 1
 var total_damage := 0
 var total_defense := 0
 var total_speed := 0
@@ -42,6 +43,7 @@ func _ready() -> void:
 	hide()
 	update_stats()
 	total_magic = max_magic
+	total_health = max_health
 	
 	
 func _process(delta: float) -> void:
@@ -51,6 +53,8 @@ func _process(delta: float) -> void:
 		else:
 			show()
 	update_stats()
+	print(total_magic)
+	print(max_magic)
 	
 	
 
@@ -68,7 +72,15 @@ func check_exp():
 func add_exp(a):
 	exp += a
 func add_hp(a):
+	if (total_health+a > max_health):
+		total_health = max_health
+		return
 	total_health+= a
+func add_mp(a):
+	if (total_magic+a > max_magic):
+		total_magic = max_magic
+		return
+	total_magic += a
 func get_strength() -> int:
 	return strength
 
@@ -100,7 +112,7 @@ func _on_int_button_2_pressed() -> void:
 
 
 func update_stats():
-	total_health = base_health + vitality * 10
+	max_health = base_health + vitality * 10
 	total_damage = base_damage + strength * 2
 	total_defense = base_defense + vitality * 1
 	total_speed = base_speed + dexterity * 2

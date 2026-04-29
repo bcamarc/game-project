@@ -93,11 +93,11 @@ func _physics_process(delta):
 
 	if count3 % 35 == 0 and get_node("../Stats").total_magic < get_node("../Stats").max_magic:
 		if boosted:
-			get_node("../Stats").total_magic += 4.5
+			get_node("../Stats").add_mp(4.5)
 		else:
-			get_node("../Stats").total_magic += 3
+			get_node("../Stats").add_mp(3)
 
-	if count5 > 400 and mana >= 70 and Input.is_action_just_pressed("holySpell"):
+	if count5 > 400 and get_node("../Stats").total_magic >= 70 and Input.is_action_just_pressed("holySpell"):
 		var spell4 = holySpell.instantiate()
 		spell4.global_position = global_position
 		get_tree().current_scene.add_child(spell4)

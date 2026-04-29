@@ -1,4 +1,4 @@
 extends AnimatedSprite2D
 
 func _process(delta: float) -> void:
-	global_position = get_node("../AlienPlayer").global_position
+	global_position = get_node("../Knight").global_position

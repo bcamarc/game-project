@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cm7tjhae01oe5" path="res://GodotMagic/Thunder Effect 01/Thunder Effect 01/Projectile 2/Projectile 2 w blur.png" id="1_iunt5"]
 [ext_resource type="Texture2D" uid="uid://drpl7vpxpkum5" path="res://GodotMagic/Thunder Effect 01/Thunder Effect 01/Thunder Hit/Thunder hit w blur.png" id="2_p44so"]
-[ext_resource type="Script" uid="uid://bcjv5ja4psjc" path="res://thunder_spell.gd" id="3_a626v"]
+[ext_resource type="Script" path="res://thunder_spell.gd" id="3_a626v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hasvq"]
 atlas = ExtResource("1_iunt5")

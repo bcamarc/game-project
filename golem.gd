@@ -94,7 +94,7 @@ func _process(delta: float) -> void:
 		if abilityRadius and randf() < 0.0007:
 			$AnimatedSprite2D.play("AbilityAttack")
 			add_child(abilityFX)
-			get_node("../Stats").health -= 15
+			get_node("../Stats").total_health -= 15
 	#else:
 		#print("player not found")
 
@@ -105,7 +105,7 @@ func _process(delta: float) -> void:
 
 func _on_frame_changed():
 	if $AnimatedSprite2D.animation == "AttackB" and $AnimatedSprite2D.frame == attack_frame:
-		get_node("../Stats").health -= attack_damage
+		get_node("../Stats").total_health -= attack_damage
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "Knight":
