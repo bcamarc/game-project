@@ -1,18 +1,25 @@
 extends Control
 
 var item = null
-@onready var icon = find_child("TextureRect", true, false)
+var icon = null
+
 
 func _ready():
+	icon = find_child("TextureRect", true, false)
 	print("ICON NODE =", icon)
+
+	if item != null:
+		_apply_item()
+
 
 func set_item(new_item):
 	item = new_item
 
-	if icon == null:
-		print("ERROR: icon still null")
-		return
+	if icon != null:
+		_apply_item()
 
+
+func _apply_item():
 	if item and item.has("icon"):
 		icon.texture = item["icon"]
 	else:
@@ -23,13 +30,18 @@ func _get_drag_data(position):
 	if item == null:
 		return null
 
+	var container = PanelContainer.new()
+	container.custom_minimum_size = Vector2(100, 100)
+
 	var preview = TextureRect.new()
+	preview.texture = icon.texture
+	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	preview.custom_minimum_size = Vector2(100, 100)
 
-	if icon and icon.texture:
-		preview.texture = icon.texture
+	container.add_child(preview)
 
-	preview.custom_minimum_size = Vector2(32, 32)
-	set_drag_preview(preview)
+	set_drag_preview(container)
 
 	return {
 		"item": item,
