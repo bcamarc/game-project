@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 					if not $AnimatedSprite2D.is_playing():
 						$AnimatedSprite2D.play("Attack")
 				if count % 40 == 0:
-					get_node("../Stats").health -= 2.5
+					get_node("../Stats").total_health -= 2.5
 			else:
 				move_and_slide()
 				if not $AnimatedSprite2D.is_playing():

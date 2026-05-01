@@ -65,15 +65,16 @@ theme_override_constants/v_separation = 44
 columns = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="character_slot" parent="." instance=ExtResource("6_0xmy5")]
+[node name="helmet_slot" parent="." instance=ExtResource("6_0xmy5")]
 custom_minimum_size = Vector2(100, 100)
 offset_left = 390.0
 offset_top = 241.0
 offset_right = 490.0
 offset_bottom = 341.0
 scale = Vector2(2.2, 2.2)
+slot_type = "helmet"
 
-[node name="character_slot2" parent="." instance=ExtResource("6_0xmy5")]
+[node name="chestplate_slot" parent="." instance=ExtResource("6_0xmy5")]
 custom_minimum_size = Vector2(100, 100)
 offset_left = 389.0
 offset_top = 367.0
@@ -82,8 +83,9 @@ offset_bottom = 467.0
 scale = Vector2(2.2, 2.2)
 size_flags_horizontal = 1
 size_flags_vertical = 1
+slot_type = "chestplate"
 
-[node name="character_slot3" parent="." instance=ExtResource("6_0xmy5")]
+[node name="boots_slot" parent="." instance=ExtResource("6_0xmy5")]
 custom_minimum_size = Vector2(100, 100)
 offset_left = 388.0
 offset_top = 491.0
@@ -92,3 +94,15 @@ offset_bottom = 591.0
 scale = Vector2(2.2, 2.2)
 size_flags_horizontal = 1
 size_flags_vertical = 1
+slot_type = "boots"
+
+[node name="weapon_slot" parent="." instance=ExtResource("6_0xmy5")]
+custom_minimum_size = Vector2(100, 100)
+offset_left = 45.0
+offset_top = 367.0
+offset_right = 145.0
+offset_bottom = 467.0
+scale = Vector2(2.2, 2.2)
+size_flags_horizontal = 1
+size_flags_vertical = 1
+slot_type = "weapon"

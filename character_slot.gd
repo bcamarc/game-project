@@ -2,10 +2,11 @@ extends Control
 
 var item = null
 @onready var icon = $TextureRect
+@export var slot_type = "" 
 
 func _ready():
 	
-	custom_minimum_size = Vector2(200,200)
+	custom_minimum_size = Vector2(48,48)
 	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	icon.texture = null
@@ -42,7 +43,18 @@ func _get_drag_data(position):
 	}
 
 func _can_drop_data(position, data):
-	return typeof(data) == TYPE_DICTIONARY and data.has("item")
+	if typeof(data) != TYPE_DICTIONARY:
+		return false
+
+	if not data.has("item"):
+		return false
+
+	var incoming_item = data["item"]
+
+	if not incoming_item.has("type"):
+		return false
+
+	return incoming_item["type"] == slot_type
 
 func _drop_data(position, data):
 	var from_slot = data["from"]

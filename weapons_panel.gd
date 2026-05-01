@@ -3,9 +3,9 @@ extends Panel
 @onready var grid = $GridContainer
 
 var items = [
-	{"name": "Sword", "icon": preload("res://art/golem_chastplate.png")},
-	{"name": "Shield", "icon": preload("res://art/copper_chestplate.png")},
-	{"name": "Potion", "icon": preload("res://art/golem_helmet.png")}
+	{"name": "Sword", "icon": preload("res://art/golem_chastplate.png"), "type": "weapon"},
+	{"name": "Shield", "icon": preload("res://art/copper_chestplate.png"), "type": "chestplate"},
+	{"name": "Potion", "icon": preload("res://art/golem_helmet.png"), "type": "helmet"}
 ]
 
 func _ready():

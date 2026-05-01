@@ -19,12 +19,12 @@ var count5 = 500
 
 var boosted = false
 var able_to_attack := false
+var is_attacking := false
+
 @onready var sprite = get_node("./KnightSprite")
 
 func _ready() -> void:
-	print("aoiefawoifn")
-	pass
-
+	sprite.animation_finished.connect(_on_animation_finished)
 
 func _physics_process(delta):
 
@@ -34,41 +34,56 @@ func _physics_process(delta):
 	count3 += 1
 	count4 += 1
 	count5 += 1
+
 	add_to_group("player")
 	add_to_group("alien_player")
+
 	var direction := Vector2.ZERO
+
 	if Input.is_action_pressed("Left"):
 		direction.x -= 1
 		sprite.flip_h = true
 	if Input.is_action_pressed("right"):
 		direction.x += 1
 		sprite.flip_h = false
+
 	velocity.x = direction.x * get_node("../Stats").total_speed
 
 	if is_on_floor():
 		velocity.y = 0
 		jumpCount = 0
 		jumpEnded = false
+
 		if Input.is_action_just_pressed("jump"):
 			velocity.y = -jump_force
 			jumpCount = 1
 			jumpEnded = false
-			if ( not sprite.animation == "attack1"):
+			if not is_attacking:
 				sprite.play("jump_start")
+
 		elif direction.x != 0:
-			if not sprite.is_playing():
+			if not is_attacking:
 				sprite.play("Run")
+
 		else:
-			if not sprite.is_playing():
+			if not is_attacking:
 				sprite.play("Idle")
+
 	else:
 		velocity.y += gravity * delta
+
 		if jumpCount == 1 and not jumpEnded and velocity.y > 0:
-			if ( not sprite.animation == "attack1"):
+			if not is_attacking:
 				sprite.play("jump_end")
 			jumpEnded = true
+
 		elif direction.x != 0 and jumpCount == 0:
-			sprite.play("Run")
+			if not is_attacking:
+				sprite.play("Run")
+
+	if Input.is_action_just_pressed("attack"):
+		is_attacking = true
+		sprite.play("attack1")
 
 	if count > 40 and get_node("../Stats").total_magic >= 10 and Input.is_action_just_pressed("fireSpell"):
 		var spell = fireSpell.instantiate()
@@ -110,17 +125,24 @@ func _physics_process(delta):
 	if count5 > 200 and boosted:
 		get_node("../Stats").total_speed -= 100
 		boosted = false
-	if Input.is_action_just_pressed("attack"):
-		$KnightSprite.play("attack1")
 
 	if get_node("../Stats").total_health <= 0:
 		queue_free()
 
-	#if not is_on_floor() and sprite.animation == "attack1" and not sprite.is_playing():
-		#if velocity.y < 0:
-			#sprite.play("jump_start")
-		#else:
-			#sprite.play("jump_end")
-
 	move_and_slide()
-	
+
+
+func _on_animation_finished():
+	if sprite.animation == "attack1":
+		is_attacking = false
+
+		if not is_on_floor():
+			if velocity.y < 0:
+				sprite.play("jump_start")
+			else:
+				sprite.play("jump_end")
+		else:
+			if velocity.x != 0:
+				sprite.play("Run")
+			else:
+				sprite.play("Idle")
