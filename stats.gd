@@ -53,8 +53,7 @@ func _process(delta: float) -> void:
 		else:
 			show()
 	update_stats()
-	print(total_magic)
-	print(max_magic)
+
 	
 	
 

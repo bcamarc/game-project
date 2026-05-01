@@ -77,7 +77,7 @@ func _process(delta: float) -> void:
 		if ability and randf() < 0.001:
 			$AnimatedSprite2D.play("Ability")
 			$slimeFx.play("ability")
-			get_node("../Stats").health -= 5
+			get_node("../Stats").total_health -= 5
 
 		if not is_on_wall() and not is_on_floor() and count % 5 == 0:
 			velocity.y = 400
@@ -123,3 +123,6 @@ func _on_ability_area_body_entered(body: Node2D) -> void:
 func _on_ability_area_body_exited(body: Node2D) -> void:
 	if body.name == "Knight":
 		ability = false
+
+func take_damage(a) -> void:
+	health -= a

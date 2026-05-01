@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://wji0ohqugwxm"]
+[gd_scene load_steps=50 format=3 uid="uid://wji0ohqugwxm"]
 
 [ext_resource type="Script" uid="uid://chbegw6mdi5y3" path="res://alien_player.gd" id="1_nsuie"]
 [ext_resource type="Texture2D" uid="uid://2dblqohlcv01" path="res://KnightSprites/with_outline/IDLE.png" id="2_nsuie"]
@@ -323,6 +323,10 @@ animations = [{
 "speed": 9.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o118k"]
+radius = 13.999861
+height = 34.392464
+
 [node name="Knight" type="CharacterBody2D"]
 position = Vector2(2.0000305, 2.0000153)
 scale = Vector2(2.5, 2.5)
@@ -345,5 +349,18 @@ position = Vector2(18.799988, 1.5999938)
 sprite_frames = SubResource("SpriteFrames_gvm6a")
 animation = &"default 2"
 autoplay = "default 2"
-frame = 5
-frame_progress = 1.0
+frame = 2
+frame_progress = 0.91855603
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(18.399994, 3.5999947)
+collision_layer = 15
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(6.1392784e-06, -1.7881393e-06)
+rotation = 1.5663137
+shape = SubResource("CapsuleShape2D_o118k")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

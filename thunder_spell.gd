@@ -49,10 +49,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			play("Hit")
 			body.health -= damage
 			dying = true
-		if body.is_in_group("fire_alien") or body.is_in_group("ice_alien"):
-			play("Hit")
-			body.take_damage(damage)
-			dying = true
 		if "TileMapLayer" == body.name:
 			play("Hit")
 			dying = true

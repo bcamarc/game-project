@@ -18,10 +18,14 @@ var count4 = 0
 var count5 = 500
 
 var boosted = false
-var able_to_attack := false
 var is_attacking := false
+var has_hit := false
 
-@onready var sprite = get_node("./KnightSprite")
+var attack_cooldown := 0.2
+var attack_timer := 0.0
+
+@onready var sprite = $KnightSprite
+@onready var hitbox = $Area2D
 
 func _ready() -> void:
 	sprite.animation_finished.connect(_on_animation_finished)
@@ -35,6 +39,8 @@ func _physics_process(delta):
 	count4 += 1
 	count5 += 1
 
+	attack_timer -= delta
+
 	add_to_group("player")
 	add_to_group("alien_player")
 
@@ -46,6 +52,10 @@ func _physics_process(delta):
 	if Input.is_action_pressed("right"):
 		direction.x += 1
 		sprite.flip_h = false
+	if sprite.flip_h:
+		hitbox.position.x = -abs(hitbox.position.x)
+	else:
+		hitbox.position.x = abs(hitbox.position.x)
 
 	velocity.x = direction.x * get_node("../Stats").total_speed
 
@@ -64,7 +74,6 @@ func _physics_process(delta):
 		elif direction.x != 0:
 			if not is_attacking:
 				sprite.play("Run")
-
 		else:
 			if not is_attacking:
 				sprite.play("Idle")
@@ -81,9 +90,21 @@ func _physics_process(delta):
 			if not is_attacking:
 				sprite.play("Run")
 
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and not is_attacking and attack_timer <= 0:
 		is_attacking = true
+		has_hit = false
 		sprite.play("attack1")
+		attack_timer = attack_cooldown
+
+	if is_attacking and not has_hit:
+		var bodies = hitbox.get_overlapping_bodies()
+
+		for body in bodies:
+			if body.is_in_group("golem") or body.is_in_group("slime"):
+				if body.has_method("take_damage"):
+					body.take_damage(get_node("../Stats").total_damage)
+					has_hit = true
+					break
 
 	if count > 40 and get_node("../Stats").total_magic >= 10 and Input.is_action_just_pressed("fireSpell"):
 		var spell = fireSpell.instantiate()
@@ -135,6 +156,7 @@ func _physics_process(delta):
 func _on_animation_finished():
 	if sprite.animation == "attack1":
 		is_attacking = false
+		has_hit = false
 
 		if not is_on_floor():
 			if velocity.y < 0:
