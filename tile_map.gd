@@ -1,13 +1,48 @@
 extends TileMapLayer
-var a =  Vector2i(1, 1)
+
 var noise := FastNoiseLite.new()
+
+var slimeScene = preload("res://test_monster.tscn")
+var golemScene = preload("res://golem.tscn")
+
+var map_width := 700
+var ground_height := 20
+
 func _ready() -> void:
 	randomize()
+
 	noise.seed = randi()
 	noise.frequency = 0.01
-	set_cell(a, 0, Vector2i(0, 0), 0)
-	for x in range(700):
-		var height = int(noise.get_noise_1d(x) * 10 + 20 / 2)
-		for y in range(height, 20):
-			set_cell(Vector2i(x, y-1), 0, Vector2i(0, 1), 0)
-			set_cell(Vector2i(x, height-2), 0, Vector2i(0, 0), 0)
+
+	call_deferred("_spawn_map")
+
+func _spawn_map():
+
+	var mob_count := 6
+
+
+	for x in range(map_width):
+
+		var height = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
+
+		for y in range(height, ground_height):
+			set_cell(Vector2i(x, y - 1), 0, Vector2i(0, 1), 0)
+
+		set_cell(Vector2i(x, height - 2), 0, Vector2i(0, 0), 0)
+
+
+	for i in range(mob_count):
+
+		var x = int(i * (map_width / mob_count))
+		var y = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
+
+		var mob
+
+		if randf() < 0.5:
+			mob = slimeScene.instantiate()
+		else:
+			mob = golemScene.instantiate()
+
+		get_parent().add_child(mob)
+
+		mob.global_position = map_to_local(Vector2i(x, y - 3))
