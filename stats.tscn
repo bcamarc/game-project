@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://djxmtycproxvm"]
+[gd_scene load_steps=18 format=3 uid="uid://djxmtycproxvm"]
 
 [ext_resource type="Script" uid="uid://b1ximvd4rs866" path="res://stats.gd" id="1_qkx3n"]
 [ext_resource type="Texture2D" uid="uid://6vptby3n8jbw" path="res://baseStats.png" id="2_tgj6n"]
@@ -7,6 +7,11 @@
 [ext_resource type="Script" uid="uid://d05i8exk5sg2o" path="res://vit_label.gd" id="5_r4or0"]
 [ext_resource type="Script" uid="uid://dp5yslf8ua5as" path="res://int_label.gd" id="6_af2q3"]
 [ext_resource type="Script" uid="uid://shwu0pt2pfkn" path="res://int_label_2.gd" id="7_agoph"]
+[ext_resource type="Script" uid="uid://dy4bfoxcuivyh" path="res://atk.gd" id="8_m8qmt"]
+[ext_resource type="Script" uid="uid://ddl2oeago823v" path="res://def.gd" id="9_wu3h0"]
+[ext_resource type="Script" uid="uid://c57xr88sio4q2" path="res://spd.gd" id="10_tj6r6"]
+[ext_resource type="Script" uid="uid://dcjc5k5qsc332" path="res://jmp.gd" id="11_1gw14"]
+[ext_resource type="Script" uid="uid://c834sis47h5kc" path="res://mag.gd" id="12_5mqph"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgj6n"]
 
@@ -142,6 +147,66 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_r4or0")
 theme_override_font_sizes/font_size = 30
 script = ExtResource("7_agoph")
+
+[node name="atk" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 191.0
+offset_top = 165.0
+offset_right = 238.0
+offset_bottom = 207.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("8_m8qmt")
+
+[node name="def" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 263.0
+offset_top = 165.0
+offset_right = 310.0
+offset_bottom = 207.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("9_wu3h0")
+
+[node name="spd" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 332.0
+offset_top = 165.0
+offset_right = 379.0
+offset_bottom = 207.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("10_tj6r6")
+
+[node name="jmp" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 402.0
+offset_top = 165.0
+offset_right = 449.0
+offset_bottom = 207.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("11_1gw14")
+
+[node name="mag" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 470.0
+offset_top = 165.0
+offset_right = 517.0
+offset_bottom = 207.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_r4or0")
+theme_override_font_sizes/font_size = 30
+script = ExtResource("12_5mqph")
 
 [connection signal="pressed" from="Control/Panel/STRButton" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Control/Panel/VITButton" to="." method="_on_vit_button_pressed"]
