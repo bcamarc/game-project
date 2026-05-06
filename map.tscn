@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=39 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -15,8 +15,9 @@
 [ext_resource type="Script" uid="uid://dcmmqgjxio6fi" path="res://mana_bar.gd" id="12_6qsgm"]
 [ext_resource type="PackedScene" uid="uid://crs31v103iobq" path="res://golem.tscn" id="14_2wwcf"]
 [ext_resource type="PackedScene" uid="uid://dmssemijldie6" path="res://test_monster.tscn" id="15_wbpbn"]
+[ext_resource type="PackedScene" uid="uid://c24u521dpt1yt" path="res://gate1.tscn" id="16_wbpbn"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wijl4"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
 texture = ExtResource("1_c7s6e")
 0:0/0 = 0
@@ -151,7 +152,7 @@ texture = ExtResource("1_c7s6e")
 12:1/0 = 0
 14:2/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ooc2g"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a6rn7"]
 texture = ExtResource("3_6qsgm")
 0:0/0 = 0
 1:0/0 = 0
@@ -248,8 +249,8 @@ texture = ExtResource("3_6qsgm")
 
 [sub_resource type="TileSet" id="TileSet_e0an3"]
 physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_wijl4")
-sources/1 = SubResource("TileSetAtlasSource_ooc2g")
+sources/0 = SubResource("TileSetAtlasSource_wbpbn")
+sources/1 = SubResource("TileSetAtlasSource_a6rn7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqbix"]
 bg_color = Color(0, 0, 0, 1)
@@ -442,3 +443,6 @@ position = Vector2(565.07825, -84.28467)
 
 [node name="TestMonster" parent="." instance=ExtResource("15_wbpbn")]
 position = Vector2(818.07825, -299.88464)
+
+[node name="gate" parent="." instance=ExtResource("16_wbpbn")]
+position = Vector2(1112.8782, 110.415344)

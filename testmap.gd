@@ -4,7 +4,7 @@ var noise := FastNoiseLite.new()
 
 var slimeScene = preload("res://test_monster.tscn")
 var golemScene = preload("res://golem.tscn")
-var testMapScene = preload("res://testmap.tscn")
+
 
 var map_width := 700
 var ground_height := 20
@@ -19,10 +19,8 @@ func _ready() -> void:
 
 
 func on_next_level():
-	var a = testMapScene.instantiate()
-	get_parent().add_child(a)
+	
 	print("worke")
-	queue_free()
 
 
 func _spawn_map():
@@ -35,9 +33,9 @@ func _spawn_map():
 		var height = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
 
 		for y in range(height, ground_height):
-			set_cell(Vector2i(x, y - 1), 0, Vector2i(0, 1), 0)
+			set_cell(Vector2i(x, y - 1), 0, Vector2i(2,0), 0)
 
-		set_cell(Vector2i(x, height - 2), 0, Vector2i(0, 0), 0)
+		set_cell(Vector2i(x, height - 2), 0, Vector2i(2,1), 0)
 
 
 	for i in range(mob_count):

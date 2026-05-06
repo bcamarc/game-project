@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://c24u521dpt1yt"]
+
+[ext_resource type="Texture2D" uid="uid://dxwlg3uucr5yp" path="res://GodotSound/Dimensional_Portal.png" id="1_i1rtd"]
+[ext_resource type="Script" uid="uid://cy0ukjltknwl2" path="res://gate.gd" id="2_0vs45"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6laut"]
+atlas = ExtResource("1_i1rtd")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hq48"]
+atlas = ExtResource("1_i1rtd")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpse5"]
+atlas = ExtResource("1_i1rtd")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eoqul"]
+atlas = ExtResource("1_i1rtd")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qctf"]
+atlas = ExtResource("1_i1rtd")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc4g6"]
+atlas = ExtResource("1_i1rtd")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cl5ug"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6laut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hq48")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kpse5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eoqul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1qctf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qc4g6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_knn3s"]
+
+[node name="gate" type="AnimatedSprite2D"]
+position = Vector2(50.5, 71.5)
+scale = Vector2(4.15625, 5.46875)
+sprite_frames = SubResource("SpriteFrames_cl5ug")
+autoplay = "default"
+frame_progress = 0.30254665
+script = ExtResource("2_0vs45")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1.0827017, 0.091429144)
+shape = SubResource("CapsuleShape2D_knn3s")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
