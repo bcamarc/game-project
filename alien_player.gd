@@ -7,6 +7,7 @@ var jumpEnded := false
 var alienPos := Vector2.ZERO
 
 var mana := 100
+var knight := load("res://knight.tscn")
 var fireSpell := load("res://fire_spell.tscn")
 var thunderSpell := load("res://thunder_spell.tscn")
 var iceSpell := load("res://ice_spell.tscn")
@@ -29,7 +30,14 @@ var attack_timer := 0.0
 
 func _ready() -> void:
 	sprite.animation_finished.connect(_on_animation_finished)
-
+	add_to_group("player")
+	add_to_group("alien_player")
+	
+func respawn():
+	get_node("../Stats").total_health = 100
+	global_position = Vector2(0, 0)
+	#queue_free()
+	
 func _physics_process(delta):
 
 	alienPos = global_position
@@ -41,8 +49,7 @@ func _physics_process(delta):
 
 	attack_timer -= delta
 
-	add_to_group("player")
-	add_to_group("alien_player")
+	
 
 	var direction := Vector2.ZERO
 
@@ -148,7 +155,8 @@ func _physics_process(delta):
 		boosted = false
 
 	if get_node("../Stats").total_health <= 0:
-		queue_free()
+		respawn()
+		
 
 	move_and_slide()
 
