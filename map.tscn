@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=41 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://crs31v103iobq" path="res://golem.tscn" id="14_2wwcf"]
 [ext_resource type="PackedScene" uid="uid://dmssemijldie6" path="res://test_monster.tscn" id="15_wbpbn"]
 [ext_resource type="PackedScene" uid="uid://c24u521dpt1yt" path="res://gate1.tscn" id="16_wbpbn"]
+[ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="18_4on3e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -450,3 +451,6 @@ position = Vector2(818.07825, -299.88464)
 
 [node name="gate" parent="." instance=ExtResource("16_wbpbn")]
 position = Vector2(1112.8782, 110.415344)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("18_4on3e")]
+position = Vector2(102, -56)
