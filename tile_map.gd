@@ -9,6 +9,8 @@ var testMapScene = preload("res://testmap.tscn")
 var map_width := 700
 var ground_height := 20
 
+
+
 func _ready() -> void:
 	randomize()
 
@@ -29,7 +31,6 @@ func _spawn_map():
 
 	var mob_count := 6
 
-
 	for x in range(map_width):
 
 		var height = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
@@ -38,6 +39,11 @@ func _spawn_map():
 			set_cell(Vector2i(x, y - 1), 0, Vector2i(0, 1), 0)
 
 		set_cell(Vector2i(x, height - 2), 0, Vector2i(0, 0), 0)
+
+		if randi() % 20 == 0:
+			set_cell(Vector2i(x, height - 3), 0, Vector2i(6, 6), 0)
+		if randi() % 20 == 0:
+			set_cell(Vector2i(x, height - 3), 0, Vector2i(8,5), 0)
 
 
 	for i in range(mob_count):

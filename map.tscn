@@ -16,7 +16,7 @@
 [ext_resource type="Script" uid="uid://dcmmqgjxio6fi" path="res://mana_bar.gd" id="12_6qsgm"]
 [ext_resource type="PackedScene" uid="uid://crs31v103iobq" path="res://golem.tscn" id="14_2wwcf"]
 [ext_resource type="PackedScene" uid="uid://dmssemijldie6" path="res://test_monster.tscn" id="15_wbpbn"]
-[ext_resource type="PackedScene" path="res://gate1.tscn" id="16_wbpbn"]
+[ext_resource type="PackedScene" uid="uid://c24u521dpt1yt" path="res://gate1.tscn" id="16_wbpbn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -78,7 +78,6 @@ texture = ExtResource("1_c7s6e")
 8:4/0 = 0
 9:4/0 = 0
 0:5/0 = 0
-1:5/0 = 0
 2:5/0 = 0
 3:5/0 = 0
 4:5/0 = 0
@@ -152,6 +151,9 @@ texture = ExtResource("1_c7s6e")
 3:15/0 = 0
 12:1/0 = 0
 14:2/0 = 0
+4:3/0 = 0
+3:3/0 = 0
+1:5/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a6rn7"]
 texture = ExtResource("3_6qsgm")

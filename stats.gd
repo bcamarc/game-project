@@ -30,6 +30,7 @@ var total_defense := 0
 var total_speed := 0
 var total_magic := 0
 var max_magic := 0
+var attack_speed := 1.0
 
 var equipment = {
 	"weapon": null,
@@ -47,6 +48,7 @@ func _ready() -> void:
 	
 	
 func _process(delta: float) -> void:
+	check_exp()
 	if (Input.is_action_just_released("stats")):
 		if (visible):
 			hide()
@@ -67,6 +69,7 @@ func check_exp():
 		level+=1
 		exp = 0
 		expNeeded = expNeeded *1.2
+		skillPoints += 2
 		print("levelup")
 func add_exp(a):
 	exp += a
@@ -116,6 +119,7 @@ func update_stats():
 	total_defense = base_defense + vitality * 1
 	total_speed = base_speed + dexterity * 2
 	max_magic = base_magic + intellegience * 2
+	attack_speed = (dexterity/100) +1
 
 	for item in equipment.values():
 		if item != null:
@@ -127,3 +131,7 @@ func update_stats():
 				total_speed += item.speed
 			if "magic" in item:
 				total_magic += item.magic
+
+
+func _on_close_button_pressed() -> void:
+	hide()

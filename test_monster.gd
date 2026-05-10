@@ -9,7 +9,7 @@ var health := 50.0
 var died := false
 var slime_death := false
 var floor_check := false
-
+var damaged := false
 signal death(x, y)
 
 func _ready() -> void:
@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		floor_check = false
 
-	if distance <= 400.0:
+	if distance <= 400.0 or damaged:
 		# Face and choose direction
 		if round(knight.alienPos.x) >= round(monster_pos_x):
 			direction.x = 1.0
@@ -127,4 +127,5 @@ func _on_ability_area_body_exited(body: Node2D) -> void:
 		ability = false
 
 func take_damage(a) -> void:
+	damaged = true
 	health -= a

@@ -52,7 +52,10 @@ func _physics_process(delta):
 	
 
 	var direction := Vector2.ZERO
-
+	if (sprite.animation == "attack1"):
+		sprite.speed_scale = get_node("../Stats").attack_speed
+	else:
+		sprite.speed_scale = 1.0
 	if Input.is_action_pressed("Left"):
 		direction.x -= 1
 		sprite.flip_h = true

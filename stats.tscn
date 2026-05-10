@@ -208,7 +208,20 @@ theme_override_fonts/font = ExtResource("3_r4or0")
 theme_override_font_sizes/font_size = 30
 script = ExtResource("12_5mqph")
 
+[node name="closeButton" type="Button" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 495.0
+offset_top = -102.0
+offset_right = 537.5702
+offset_bottom = -55.990128
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_styles/normal = SubResource("StyleBoxTexture_r4or0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_af2q3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_agoph")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_m8qmt")
+
 [connection signal="pressed" from="Control/Panel/STRButton" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Control/Panel/VITButton" to="." method="_on_vit_button_pressed"]
 [connection signal="pressed" from="Control/Panel/INTButton" to="." method="_on_int_button_pressed"]
 [connection signal="pressed" from="Control/Panel/DEXButton" to="." method="_on_int_button_2_pressed"]
+[connection signal="pressed" from="Control/Panel/closeButton" to="." method="_on_close_button_pressed"]
