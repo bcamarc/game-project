@@ -449,4 +449,4 @@ position = Vector2(565.07825, -84.28467)
 position = Vector2(818.07825, -299.88464)
 
 [node name="gate" parent="." instance=ExtResource("16_wbpbn")]
-position = Vector2(1112.8782, 110.415344)
+position = Vector2(530.71155, -513.7938)

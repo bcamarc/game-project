@@ -54,6 +54,7 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_knn3s"]
+height = 29.622856
 
 [node name="gate" type="AnimatedSprite2D"]
 position = Vector2(50.5, 71.5)
