@@ -5,8 +5,8 @@
 [ext_resource type="Script" uid="uid://ctty4ww42hm7l" path="res://tile_map.gd" id="2_71pa8"]
 [ext_resource type="Texture2D" uid="uid://dfoej6gn5j6qg" path="res://spaceCadetTextures.png" id="3_6qsgm"]
 [ext_resource type="Script" uid="uid://ijkp8l5x7632" path="res://layer_0.gd" id="4_0t07s"]
+[ext_resource type="AudioStream" uid="uid://dp67buo48ao4v" path="res://Rae Sremmurd Feat Young Thug - Offshore Instrumental.wav" id="6_4on3e"]
 [ext_resource type="Script" uid="uid://b5qrvhb1pgexx" path="res://coins_folder.gd" id="6_ooc2g"]
-[ext_resource type="AudioStream" uid="uid://cjvwc0irvjyho" path="res://soundsForGame/Future - Solo (Official Instrumental).mp3" id="7_ooc2g"]
 [ext_resource type="Script" uid="uid://b5ea5a43qtufl" path="res://progress_bar.gd" id="7_oysan"]
 [ext_resource type="Script" uid="uid://it8mjmpehkws" path="res://label.gd" id="8_gqbix"]
 [ext_resource type="Texture2D" uid="uid://bw8a5o2ab4nju" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/coin.png" id="8_sb2pt"]
@@ -389,7 +389,7 @@ tile_set = SubResource("TileSet_e0an3")
 script = ExtResource("4_0t07s")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("7_ooc2g")
+stream = ExtResource("6_4on3e")
 volume_db = -8.0
 autoplay = true
 max_distance = 10000000000.0

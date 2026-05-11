@@ -79,6 +79,6 @@ func _physics_process(delta: float) -> void:
 			queue_free()
 			return
 		if collider.is_in_group("alien_player"):
-			get_node("../Stats").health -= 7.5
+			get_node("../Stats").base_health -= 7.5
 			queue_free()
 			return
