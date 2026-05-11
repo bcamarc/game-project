@@ -9,17 +9,12 @@ var map_width := 700
 var ground_height := 20
 
 var safe_x := 0
-func on_need_position(x) -> void:
-	safe_x = x
+
 func _ready() -> void:
-	print(name)
 	randomize()
 	noise.seed = randi()
 	noise.frequency = 0.01
 	call_deferred("_spawn_map")
-
-func on_next_level():
-	_spawn_map()
 
 func _spawn_map():
 	clear()
