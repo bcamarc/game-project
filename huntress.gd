@@ -38,7 +38,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	if distance <= 400:
-		if round(alien.alienPos.x) >= round(monsterPos):
+		if round(alien.alienPos.x) >= round(monsterPos) + 50:
 			$AnimatedSprite2D.flip_h = false
 		else:
 			$AnimatedSprite2D.flip_h = true
