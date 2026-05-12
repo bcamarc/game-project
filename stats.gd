@@ -3,7 +3,7 @@ extends CanvasLayer
 var coins := 0
 var exp := 0
 var level := 1
-var expNeeded := 10
+var expNeeded := 10.0
 
 var fireSpellDamage := 10
 var thunderSpellDamage := 37
@@ -32,7 +32,6 @@ var max_magic := 0
 var attack_speed := 1.0
 
 var testMapScene = preload("res://testmap.tscn")
-
 var equipment = {
 	"weapon": null,
 	"helmet": null,
@@ -47,18 +46,16 @@ func _ready() -> void:
 	total_magic = max_magic
 	total_health = max_health
 
-func on_next_level(x) -> void:
-	var a = testMapScene.instantiate()
-	a.safe_x = int(x / 16)
-	get_parent().add_child(a)
+func on_next_level(tile_x, tile_y):
+	var new_map = testMapScene.instantiate()
+	get_parent().add_child(new_map)
+	if new_map.has_method("set_gate_data"):
+		new_map.set_gate_data(tile_x, tile_y)
 
-func _process(delta: float) -> void:
+func _process(_delta):
 	check_exp()
 	if Input.is_action_just_released("stats"):
-		if visible:
-			hide()
-		else:
-			show()
+		visible = !visible
 	update_stats()
 
 func add_coin(a):
@@ -78,36 +75,30 @@ func add_exp(a):
 	exp += a
 
 func add_hp(a):
-	if total_health + a > max_health:
-		total_health = max_health
-		return
-	total_health += a
+	total_health = clamp(total_health + a, 0, max_health)
 
 func add_mp(a):
-	if total_magic + a > max_magic:
-		total_magic = max_magic
-		return
-	total_magic += a
+	total_magic = clamp(total_magic + a, 0, max_magic)
 
 func get_strength() -> int:
 	return strength
 
-func _on_button_pressed() -> void:
+func _on_button_pressed():
 	if skillPoints > 0:
 		strength += 1
 		skillPoints -= 1
 
-func _on_vit_button_pressed() -> void:
+func _on_vit_button_pressed():
 	if skillPoints > 0:
 		vitality += 1
 		skillPoints -= 1
 
-func _on_int_button_pressed() -> void:
+func _on_int_button_pressed():
 	if skillPoints > 0:
 		intellegience += 1
 		skillPoints -= 1
 
-func _on_int_button_2_pressed() -> void:
+func _on_int_button_2_pressed():
 	if skillPoints > 0:
 		dexterity += 1
 		skillPoints -= 1
@@ -118,8 +109,8 @@ func update_stats():
 	total_defense = base_defense + vitality * 1
 	total_speed = base_speed + dexterity * 2
 	max_magic = base_magic + intellegience * 2
-	attack_speed = (dexterity / 100) + 1
-
+	attack_speed = (dexterity / 100.0) + 1.0
+	
 	for item in equipment.values():
 		if item != null:
 			if "damage" in item:
@@ -130,6 +121,3 @@ func update_stats():
 				total_speed += item.speed
 			if "magic" in item:
 				total_magic += item.magic
-
-func _on_close_button_pressed() -> void:
-	hide()
