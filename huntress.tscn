@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bpjo6b5j4404n"]
+[gd_scene load_steps=53 format=3 uid="uid://bpjo6b5j4404n"]
 
 [ext_resource type="Script" uid="uid://tcnoead2j0f1" path="res://huntress.gd" id="1_cr00k"]
 [ext_resource type="Texture2D" uid="uid://cpjh3dnlpq4gc" path="res://art/Huntress_Sprites/Character/Attack.png" id="1_wjujr"]
@@ -337,6 +337,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wjujr"]
 size = Vector2(36, 72)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cr00k"]
+bg_color = Color(1, 0.1764706, 0.24313726, 1)
+
 [node name="CharacterBody2D" type="CharacterBody2D"]
 position = Vector2(200, 176)
 script = ExtResource("1_cr00k")
@@ -345,9 +348,7 @@ script = ExtResource("1_cr00k")
 position = Vector2(47, 47)
 scale = Vector2(1.94, 1.94)
 sprite_frames = SubResource("SpriteFrames_ripeq")
-animation = &"attack"
-frame = 5
-frame_progress = 1.0
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(46, 44)
@@ -358,7 +359,19 @@ wait_time = 2.0
 autostart = true
 
 [node name="arrow_spawn" type="Marker2D" parent="."]
-position = Vector2(80, 24)
+position = Vector2(66, 24)
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = 28.0
+offset_top = 3.0
+offset_right = 65.0
+offset_bottom = 7.0
+theme_override_colors/font_color = Color(0.7754263, 0.13521668, 0.17379606, 1)
+theme_override_colors/font_outline_color = Color(0.8235294, 0, 0, 1)
+theme_override_styles/fill = SubResource("StyleBoxFlat_cr00k")
+max_value = 50.0
+value = 50.0
+show_percentage = false
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

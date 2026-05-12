@@ -49,7 +49,7 @@ extends CharacterBody2D
 var direction := 1
 var dying := false
 var damage
-var speed := 250.0
+var speed := 175.0
 
 # arc settings
 var gravity := 1200.0
@@ -79,6 +79,6 @@ func _physics_process(delta: float) -> void:
 			queue_free()
 			return
 		if collider.is_in_group("alien_player"):
-			get_node("../Stats").base_health -= 7.5
+			get_node("../Stats").total_health -= 7.5
 			queue_free()
 			return
