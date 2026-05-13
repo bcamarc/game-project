@@ -14,7 +14,7 @@ var strength := 0
 var vitality := 0
 var intellegience := 0
 var dexterity := 0
-var skillPoints := 5
+var skillPoints := 50
 
 var base_health := 100
 var base_damage := 10

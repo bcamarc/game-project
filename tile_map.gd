@@ -31,12 +31,15 @@ func _spawn_map():
 
 	var gate = gateScene.instantiate()
 	var gate_y = int(noise.get_noise_1d(gate_x) * 10 + ground_height / 2)
-	get_parent().add_child.call_deferred(gate)
+	add_child(gate)
+	gate.top_level = true
 	gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 2))
 
 	for i in range(mob_count):
 		var x = int(i * (map_width / mob_count))
 		var y = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
 		var mob = slimeScene.instantiate() if randf() < 0.5 else golemScene.instantiate()
-		get_parent().add_child.call_deferred(mob)
+		
+		add_child(mob)
+		mob.top_level = true
 		mob.global_position = map_to_local(Vector2i(x, y - 3))

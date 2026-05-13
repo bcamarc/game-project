@@ -4,14 +4,13 @@ signal gate_entered(tile_x, tile_y)
 var stop := false
 
 func _ready() -> void:
-	var stats = get_node_or_null("../Stats")
+	var stats = get_node_or_null("../../Stats")
 	if stats:
 		gate_entered.connect(stats.on_next_level)
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	stop = true
 	if body.name == "Knight":
-		
 		var maps = get_tree().get_nodes_in_group("current_map")
 		if maps.size() > 0:
 			var map = maps[0]

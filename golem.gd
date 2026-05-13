@@ -11,7 +11,7 @@ var health := 100
 var shieldHealth := 0
 var up := false
 var first := true
-var floor := false
+var floor_check := false
 var fps := true
 var abilityFXScene := load("res://golem_ability.tscn")
 var abilityRadius := false
@@ -25,30 +25,29 @@ var attack_timer := 0.0
 func _ready() -> void:
 	add_to_group("golem")
 	if not is_on_floor():
-		floor = true
-	$RayCast2D.add_exception(get_node("../Golem"))
-	$RayCast2D.add_exception(get_node("../TestMonster"))
+		floor_check = true
 	$AnimatedSprite2D.connect("frame_changed", Callable(self, "_on_frame_changed"))
 
 func _process(delta: float) -> void:
 	if shieldHealth < 0:
 		shieldHealth = 0
-	if has_node("../Knight"):
+	# Look 2 levels up for Knight
+	if has_node("../../Knight"):
 		attack_timer += delta
 		var abilityFX = abilityFXScene.instantiate()
-		if floor and not is_on_floor():
+		if floor_check and not is_on_floor():
 			velocity.y = 500
 			move_and_slide()
 		else:
 			velocity.y = 0
-			floor = false
+			floor_check = false
 		$ProgressBar.value = health
 		$ProgressBar2.value = shieldHealth
 		count += 1
 		Acount += 1
 		if count > 50:
 			first = true
-		var alien = get_node("../Knight")
+		var alien = get_node("../../Knight")
 		var distance = $AnimatedSprite2D.global_position.distance_to(alien.global_position)
 		monsterPos = global_position.x
 
@@ -65,7 +64,7 @@ func _process(delta: float) -> void:
 				$AnimatedSprite2D.play("Idle")
 
 		$RayCast2D.target_position = Vector2(35 * direction.x, -3)
-		if $RayCast2D.is_colliding() and $RayCast2D.get_collider() == get_node("../TileMapLayer"):
+		if $RayCast2D.is_colliding() or is_on_wall():
 			velocity.y = -150
 		if not is_on_wall() and not is_on_floor():
 			velocity.y = 100
@@ -94,18 +93,16 @@ func _process(delta: float) -> void:
 		if abilityRadius and randf() < 0.0007:
 			$AnimatedSprite2D.play("AbilityAttack")
 			add_child(abilityFX)
-			get_node("../Stats").total_health -= 15
-	#else:
-		#print("player not found")
+			get_node("../../Stats").total_health -= 15
 
 	if health <= 0:
 		emit_signal("death", position.x, position.y)
-		get_node("../Stats").add_exp(7)
+		get_node("../../Stats").add_exp(7)
 		queue_free()
 
 func _on_frame_changed():
 	if $AnimatedSprite2D.animation == "AttackB" and $AnimatedSprite2D.frame == attack_frame:
-		get_node("../Stats").total_health -= attack_damage
+		get_node("../../Stats").total_health -= attack_damage
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "Knight":
