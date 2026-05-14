@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	stop = true
-	if body.name == "Knight":
+	if body.is_in_group("player"):
 		
 		var maps = get_tree().get_nodes_in_group("current_map")
 		if maps.size() > 0:

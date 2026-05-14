@@ -14,7 +14,8 @@ signal death(x, y)
 
 func _ready() -> void:
 	add_to_group("alien")
-
+	add_to_group("slime")
+	add_to_group("enemy")
 	if not is_on_floor():
 		floor_check = true
 
@@ -22,7 +23,8 @@ func _ready() -> void:
 	$RayCast2D.add_exception(get_node("../TestMonster"))
 
 func _physics_process(delta: float) -> void:
-	if not has_node("../Knight"):
+	#if not has_node("../Knight") or not has_node(".."):'
+	if get_tree().get_nodes_in_group("alien_player") == null:
 		print("player not found")
 		return
 
@@ -33,12 +35,14 @@ func _physics_process(delta: float) -> void:
 	$ProgressBar.value = health
 	count += 1
 
-	var knight = get_node("../Knight")
+	var knight = get_node("../Huntress")
+	if knight == null:
+		knight = get_node("../Knight")
 	var monster_pos_x = global_position.x
 	var distance = global_position.distance_to(knight.global_position)
 
 	# Default movement each frame
-	velocity.x = 0.0
+	#velocity.x = 0.0
 
 	# Optional "drop" behavior you had
 	if floor_check and not is_on_floor() and not died:
@@ -49,7 +53,7 @@ func _physics_process(delta: float) -> void:
 		floor_check = false
 
 	if distance <= 400.0 or damaged:
-		# Face and choose direction
+		
 		if round(knight.alienPos.x) >= round(monster_pos_x):
 			direction.x = 1.0
 			$AnimatedSprite2D.flip_h = false
@@ -57,10 +61,10 @@ func _physics_process(delta: float) -> void:
 			direction.x = -1.0
 			$AnimatedSprite2D.flip_h = true
 
-		# Horizontal move is always set when tracking knight
+		
 		velocity.x = speed * direction.x
 
-		# Attack logic
+		
 		if attacking and not died:
 			if count % 20 == 0 and not $AnimatedSprite2D.is_playing():
 				$AnimatedSprite2D.play("Attack")
@@ -111,19 +115,19 @@ func handle_death() -> void:
 		death.emit(position.x, position.y)
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("alien_player"):
 		attacking = true
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("alien_player"):
 		attacking = false
 
 func _on_ability_area_body_entered(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("alien_player"):
 		ability = true
 
 func _on_ability_area_body_exited(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("alien_player"):
 		ability = false
 
 func take_damage(a) -> void:

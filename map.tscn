@@ -394,11 +394,13 @@ autoplay = true
 max_distance = 10000000000.0
 
 [node name="CoinsFolder" type="Node2D" parent="."]
+position = Vector2(9, 4)
 script = ExtResource("6_ooc2g")
 
 [node name="Stats" parent="." instance=ExtResource("9_gqbix")]
 
 [node name="Knight" parent="." instance=ExtResource("10_ooc2g")]
+position = Vector2(11.999999, -8)
 
 [node name="Camera2D" type="Camera2D" parent="Knight"]
 position = Vector2(-1.2000122, -6.67572e-06)

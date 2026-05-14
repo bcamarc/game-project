@@ -339,7 +339,6 @@ bg_color = Color(0.94036186, 5.3425133e-06, 3.85046e-07, 1)
 
 [node name="TestMonster" type="CharacterBody2D" groups=["slime"]]
 position = Vector2(383, 253)
-collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_td46n")
 

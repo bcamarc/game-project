@@ -23,6 +23,7 @@ var attack_cooldown := 0.8
 var attack_timer := 0.0
 
 func _ready() -> void:
+	add_to_group("enemy")
 	add_to_group("golem")
 	if not is_on_floor():
 		floor = true
@@ -30,10 +31,10 @@ func _ready() -> void:
 	$RayCast2D.add_exception(get_node("../TestMonster"))
 	$AnimatedSprite2D.connect("frame_changed", Callable(self, "_on_frame_changed"))
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if shieldHealth < 0:
 		shieldHealth = 0
-	if has_node("../Knight"):
+	if not get_tree().get_nodes_in_group("alien_player") == null:
 		attack_timer += delta
 		var abilityFX = abilityFXScene.instantiate()
 		if floor and not is_on_floor():
@@ -49,6 +50,8 @@ func _process(delta: float) -> void:
 		if count > 50:
 			first = true
 		var alien = get_node("../Knight")
+		if alien == null:
+			alien = get_node("../Huntress")
 		var distance = $AnimatedSprite2D.global_position.distance_to(alien.global_position)
 		monsterPos = global_position.x
 
