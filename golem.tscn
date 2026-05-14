@@ -457,9 +457,9 @@ show_percentage = false
 
 [node name="ProgressBar2" type="ProgressBar" parent="."]
 offset_left = 17.0
-offset_top = -20.0
+offset_top = -19.0
 offset_right = 42.0
-offset_bottom = -16.0
+offset_bottom = -15.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_gcfva")
 show_percentage = false
 

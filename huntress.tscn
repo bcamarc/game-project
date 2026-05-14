@@ -342,16 +342,18 @@ bg_color = Color(1, 0.1764706, 0.24313726, 1)
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 position = Vector2(200, 176)
+collision_mask = 7
 script = ExtResource("1_cr00k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(47, 47)
+position = Vector2(-1.0000057, 0.9999962)
 scale = Vector2(1.94, 1.94)
 sprite_frames = SubResource("SpriteFrames_ripeq")
 animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(46, 44)
+light_mask = 3
+position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_wjujr")
 
 [node name="Timer" type="Timer" parent="."]
@@ -359,9 +361,11 @@ wait_time = 2.0
 autostart = true
 
 [node name="arrow_spawn" type="Marker2D" parent="."]
-position = Vector2(66, 24)
+light_mask = 3
+position = Vector2(28, -8)
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
 offset_left = 28.0
 offset_top = 3.0
 offset_right = 65.0
