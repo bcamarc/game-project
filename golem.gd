@@ -116,18 +116,54 @@ func _physics_process(delta: float) -> void:
 		velocity.x = 0.0
 		if not $AnimatedSprite2D.is_playing() or $AnimatedSprite2D.animation != "Idle":
 			$AnimatedSprite2D.play("Idle")
+##jumping on random blocks
+	#$RayCast2D.target_position = Vector2(35.0 * direction.x, -6.0)
+#
+	#var tilemap = get_node_or_null("../TileMapLayer")
+	#var blocked_ahead: bool = false
+	#if $RayCast2D.is_colliding():
+		#var hit = $RayCast2D.get_collider()
+		#blocked_ahead = (tilemap != null and hit == tilemap)
+#
+	#var player_is_above: bool = alien.global_position.y < global_position.y - 14.0
+	#var player_is_close_x: bool = absf(alien.global_position.x - global_position.x) < 120.0
+#
+	#if is_on_floor() and jump_timer <= 0.0:
+		#if blocked_ahead or (player_is_above and player_is_close_x):
+			#velocity.y = jump_velocity
+			#jump_timer = jump_cooldown
+	# Terrain-only jump logic
+# Terrain-only jump logic
+	var tilemap = get_node_or_null("../TileMapLayer")
 
-	# Better jump logic for random terrain / player above
-	$RayCast2D.target_position = Vector2(35.0 * direction.x, -6.0)
-	var blocked_ahead: bool = $RayCast2D.is_colliding()
-	var player_is_above: bool = alien.global_position.y < global_position.y - 14.0
-	var player_is_close_x: bool = absf(alien.global_position.x - global_position.x) < 120.0
+# 1) Wall directly ahead (only count tilemap hits)
+	$RayCast2D.target_position = Vector2(30.0 * direction.x, -4.0)
+	$RayCast2D.force_raycast_update()
+
+	var wall_ahead: bool = false
+	if $RayCast2D.is_colliding():
+		var hit = $RayCast2D.get_collider()
+		wall_ahead = (tilemap != null and hit == tilemap)
+
+# 2) Ledge check with optional second raycast
+# Add a RayCast2D child named "LedgeRayCast2D" for best results.
+	var floor_ahead: bool = true
+	var ledge_ray = get_node_or_null("LedgeRayCast2D") as RayCast2D
+	if ledge_ray != null:
+		ledge_ray.position = Vector2(20.0 * direction.x, 0.0)
+		ledge_ray.target_position = Vector2(0.0, 24.0)
+		ledge_ray.force_raycast_update()
+
+		floor_ahead = false
+		if ledge_ray.is_colliding():
+			var ground_hit = ledge_ray.get_collider()
+			floor_ahead = (tilemap != null and ground_hit == tilemap)
 
 	if is_on_floor() and jump_timer <= 0.0:
-		if blocked_ahead or (player_is_above and player_is_close_x):
-			$AnimatedSprite2D.play("Jump")
+		if wall_ahead or not floor_ahead:
 			velocity.y = jump_velocity
 			jump_timer = jump_cooldown
+
 
 	if attacking:
 		if attack_timer >= attack_cooldown:
