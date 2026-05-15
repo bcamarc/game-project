@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://c24u521dpt1yt"]
+[gd_scene load_steps=27 format=3 uid="uid://c24u521dpt1yt"]
 
 [ext_resource type="Texture2D" uid="uid://dxwlg3uucr5yp" path="res://GodotSound/Dimensional_Portal.png" id="1_i1rtd"]
 [ext_resource type="Script" uid="uid://cy0ukjltknwl2" path="res://gate.gd" id="2_0vs45"]
+[ext_resource type="Texture2D" uid="uid://dij8qnhfq60ph" path="res://MediavelUI/MediavelUI/Mediavel.png" id="3_0vs45"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6laut"]
 atlas = ExtResource("1_i1rtd")
@@ -56,6 +57,68 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_knn3s"]
 height = 29.622856
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_cl5ug"]
+atlas = ExtResource("3_0vs45")
+region = Rect2(608, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knn3s"]
+atlas = ExtResource("3_0vs45")
+region = Rect2(624, 64, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kbcya"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cl5ug")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knn3s")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0vs45"]
+atlas = ExtResource("3_0vs45")
+region = Rect2(608, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kbcya"]
+atlas = ExtResource("3_0vs45")
+region = Rect2(624, 64, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xwgur"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0vs45")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kbcya")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mougp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0vs45"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6laut"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2hq48"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kpse5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eoqul"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1qctf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qc4g6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cl5ug"]
+
 [node name="gate" type="AnimatedSprite2D"]
 position = Vector2(50.5, 71.5)
 scale = Vector2(4.15625, 5.46875)
@@ -70,4 +133,71 @@ script = ExtResource("2_0vs45")
 position = Vector2(1.0827017, 0.091429144)
 shape = SubResource("CapsuleShape2D_knn3s")
 
+[node name="confirmation" type="Sprite2D" parent="."]
+position = Vector2(78.31578, 16.548569)
+texture = ExtResource("3_0vs45")
+region_enabled = true
+region_rect = Rect2(608, 208, 80, 48)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(64.3609, 23.49714)
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_kbcya")
+frame = 1
+frame_progress = 0.7796784
+
+[node name="yes" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(0.32079315, -1.4628601)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_0vs45")
+region_enabled = true
+region_rect = Rect2(880, 560, 32, 16)
+
+[node name="Sprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(91.068, 23.497)
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_xwgur")
+frame_progress = 0.69146436
+
+[node name="no" type="Sprite2D" parent="Sprite2D2"]
+position = Vector2(-0.321, -1.463)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_0vs45")
+region_enabled = true
+region_rect = Rect2(864, 560, 16, 16)
+
+[node name="yesButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 1.771
+anchor_top = 1.445
+anchor_right = 1.771
+anchor_bottom = 1.445
+offset_left = 2.6362686
+offset_top = -27.131424
+offset_right = 12.500927
+offset_bottom = -19.131424
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mougp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0vs45")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_6laut")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2hq48")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kpse5")
+
+[node name="noButton" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 1.771
+anchor_top = 1.445
+anchor_right = 1.771
+anchor_bottom = 1.445
+offset_left = 29.583637
+offset_top = -27.131424
+offset_right = 39.4483
+offset_bottom = -19.131424
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mougp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_eoqul")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1qctf")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qc4g6")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_cl5ug")
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="pressed" from="yesButton" to="." method="_on_yes_button_pressed"]
+[connection signal="pressed" from="noButton" to="." method="_on_no_button_pressed"]

@@ -21,5 +21,13 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 				map.on_next_level()
 
 func _process(delta: float) -> void:
-	if not stop:
-		global_position.y += 6
+	pass
+	#if not stop:
+		#global_position.y += 6
+
+
+func _on_yes_button_pressed() -> void:
+	$Sprite2D.frame = 0
+
+func _on_no_button_pressed() -> void:
+	pass # Replace with function body.
