@@ -4,24 +4,20 @@ var coins := 0
 var exp := 0
 var level := 1
 var expNeeded := 10.0
-
 var fireSpellDamage := 10
 var thunderSpellDamage := 37
 var iceSpellDamage := 10
 var highest_level := 1
-
 var strength := 0
 var vitality := 0
 var intellegience := 0
 var dexterity := 0
 var skillPoints := 50
-
 var base_health := 100
 var base_damage := 10
 var base_defense := 5
 var base_speed := 250
 var base_magic := 50
-
 var total_health := 1
 var max_health := 1
 var total_damage := 0
@@ -30,14 +26,8 @@ var total_speed := 0
 var total_magic := 0
 var max_magic := 0
 var attack_speed := 1.0
-
 var testMapScene = preload("res://testmap.tscn")
-var equipment = {
-	"weapon": null,
-	"helmet": null,
-	"chest": null,
-	"boots": null
-}
+var equipment = {"weapon": null, "helmet": null, "chest": null, "boots": null}
 
 func _ready() -> void:
 	add_to_group("stats")
@@ -111,21 +101,13 @@ func update_stats():
 	total_speed = base_speed + dexterity * 2
 	max_magic = base_magic + intellegience * 2
 	attack_speed = (dexterity / 100.0) + 1.0
-
 	var bonus_magic := 0
 	for item in equipment.values():
 		if item != null:
-			if "damage" in item:
-				total_damage += item.damage
-			if "defense" in item:
-				total_defense += item.defense
-			if "speed" in item:
-				total_speed += item.speed
-			if "magic" in item:
-				bonus_magic += item.magic
-
+			if "damage" in item: total_damage += item.damage
+			if "defense" in item: total_defense += item.defense
+			if "speed" in item: total_speed += item.speed
+			if "magic" in item: bonus_magic += item.magic
 	max_magic += bonus_magic
-
-	# Keep current values valid after stat/equipment changes
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)

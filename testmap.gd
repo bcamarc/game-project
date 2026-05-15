@@ -3,7 +3,6 @@ extends TileMapLayer
 var noise := FastNoiseLite.new()
 var slimeScene = preload("res://test_monster.tscn")
 var golemScene = preload("res://golem.tscn")
-
 var map_width := 700
 var ground_height := 20
 var safe_x := 0
@@ -26,33 +25,25 @@ func on_next_level():
 func _spawn_map():
 	clear()
 	var mob_count := 6
-	var safe_radius := 4 
-
-
+	var safe_radius := 4
 	for x in range(map_width):
 		var distance = abs(x - safe_x)
 		var height: int
-		
 		if distance <= safe_radius:
-			height = safe_y + 4 
+			height = safe_y + 4
 		else:
 			var noise_val = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
 			var blend = clamp((distance - safe_radius) / 10.0, 0.0, 1.0)
 			height = int(lerp(float(safe_y + 4), float(noise_val), blend))
-
 		for y in range(height, ground_height + 20):
 			set_cell(Vector2i(x, y), 0, Vector2i(2, 0))
 		set_cell(Vector2i(x, height - 1), 0, Vector2i(2, 1))
-
-	
 	for i in range(mob_count):
 		var x = int(i * (map_width / mob_count))
 		if abs(x - safe_x) < 15:
 			continue
-		
 		var y = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
 		var mob = slimeScene.instantiate() if randf() < 0.5 else golemScene.instantiate()
-		
 		add_child(mob)
-		mob.top_level = true 
+		mob.top_level = true
 		mob.global_position = map_to_local(Vector2i(x, y - 3))
