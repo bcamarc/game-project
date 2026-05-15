@@ -40,6 +40,7 @@ var equipment = {
 }
 
 func _ready() -> void:
+	add_to_group("stats")
 	check_exp()
 	hide()
 	update_stats()
@@ -110,7 +111,8 @@ func update_stats():
 	total_speed = base_speed + dexterity * 2
 	max_magic = base_magic + intellegience * 2
 	attack_speed = (dexterity / 100.0) + 1.0
-	
+
+	var bonus_magic := 0
 	for item in equipment.values():
 		if item != null:
 			if "damage" in item:
@@ -120,4 +122,10 @@ func update_stats():
 			if "speed" in item:
 				total_speed += item.speed
 			if "magic" in item:
-				total_magic += item.magic
+				bonus_magic += item.magic
+
+	max_magic += bonus_magic
+
+	# Keep current values valid after stat/equipment changes
+	total_health = clamp(total_health, 0, max_health)
+	total_magic = clamp(total_magic, 0, max_magic)

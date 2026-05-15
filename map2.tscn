@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cb84syslqixot"]
+[gd_scene load_steps=16 format=3 uid="uid://cb84syslqixot"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_omx1u"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="2_heluf"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://djxmtycproxvm" path="res://stats.tscn" id="8_bq60f"]
 [ext_resource type="PackedScene" uid="uid://crs31v103iobq" path="res://golem.tscn" id="15_u4ji8"]
 [ext_resource type="PackedScene" uid="uid://dmssemijldie6" path="res://test_monster.tscn" id="16_g6c7q"]
-[ext_resource type="PackedScene" uid="uid://c24u521dpt1yt" path="res://gate1.tscn" id="17_ps3md"]
 [ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="18_y4yj0"]
 [ext_resource type="Script" uid="uid://dbkt7s5gpn1rw" path="res://huntress_camera.gd" id="19_jyg3w"]
 
@@ -285,9 +284,6 @@ position = Vector2(565.07825, -84.28467)
 
 [node name="TestMonster" parent="." instance=ExtResource("16_g6c7q")]
 position = Vector2(818.07825, -299.88464)
-
-[node name="gate" parent="." instance=ExtResource("17_ps3md")]
-position = Vector2(530.71155, -513.7938)
 
 [node name="Huntress" parent="." instance=ExtResource("18_y4yj0")]
 position = Vector2(20, 37)
