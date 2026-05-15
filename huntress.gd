@@ -1,5 +1,4 @@
-
-
+# Huntress.gd
 extends CharacterBody2D
 
 var jump_force := 400.0
@@ -13,13 +12,11 @@ var arrows: PackedScene = preload("res://arrow.tscn")
 var mana := 100
 var knight := load("res://knight.tscn")
 
-
 var count := 0
 var count2 := 0
 var count3 := 0
 var count4 := 0
 var count5 := 500
-
 
 var is_attacking := false
 var pending_shot := false
@@ -43,7 +40,6 @@ func _ready() -> void:
 
 	floor_snap_length = 8.0
 
-	# Ensure attack animations do not loop.
 	if sprite.sprite_frames.has_animation(ANIM_ATTACK_PRIMARY):
 		sprite.sprite_frames.set_animation_loop(ANIM_ATTACK_PRIMARY, false)
 	if sprite.sprite_frames.has_animation(ANIM_ATTACK_FALLBACK):
@@ -122,15 +118,16 @@ func _physics_process(delta: float) -> void:
 
 func _spawn_arrow() -> void:
 	var arrow = arrows.instantiate()
-	arrow.global_position = $arrow_spawn.global_position
-	get_tree().current_scene.add_child(arrow)
+	var spawn_pos: Vector2 = $arrow_spawn.global_position
+	var mouse_world: Vector2 = get_global_mouse_position()
 
-	if sprite.flip_h:
-		arrow.direction = -1
-		arrow.get_node("AnimatedSprite2D").flip_h = true
-	else:
-		arrow.direction = 1
-		arrow.get_node("AnimatedSprite2D").flip_h = false
+	# Set values BEFORE add_child so arrow _ready() sees them.
+	arrow.global_position = spawn_pos
+	arrow.direction = -1 if mouse_world.x < spawn_pos.x else 1
+	if arrow.has_method("set_target_position"):
+		arrow.set_target_position(mouse_world)
+
+	get_tree().current_scene.add_child(arrow)
 
 func _play_attack_anim() -> void:
 	if sprite.sprite_frames.has_animation(ANIM_ATTACK_PRIMARY):
@@ -140,7 +137,6 @@ func _play_attack_anim() -> void:
 
 func _on_animation_finished() -> void:
 	if sprite.animation == ANIM_ATTACK_PRIMARY or sprite.animation == ANIM_ATTACK_FALLBACK:
-		# Spawn arrow only after attack animation is done.
 		if pending_shot:
 			_spawn_arrow()
 			pending_shot = false
