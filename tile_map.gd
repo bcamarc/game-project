@@ -13,7 +13,7 @@ func _ready() -> void:
 	add_to_group("current_map")
 	randomize()
 	noise.seed = randi()
-	noise.frequency = 0.01
+	noise.frequency = 0.02
 	call_deferred("_spawn_map")
 
 func on_next_level():
@@ -24,20 +24,20 @@ func _spawn_map():
 	gate_x = randi_range(50, map_width - 50)
 
 	for x in range(map_width):
-		var height = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
+		var height = floor(noise.get_noise_1d(x) * 10 + ground_height / 2)
 		for y in range(height, ground_height):
 			set_cell(Vector2i(x, y - 1), 0, Vector2i(0, 1), 0)
 		set_cell(Vector2i(x, height - 2), 0, Vector2i(0, 0), 0)
 
 	var gate = gateScene.instantiate()
-	var gate_y = int(noise.get_noise_1d(gate_x) * 10 + ground_height / 2)
+	var gate_y = floor(noise.get_noise_1d(gate_x) * 10 + ground_height / 2)
 	add_child(gate)
 	gate.top_level = true
 	gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 2))
 
 	for i in range(mob_count):
-		var x = int(i * (map_width / mob_count))
-		var y = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
+		var x = randi_range(0, map_width - 1)
+		var y = floor(noise.get_noise_1d(x) * 10 + ground_height / 2)
 		var mob = slimeScene.instantiate() if randf() < 0.5 else golemScene.instantiate()
 		
 		add_child(mob)

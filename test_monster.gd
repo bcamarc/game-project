@@ -121,10 +121,8 @@ func _physics_process(delta: float) -> void:
 			else:
 				print("hp is broken")
 
-		# Terrain-only jump logic
 		var tilemap = get_node_or_null("../TileMapLayer")
 
-# 1) Wall directly ahead (only count tilemap hits)
 		$RayCast2D.target_position = Vector2(30.0 * direction.x, -4.0)
 		$RayCast2D.force_raycast_update()
 
@@ -133,8 +131,6 @@ func _physics_process(delta: float) -> void:
 			var hit = $RayCast2D.get_collider()
 			wall_ahead = (tilemap != null and hit == tilemap)
 
-# 2) Ledge check with optional second raycast
-# Add a RayCast2D child named "LedgeRayCast2D" for best results.
 		var floor_ahead: bool = true
 		var ledge_ray = get_node_or_null("LedgeRayCast2D") as RayCast2D
 		if ledge_ray != null:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=40 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -11,9 +11,12 @@
 [ext_resource type="Script" uid="uid://it8mjmpehkws" path="res://label.gd" id="8_gqbix"]
 [ext_resource type="Texture2D" uid="uid://bw8a5o2ab4nju" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/coin.png" id="8_sb2pt"]
 [ext_resource type="PackedScene" uid="uid://djxmtycproxvm" path="res://stats.tscn" id="9_gqbix"]
+[ext_resource type="Texture2D" uid="uid://dij8qnhfq60ph" path="res://MediavelUI/MediavelUI/Mediavel.png" id="10_2wwcf"]
 [ext_resource type="Script" uid="uid://cujcho1i3w7lo" path="res://camera_2d.gd" id="10_a6rn7"]
 [ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="10_ooc2g"]
 [ext_resource type="Script" uid="uid://dcmmqgjxio6fi" path="res://mana_bar.gd" id="12_6qsgm"]
+[ext_resource type="FontFile" uid="uid://xwrv7ayarg34" path="res://MediavelUI/MediavelUI/Round9x13.ttf" id="14_wbpbn"]
+[ext_resource type="Script" uid="uid://dagm6rnpipew" path="res://label_2.gd" id="17_a6rn7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -350,21 +353,17 @@ animations = [{
 "speed": 9.0
 }]
 
-[sub_resource type="FontFile" id="FontFile_gqbix"]
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-
 [sub_resource type="LabelSettings" id="LabelSettings_oysan"]
-font = SubResource("FontFile_gqbix")
+font = ExtResource("14_wbpbn")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0t07s"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ooc2g"]
 bg_color = Color(0.32609954, 0.59494525, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4on3e"]
+font = ExtResource("14_wbpbn")
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_6qsgm")
@@ -399,44 +398,61 @@ script = ExtResource("6_ooc2g")
 [node name="Knight" parent="." instance=ExtResource("10_ooc2g")]
 position = Vector2(11.999999, -8)
 
+[node name="Sprite2D" type="Sprite2D" parent="Knight"]
+position = Vector2(-175.6, -110)
+scale = Vector2(1.4050001, 1.3)
+texture = ExtResource("10_2wwcf")
+region_enabled = true
+region_rect = Rect2(0, 32, 80, 32)
+
 [node name="Camera2D" type="Camera2D" parent="Knight"]
 position = Vector2(-1.2000122, -6.67572e-06)
 scale = Vector2(0.99999994, 0.99999994)
 script = ExtResource("10_a6rn7")
 
 [node name="ProgressBar" type="ProgressBar" parent="Knight/Camera2D"]
-offset_left = -230.40001
-offset_top = -129.20001
-offset_right = -113.60001
-offset_bottom = -116.40001
+offset_left = -193.20003
+offset_top = -123.60002
+offset_right = -122.800026
+offset_bottom = -117.60002
 theme_override_styles/background = SubResource("StyleBoxFlat_gqbix")
 theme_override_styles/fill = SubResource("StyleBoxFlat_oysan")
 show_percentage = false
 script = ExtResource("7_oysan")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Knight/Camera2D"]
-position = Vector2(189.59999, -114.40002)
-scale = Vector2(1.5, 1.5)
+position = Vector2(-187.6, -102.40001)
 sprite_frames = SubResource("SpriteFrames_3mr0t")
 autoplay = "default"
 frame_progress = 0.86182773
 
 [node name="Label" type="Label" parent="Knight/Camera2D"]
-offset_left = 162.4
-offset_top = -127.59999
-offset_right = 184.4
-offset_bottom = -104.59999
+offset_left = -183.59999
+offset_top = -109.60001
+offset_right = -161.59999
+offset_bottom = -86.60001
+scale = Vector2(0.7, 0.7)
 label_settings = SubResource("LabelSettings_oysan")
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("8_gqbix")
 
 [node name="ManaBar" type="ProgressBar" parent="Knight/Camera2D"]
-offset_left = -230.0
-offset_top = -110.0
-offset_right = -112.8
-offset_bottom = -96.40001
+offset_left = -192.8
+offset_top = -116.39999
+offset_right = -122.4
+offset_bottom = -110.39999
 theme_override_styles/background = SubResource("StyleBoxFlat_0t07s")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ooc2g")
 show_percentage = false
 script = ExtResource("12_6qsgm")
+
+[node name="Label2" type="Label" parent="Knight/Camera2D"]
+offset_left = -219.2
+offset_top = -121.600006
+offset_right = -179.2
+offset_bottom = -98.600006
+scale = Vector2(1.8, 1.8)
+text = "1"
+label_settings = SubResource("LabelSettings_4on3e")
+script = ExtResource("17_a6rn7")
