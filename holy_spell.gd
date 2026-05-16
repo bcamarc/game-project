@@ -1,4 +1,6 @@
 extends AnimatedSprite2D
 
 func _process(delta: float) -> void:
-	global_position = get_node("../Knight").global_position
+	var wizard := get_tree().get_first_node_in_group("wizard") as Node2D
+	if wizard:
+		global_position = wizard.global_position
