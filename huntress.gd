@@ -1,4 +1,3 @@
-# Huntress.gd
 extends CharacterBody2D
 
 var jump_force := 400.0
@@ -73,10 +72,10 @@ func _physics_process(delta: float) -> void:
 
 	var direction_x := 0.0
 	if left_pressed and not right_pressed:
-		direction_x = -1.0
+		direction_x = -1.25
 		sprite.flip_h = true
 	elif right_pressed and not left_pressed:
-		direction_x = 1.0
+		direction_x = 1.25
 		sprite.flip_h = false
 
 	velocity.x = direction_x * get_node("../Stats").total_speed
@@ -86,7 +85,7 @@ func _physics_process(delta: float) -> void:
 		jump_ended = false
 
 		if _is_jump_just_pressed():
-			velocity.y = -jump_force
+			velocity.y = -jump_force * 1.25
 			jump_count = 1
 			jump_ended = false
 			if not is_attacking:
@@ -121,7 +120,7 @@ func _spawn_arrow() -> void:
 	var spawn_pos: Vector2 = $arrow_spawn.global_position
 	var mouse_world: Vector2 = get_global_mouse_position()
 
-	# Set values BEFORE add_child so arrow _ready() sees them.
+	
 	arrow.global_position = spawn_pos
 	arrow.direction = -1 if mouse_world.x < spawn_pos.x else 1
 	if arrow.has_method("set_target_position"):
