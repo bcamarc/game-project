@@ -38,12 +38,16 @@ func _spawn_map():
 		for y in range(height, ground_height + 20):
 			set_cell(Vector2i(x, y), 0, Vector2i(2, 0))
 		set_cell(Vector2i(x, height - 1), 0, Vector2i(2, 1))
-	for i in range(mob_count):
-		var x = int(i * (map_width / mob_count))
+		
+	var spawned_mobs := 0
+	while spawned_mobs < mob_count:
+		var x = randi_range(0, map_width - 1)
 		if abs(x - safe_x) < 15:
 			continue
+			
 		var y = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
 		var mob = slimeScene.instantiate() if randf() < 0.5 else golemScene.instantiate()
 		add_child(mob)
 		mob.top_level = true
 		mob.global_position = map_to_local(Vector2i(x, y - 3))
+		spawned_mobs += 1
