@@ -116,46 +116,46 @@ func _physics_process(delta):
 					has_hit = true
 					break
 
-	if count > 40 and get_node("../Stats").total_magic >= 10 and Input.is_action_just_pressed("fireSpell"):
-		var spell = fireSpell.instantiate()
-		spell.global_position = global_position
-		get_tree().current_scene.add_child(spell)
-		count = 0
-		get_node("../Stats").total_magic -= 10
-
-	if count2 > 60 and get_node("../Stats").total_magic >= 40 and Input.is_action_just_pressed("thunderSpell"):
-		var spell2 = thunderSpell.instantiate()
-		spell2.global_position = global_position
-		get_tree().current_scene.add_child(spell2)
-		count2 = 0
-		get_node("../Stats").total_magic -= 40
-
-	if count4 > 40 and get_node("../Stats").total_magic >= 20 and Input.is_action_just_pressed("iceSpell"):
-		var spell3 = iceSpell.instantiate()
-		spell3.global_position = global_position
-		get_tree().current_scene.add_child(spell3)
-		count4 = 0
-		get_node("../Stats").total_magic -= 20
-
-	if count3 % 35 == 0 and get_node("../Stats").total_magic < get_node("../Stats").max_magic:
-		if boosted:
-			get_node("../Stats").add_mp(4.5)
-		else:
-			get_node("../Stats").add_mp(3)
-
-	if count5 > 400 and get_node("../Stats").total_magic >= 70 and Input.is_action_just_pressed("holySpell"):
-		var spell4 = holySpell.instantiate()
-		spell4.global_position = global_position
-		get_tree().current_scene.add_child(spell4)
-		count5 = 0
-		get_node("../Stats").total_magic -= 70
-		get_node("../Stats").add_hp(15)
-		boosted = true
-		get_node("../Stats").total_speed += 100
-
-	if count5 > 200 and boosted:
-		get_node("../Stats").total_speed -= 100
-		boosted = false
+	#if count > 40 and get_node("../Stats").total_magic >= 10 and Input.is_action_just_pressed("fireSpell"):
+		#var spell = fireSpell.instantiate()
+		#spell.global_position = global_position
+		#get_tree().current_scene.add_child(spell)
+		#count = 0
+		#get_node("../Stats").total_magic -= 10
+#
+	#if count2 > 60 and get_node("../Stats").total_magic >= 40 and Input.is_action_just_pressed("thunderSpell"):
+		#var spell2 = thunderSpell.instantiate()
+		#spell2.global_position = global_position
+		#get_tree().current_scene.add_child(spell2)
+		#count2 = 0
+		#get_node("../Stats").total_magic -= 40
+#
+	#if count4 > 40 and get_node("../Stats").total_magic >= 20 and Input.is_action_just_pressed("iceSpell"):
+		#var spell3 = iceSpell.instantiate()
+		#spell3.global_position = global_position
+		#get_tree().current_scene.add_child(spell3)
+		#count4 = 0
+		#get_node("../Stats").total_magic -= 20
+#
+	#if count3 % 35 == 0 and get_node("../Stats").total_magic < get_node("../Stats").max_magic:
+		#if boosted:
+			#get_node("../Stats").add_mp(4.5)
+		#else:
+			#get_node("../Stats").add_mp(3)
+#
+	#if count5 > 400 and get_node("../Stats").total_magic >= 70 and Input.is_action_just_pressed("holySpell"):
+		#var spell4 = holySpell.instantiate()
+		#spell4.global_position = global_position
+		#get_tree().current_scene.add_child(spell4)
+		#count5 = 0
+		#get_node("../Stats").total_magic -= 70
+		#get_node("../Stats").add_hp(15)
+		#boosted = true
+		#get_node("../Stats").total_speed += 100
+#
+	#if count5 > 200 and boosted:
+		#get_node("../Stats").total_speed -= 100
+		#boosted = false
 
 	if get_node("../Stats").total_health <= 0:
 		respawn()

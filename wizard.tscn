@@ -369,7 +369,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wjujr"]
-size = Vector2(63.841133, 87)
+size = Vector2(38.9032, 87)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cr00k"]
 bg_color = Color(1, 0.1764706, 0.24313726, 1)
@@ -383,11 +383,12 @@ script = ExtResource("1_bd25x")
 position = Vector2(14.000015, -13.999977)
 scale = Vector2(1.0283444, 1.1298792)
 sprite_frames = SubResource("SpriteFrames_ripeq")
-animation = &"attack2"
+animation = &"idle"
+frame_progress = 0.63024384
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3
-position = Vector2(15, -5.5)
+position = Vector2(7.5, -5.5)
 scale = Vector2(1.0024885, 1)
 shape = SubResource("RectangleShape2D_wjujr")
 
@@ -397,7 +398,7 @@ autostart = true
 
 [node name="arrow_spawn" type="Marker2D" parent="."]
 light_mask = 3
-position = Vector2(28, -8)
+position = Vector2(53, -14)
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 visible = false
