@@ -3,7 +3,9 @@ var scene = load("res://coin.tscn")
 func _ready() -> void:
 	call_deferred("spawn_things")
 	
-	
+
+func _process(delta: float) -> void:
+	spawn_things()
 
 func spawn_things():
 	
@@ -14,12 +16,7 @@ func spawn_things():
 	for node in get_tree().get_nodes_in_group("alien"):
 		if node.has_signal("death"):
 			node.connect("death", Callable(self, "_on_test_monster_death2"))
-	for node in get_tree().get_nodes_in_group("fire_alien"):
-		if node.has_signal("death"):
-			node.connect("death", Callable(self, "_on_test_monster_death3"))
-	for node in get_tree().get_nodes_in_group("ice_alien"):
-		if node.has_signal("death"):
-			node.connect("death", Callable(self, "_on_test_monster_death3"))
+
 func _on_test_monster_death(x: Variant, y: Variant) -> void:
 	var instance = scene.instantiate()
 	var instance2 = scene.instantiate()
