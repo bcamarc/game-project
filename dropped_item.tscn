@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxx25i5a0uulk"]
+
+[ext_resource type="Script" uid="uid://c48a8i210p05n" path="res://dropped_item.gd" id="1_1y2xd"]
+[ext_resource type="Texture2D" uid="uid://bbo2s657emmut" path="res://RPG Icons/Icon132.png" id="1_qpxn3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wil3b"]
+
+[node name="dropped_item" type="Sprite2D"]
+texture = ExtResource("1_qpxn3")
+script = ExtResource("1_1y2xd")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_wil3b")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

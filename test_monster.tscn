@@ -1,7 +1,8 @@
-[gd_scene load_steps=50 format=3 uid="uid://dmssemijldie6"]
+[gd_scene load_steps=51 format=3 uid="uid://dmssemijldie6"]
 
 [ext_resource type="Texture2D" uid="uid://c054upq5mcymj" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Hit.png" id="1_bb12q"]
 [ext_resource type="Script" uid="uid://xwjhoy68i1ku" path="res://test_monster.gd" id="1_td46n"]
+[ext_resource type="PackedScene" uid="uid://cxx25i5a0uulk" path="res://dropped_item.tscn" id="2_8fyey"]
 [ext_resource type="Texture2D" uid="uid://du1yxafgijiel" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Ability.png" id="2_cj5g0"]
 [ext_resource type="Texture2D" uid="uid://drn33nc0rfde6" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Idle.png" id="2_td46n"]
 [ext_resource type="Texture2D" uid="uid://bj63fpkhdwuoo" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Run.png" id="3_cj5g0"]
@@ -341,6 +342,7 @@ bg_color = Color(0.94036186, 5.3425133e-06, 3.85046e-07, 1)
 position = Vector2(383, 253)
 collision_mask = 5
 script = ExtResource("1_td46n")
+dropped_item_scene = ExtResource("2_8fyey")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(3, -1)

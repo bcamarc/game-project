@@ -1,7 +1,12 @@
 extends CharacterBody2D
 
 @onready var stats = null
+@export var dropped_item_scene: PackedScene 
 
+var possible_drops = [
+	{"name": "Sword", "icon": preload("res://RPG Icons/Icon6.png"), "type": "weapon"},
+	{"name": "Shield", "icon": preload("res://RPG Icons/Icon184.png"), "type": "chestplate"}
+]
 var speed := 75.0
 var direction := Vector2.ZERO
 var attacking := false
@@ -96,6 +101,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = speed * direction.x
 
 		if attacking and not died:
+			
 			if count % 20 == 0 and not $AnimatedSprite2D.is_playing():
 				$AnimatedSprite2D.play("Attack")
 
@@ -156,6 +162,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func handle_death() -> void:
+	
 	if not died:
 		slime_death = true
 		died = true
@@ -173,6 +180,7 @@ func handle_death() -> void:
 		else:
 			print("stats is broken")
 		death.emit(position.x, position.y)
+		spawn_loot()
 		queue_free()
 
 func get_stats() -> Node:
@@ -205,3 +213,10 @@ func _on_ability_area_body_exited(body: Node2D) -> void:
 func take_damage(a) -> void:
 	damaged = true
 	health -= a
+
+func spawn_loot() -> void:
+	var item_instance = dropped_item_scene.instantiate()
+	var random_item = possible_drops.pick_random()
+	item_instance.item_data = random_item
+	get_parent().add_child(item_instance)
+	item_instance.global_position = global_position
