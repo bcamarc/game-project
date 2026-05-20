@@ -10,7 +10,7 @@ var spell: PackedScene = preload("res://fire_spell.tscn")
 var thunderSpell: PackedScene = preload("res://thunder_spell.tscn")
 var iceSpell: PackedScene = preload("res://ice_spell.tscn")
 var holySpell: PackedScene = preload("res://holySpell.tscn")
-var mana := 100
+var mana: float = 100.0
 var knight := load("res://knight.tscn")
 
 var count := 0
@@ -76,6 +76,10 @@ func respawn() -> void:
 	holy_speed_timer = 0.0
 
 func _physics_process(delta: float) -> void:
+	print("mana: ", mana)
+	if mana < 100.0:
+		mana = min(mana + 0.1, 100.0)
+
 	alienPos = global_position
 	count += 1
 	count2 += 1
@@ -145,7 +149,26 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+func _get_spell_mana_cost(spell_scene: PackedScene) -> float:
+	if spell_scene == holySpell:
+		return 75.0
+	if spell_scene == thunderSpell:
+		return 40.0
+	if spell_scene == iceSpell:
+		return 30.0
+	return 20.0
+
+func _try_spend_mana(spell_scene: PackedScene) -> bool:
+	var cost := _get_spell_mana_cost(spell_scene)
+	if mana < cost:
+		return false
+	mana -= cost
+	return true
+
 func _start_attack_with_spell(spell_scene: PackedScene) -> void:
+	if not _try_spend_mana(spell_scene):
+		return
+
 	is_attacking = true
 	pending_shot = true
 	pending_spell = spell_scene
@@ -192,7 +215,6 @@ func _play_holy_effect() -> void:
 				effect.queue_free()
 		)
 	else:
-		# Fallback: remove after a short delay if no AnimatedSprite2D was found.
 		var t := get_tree().create_timer(0.6)
 		t.timeout.connect(func():
 			if is_instance_valid(effect):
@@ -236,15 +258,15 @@ func _spawn_ice() -> void:
 
 func _play_attack_anim() -> void:
 	if pending_spell == holySpell:
-		if sprite.sprite_frames.has_animation(ANIM_ATTACK_PRIMARY):
-			sprite.play(ANIM_ATTACK_PRIMARY)
-		elif sprite.sprite_frames.has_animation(ANIM_ATTACK_FALLBACK):
-			sprite.play(ANIM_ATTACK_FALLBACK)
-	else:
 		if sprite.sprite_frames.has_animation(ANIM_ATTACK_FALLBACK):
 			sprite.play(ANIM_ATTACK_FALLBACK)
 		elif sprite.sprite_frames.has_animation(ANIM_ATTACK_PRIMARY):
 			sprite.play(ANIM_ATTACK_PRIMARY)
+	else:
+		if sprite.sprite_frames.has_animation(ANIM_ATTACK_PRIMARY):
+			sprite.play(ANIM_ATTACK_PRIMARY)
+		elif sprite.sprite_frames.has_animation(ANIM_ATTACK_FALLBACK):
+			sprite.play(ANIM_ATTACK_FALLBACK)
 
 func _on_animation_finished() -> void:
 	if sprite.animation == ANIM_ATTACK_PRIMARY or sprite.animation == ANIM_ATTACK_FALLBACK:

@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://dahu2al5wpejs"]
+
+[ext_resource type="Script" uid="uid://cqrwl80xv7ed2" path="res://inventory.gd" id="1_0qfo5"]
+[ext_resource type="Texture2D" uid="uid://cgewfx6ebp2g1" path="res://equipment.png" id="2_yxww1"]
+[ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="3_wdpcj"]
+[ext_resource type="Script" uid="uid://dwp7bro166sjl" path="res://weapons_panel.gd" id="4_qi5as"]
+[ext_resource type="PackedScene" uid="uid://bh31s74cqt4rb" path="res://inventory_slot.tscn" id="5_jb3kq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mrqgh"]
+
+[node name="Inventory" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("1_0qfo5")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_mrqgh")
+
+[node name="TextureRect" type="TextureRect" parent="Control/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.2734375, 1.2446184)
+texture = ExtResource("2_yxww1")
+
+[node name="Knight" parent="." instance=ExtResource("3_wdpcj")]
+position = Vector2(252, 331)
+scale = Vector2(6.6071424, 6.3513513)
+collision_layer = 0
+collision_mask = 0
+script = null
+
+[node name="WeaponsPanel" type="Panel" parent="."]
+custom_minimum_size = Vector2(320, 256)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 565.0
+offset_top = 115.0
+offset_right = -32.0
+offset_bottom = -106.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_qi5as")
+slot_scene = ExtResource("5_jb3kq")
+
+[node name="GridContainer" type="GridContainer" parent="WeaponsPanel"]
+custom_minimum_size = Vector2(320, 256)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.012455462
+anchor_top = 0.004282655
+anchor_right = 1.0018018
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 44
+theme_override_constants/v_separation = 44
+columns = 5
+metadata/_edit_use_anchors_ = true
