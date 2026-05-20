@@ -10,6 +10,7 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mrqgh"]
 
 [node name="Inventory" type="CanvasLayer"]
+process_mode = 2
 script = ExtResource("1_psafj")
 
 [node name="Control" type="Control" parent="."]
@@ -34,6 +35,8 @@ texture = ExtResource("2_5tt2m")
 [node name="Knight" parent="." instance=ExtResource("3_5tt2m")]
 position = Vector2(252, 331)
 scale = Vector2(6.6071424, 6.3513513)
+collision_layer = 0
+collision_mask = 0
 script = null
 
 [node name="WeaponsPanel" type="Panel" parent="."]

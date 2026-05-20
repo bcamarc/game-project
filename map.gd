@@ -11,3 +11,8 @@ func _on_test_monster_death(x: Variant, y: Variant) -> void:
 	#add_child(instance)
 	#instance.position = Vector2(x,y)
 	pass
+func _process(delta: float) -> void:
+	if (get_node("Inventory").visible):
+		print("its visible")
+	
+	

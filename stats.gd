@@ -111,3 +111,7 @@ func update_stats():
 	max_magic += bonus_magic
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)
+
+
+func _on_close_button_pressed() -> void:
+	hide()

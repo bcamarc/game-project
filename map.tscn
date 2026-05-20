@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=41 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://dcmmqgjxio6fi" path="res://mana_bar.gd" id="12_6qsgm"]
 [ext_resource type="FontFile" uid="uid://xwrv7ayarg34" path="res://MediavelUI/MediavelUI/Round9x13.ttf" id="14_wbpbn"]
 [ext_resource type="Script" uid="uid://dagm6rnpipew" path="res://label_2.gd" id="17_a6rn7"]
+[ext_resource type="PackedScene" uid="uid://b3swrpf7cs1ve" path="res://inventory.tscn" id="18_4on3e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -384,6 +385,8 @@ tile_set = SubResource("TileSet_e0an3")
 script = ExtResource("4_0t07s")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+process_mode = 4
+visible = false
 stream = ExtResource("6_4on3e")
 volume_db = -8.0
 autoplay = true
@@ -419,6 +422,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_gqbix")
 theme_override_styles/fill = SubResource("StyleBoxFlat_oysan")
 show_percentage = false
 script = ExtResource("7_oysan")
+metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Knight/Camera2D"]
 position = Vector2(-187.6, -102.40001)
@@ -436,6 +440,7 @@ label_settings = SubResource("LabelSettings_oysan")
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("8_gqbix")
+metadata/_edit_use_anchors_ = true
 
 [node name="ManaBar" type="ProgressBar" parent="Knight/Camera2D"]
 offset_left = -192.8
@@ -446,6 +451,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_0t07s")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ooc2g")
 show_percentage = false
 script = ExtResource("12_6qsgm")
+metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="Knight/Camera2D"]
 offset_left = -219.2
@@ -456,3 +462,7 @@ scale = Vector2(1.8, 1.8)
 text = "1"
 label_settings = SubResource("LabelSettings_4on3e")
 script = ExtResource("17_a6rn7")
+metadata/_edit_use_anchors_ = true
+
+[node name="Inventory" parent="." instance=ExtResource("18_4on3e")]
+process_mode = 3
