@@ -12,10 +12,17 @@ func spawn_things():
 	for node in get_tree().get_nodes_in_group("golem"):
 		if node.has_signal("death"):
 			
-			node.connect("death", Callable(self, "_on_test_monster_death"))
+			if not node.is_connected("death", Callable(self, "_on_test_monster_death")):
+				node.connect("death", Callable(self, "_on_test_monster_death"))
+
+	#for node in get_tree().get_nodes_in_group("alien"):
+		#if node.has_signal("death"):
+			#node.connect("death", Callable(self, "_on_test_monster_death2"))
 	for node in get_tree().get_nodes_in_group("alien"):
 		if node.has_signal("death"):
-			node.connect("death", Callable(self, "_on_test_monster_death2"))
+		
+			if not node.is_connected("death", Callable(self, "_on_test_monster_death2")):
+				node.connect("death", Callable(self, "_on_test_monster_death2"))
 
 func _on_test_monster_death(x: Variant, y: Variant) -> void:
 	var instance = scene.instantiate()
