@@ -17,8 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameLevel="*res://game_level.gd"
-GameState="*res://game_state.gd"
 Stats="*res://stats.gd"
 
 [display]
