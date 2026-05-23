@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=42 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -18,6 +18,7 @@
 [ext_resource type="FontFile" uid="uid://xwrv7ayarg34" path="res://MediavelUI/MediavelUI/Round9x13.ttf" id="14_wbpbn"]
 [ext_resource type="Script" uid="uid://dagm6rnpipew" path="res://label_2.gd" id="17_a6rn7"]
 [ext_resource type="PackedScene" uid="uid://b3swrpf7cs1ve" path="res://inventory.tscn" id="18_4on3e"]
+[ext_resource type="PackedScene" uid="uid://bcnjqc2au4ndd" path="res://character_menu.tscn" id="19_bssq0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -399,18 +400,18 @@ script = ExtResource("6_ooc2g")
 [node name="Stats" parent="." instance=ExtResource("9_gqbix")]
 
 [node name="Knight" parent="." instance=ExtResource("10_ooc2g")]
-position = Vector2(11.999999, -8)
+position = Vector2(69, 45.000004)
 
 [node name="Sprite2D" type="Sprite2D" parent="Knight"]
-position = Vector2(-175.6, -110)
-scale = Vector2(1.4050001, 1.3)
+position = Vector2(-175.59999, -110)
+scale = Vector2(1.405, 1.3)
 texture = ExtResource("10_2wwcf")
 region_enabled = true
 region_rect = Rect2(0, 32, 80, 32)
 
 [node name="Camera2D" type="Camera2D" parent="Knight"]
-position = Vector2(-1.2000122, -6.67572e-06)
-scale = Vector2(0.99999994, 0.99999994)
+position = Vector2(-1.200012, -6.914139e-06)
+scale = Vector2(0.9999998, 0.9999998)
 script = ExtResource("10_a6rn7")
 
 [node name="ProgressBar" type="ProgressBar" parent="Knight/Camera2D"]
@@ -466,3 +467,5 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Inventory" parent="." instance=ExtResource("18_4on3e")]
 process_mode = 3
+
+[node name="CanvasLayer" parent="." instance=ExtResource("19_bssq0")]

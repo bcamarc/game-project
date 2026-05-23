@@ -76,9 +76,9 @@ func respawn() -> void:
 	holy_speed_timer = 0.0
 
 func _physics_process(delta: float) -> void:
-	print("mana: ", mana)
+	print("mana: ", snapped(mana, 0.1))
 	if mana < 100.0:
-		mana = min(mana + 0.1, 100.0)
+		mana = min(mana + 0.15, 100.0)
 
 	alienPos = global_position
 	count += 1

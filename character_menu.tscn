@@ -1,0 +1,134 @@
+[gd_scene load_steps=8 format=3 uid="uid://bcnjqc2au4ndd"]
+
+[ext_resource type="Script" uid="uid://ne7sbe7sj7dy" path="res://character_menu.gd" id="1_5thor"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tlbt"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.101960786, 0.5372549, 0.101960786, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8miaq"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.21568628, 0.6666667, 0.21176471, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pi0qd"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.101960786, 0.5372549, 0.101960786, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5thor"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.21568628, 0.6666667, 0.21176471, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhfay"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.101960786, 0.5372549, 0.101960786, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yih4i"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.21568628, 0.6666667, 0.21176471, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_5thor")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 399.0
+offset_top = 320.0
+offset_right = 439.0
+offset_bottom = 360.0
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+
+[node name="KnightButton" type="Button" parent="Control/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 115.0
+offset_right = 50.0
+offset_bottom = 149.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_6tlbt")
+theme_override_styles/hover = SubResource("StyleBoxFlat_8miaq")
+
+[node name="HuntressButton" type="Button" parent="Control/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 182.0
+offset_top = 117.0
+offset_right = 215.0
+offset_bottom = 145.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_pi0qd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5thor")
+
+[node name="WizardButton" type="Button" parent="Control/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 3.2670002
+anchor_top = 1.802
+anchor_right = 3.2670002
+anchor_bottom = 1.802
+offset_left = 360.0
+offset_top = 118.0
+offset_right = 390.0
+offset_bottom = 148.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhfay")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yih4i")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_left = 405.0
+offset_top = 339.0
+offset_right = 796.0
+offset_bottom = 369.0
+text = "Knight                          Huntress                        Wizard"

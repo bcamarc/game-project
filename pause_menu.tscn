@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5kd0ru5w1bu6"]
+
+[ext_resource type="Script" uid="uid://bgibr6s2iqywj" path="res://pause_menu.gd" id="1_hdmo1"]
+[ext_resource type="Texture2D" uid="uid://dq6tmws0kv0kx" path="res://spaceBackground2.jpg" id="2_nwcfo"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_hdmo1")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_nwcfo")

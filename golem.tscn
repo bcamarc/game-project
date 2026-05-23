@@ -471,7 +471,7 @@ target_position = Vector2(37, 0)
 position = Vector2(4, 9)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_5t44j")
-animation = &"death"
+animation = &"AttackB"
 autoplay = "Idle"
 
 [node name="AbilityArea" type="Area2D" parent="."]

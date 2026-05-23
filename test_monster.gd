@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var stats = null
+var target_player: Node2D = null
 @export var dropped_item_scene: PackedScene 
 
 var possible_drops = [
@@ -106,10 +107,7 @@ func _physics_process(delta: float) -> void:
 				$AnimatedSprite2D.play("Attack")
 
 			if count % 40 == 0:
-				if stats == null:
-					stats = get_stats()
-				if stats:
-					stats.total_health -= 5
+				damage_player(5)
 
 			if not $AnimatedSprite2D.is_playing():
 				$AnimatedSprite2D.play("Run")
@@ -120,12 +118,7 @@ func _physics_process(delta: float) -> void:
 		if ability and randf() < 0.001:
 			$AnimatedSprite2D.play("Ability")
 			$slimeFx.play("ability")
-			if stats == null:
-				stats = get_stats()
-			if stats:
-				stats.total_health -= 5
-			else:
-				print("hp is broken")
+			damage_player(5)
 
 		var tilemap = get_node_or_null("../TileMapLayer")
 
@@ -173,34 +166,59 @@ func handle_death() -> void:
 		slime_death = false
 
 	if died and $AnimatedSprite2D.animation == "death" and not $AnimatedSprite2D.is_playing():
-		if stats == null:
-			stats = get_stats()
-		if stats:
-			stats.add_exp(7)
+		var s = get_stats(target_player)
+		if s:
+			s.add_exp(7)
 		else:
 			print("stats is broken")
 		death.emit(position.x, position.y)
 		spawn_loot()
 		queue_free()
 
-func get_stats() -> Node:
-	if not is_inside_tree():
-		return null
-	var tree = get_tree()
-	if tree == null:
-		return null
-	var list = tree.get_nodes_in_group("stats")
-	if list.is_empty():
-		return null
-	return list[0]
+func get_stats(player: Node2D = null) -> Node:
+	# Use the same Stats node the player scripts use: ../Stats from the player.
+	if player != null and is_instance_valid(player):
+		var player_stats := player.get_node_or_null("../Stats")
+		if player_stats != null:
+			stats = player_stats
+			return stats
+
+	# Scene-local Stats (map child) is preferred over autoload when both exist.
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			stats = scene_stats
+			return stats
+
+	# Final fallback: autoload singleton.
+	var singleton_stats := get_node_or_null("/root/Stats")
+	if singleton_stats != null:
+		stats = singleton_stats
+		return stats
+
+	return null
+
+func damage_player(amount: int) -> void:
+	var s = get_stats(target_player)
+	if s:
+		if s.has_method("add_hp"):
+			s.add_hp(-amount)
+		else:
+			s.total_health -= amount
+	else:
+		print("hp is broken")
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("alien_player"):
 		attacking = true
+		target_player = body
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body.is_in_group("alien_player"):
 		attacking = false
+		if body == target_player:
+			target_player = null
 
 func _on_ability_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("alien_player"):

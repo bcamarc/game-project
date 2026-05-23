@@ -28,6 +28,14 @@ var max_magic := 0
 var attack_speed := 1.0
 var testMapScene = preload("res://testmap.tscn")
 var equipment = {"weapon": null, "helmet": null, "chest": null, "boots": null}
+signal player_changed(player_name: String)
+
+var current_player: String = "knight"
+
+func set_player(player_name: String) -> void:
+	current_player = player_name
+	print("Stats changed to:", current_player) 
+	player_changed.emit(player_name)
 
 func _ready() -> void:
 	add_to_group("stats")
