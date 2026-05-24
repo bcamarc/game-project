@@ -91,7 +91,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		floor_check = false
 
-	if distance <= 400.0 or damaged:
+	if distance <= 520.0 or damaged:
 		if alien.global_position.x >= monster_pos_x:
 			direction.x = 1.0
 			$AnimatedSprite2D.flip_h = false
@@ -157,7 +157,8 @@ func _physics_process(delta: float) -> void:
 		var player_one_block_up := player_dy > block_height * 0.45 and player_dy < block_height * 1.9
 		var player_is_ahead := (alien.global_position.x - global_position.x) * direction.x > 0.0
 		var player_not_too_close := player_dx > block_width * 2.0
-		var should_jump_to_player := player_one_block_up and player_is_ahead and player_not_too_close
+		# Only do a climb jump when there is an actual wall to climb.
+		var should_jump_to_player := player_one_block_up and player_is_ahead and player_not_too_close and wall_ahead
 		var should_path_jump := wall_ahead or not floor_ahead
 
 		if is_on_floor() and jump_timer <= 0.0:

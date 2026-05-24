@@ -10,7 +10,6 @@ var spell: PackedScene = preload("res://fire_spell.tscn")
 var thunderSpell: PackedScene = preload("res://thunder_spell.tscn")
 var iceSpell: PackedScene = preload("res://ice_spell.tscn")
 var holySpell: PackedScene = preload("res://holySpell.tscn")
-var mana: float = 100.0
 var knight := load("res://knight.tscn")
 
 var count := 0
@@ -70,15 +69,16 @@ func _ready() -> void:
 		cam.drag_vertical_enabled = false
 
 func respawn() -> void:
-	get_node("../Stats").total_health = 100
+	var stats = _stats()
+	stats.total_health = 100
 	global_position = Vector2.ZERO
 	velocity = Vector2.ZERO
 	holy_speed_timer = 0.0
 
 func _physics_process(delta: float) -> void:
-	print("mana: ", snapped(mana, 0.1))
-	if mana < 100.0:
-		mana = min(mana + 0.15, 100.0)
+	var stats = _stats()
+	if stats.total_magic < stats.max_magic:
+		stats.total_magic = min(stats.total_magic + 0.11, stats.max_magic)
 
 	alienPos = global_position
 	count += 1
@@ -91,7 +91,6 @@ func _physics_process(delta: float) -> void:
 	if holy_speed_timer > 0.0:
 		holy_speed_timer -= delta
 
-	var stats = get_node("../Stats")
 	_apply_holy_regen(delta, stats)
 
 	var left_pressed := _is_move_left_pressed()
@@ -160,9 +159,10 @@ func _get_spell_mana_cost(spell_scene: PackedScene) -> float:
 
 func _try_spend_mana(spell_scene: PackedScene) -> bool:
 	var cost := _get_spell_mana_cost(spell_scene)
-	if mana < cost:
+	var stats = _stats()
+	if stats.total_magic < cost:
 		return false
-	mana -= cost
+	stats.total_magic -= cost
 	return true
 
 func _start_attack_with_spell(spell_scene: PackedScene) -> void:
@@ -222,7 +222,7 @@ func _play_holy_effect() -> void:
 		)
 
 func _apply_holy_buffs() -> void:
-	var stats = get_node("../Stats")
+	var stats = _stats()
 	var max_health := _get_max_health(stats)
 
 	holy_speed_timer = holy_speed_duration
@@ -333,3 +333,15 @@ func _is_holy_just_pressed() -> bool:
 	var just_pressed := key_down and not holy_key_was_down
 	holy_key_was_down = key_down
 	return just_pressed
+
+func _stats():
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			return scene_stats
+
+	var stats_node := get_tree().get_first_node_in_group("stats")
+	if stats_node != null:
+		return stats_node
+	return Stats
