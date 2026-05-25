@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c5kd0ru5w1bu6"]
+[gd_scene load_steps=2 format=3 uid="uid://c5kd0ru5w1bu6"]
 
 [ext_resource type="Script" uid="uid://bgibr6s2iqywj" path="res://pause_menu.gd" id="1_hdmo1"]
-[ext_resource type="Texture2D" uid="uid://dq6tmws0kv0kx" path="res://spaceBackground2.jpg" id="2_nwcfo"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_hdmo1")
@@ -14,11 +13,24 @@ offset_bottom = 40.0
 
 [node name="Panel" type="Panel" parent="Control"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1.0
 
-[node name="TextureRect" type="TextureRect" parent="Control/Panel"]
+[node name="Resume" type="Button" parent="Control/Panel"]
+unique_name_in_owner = true
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_nwcfo")
+offset_left = 533.0
+offset_top = 372.0
+offset_right = 603.0
+offset_bottom = 410.0
+text = "Resume"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_left = 421.0
+offset_top = 94.0
+offset_right = 721.0
+offset_bottom = 134.0
+
+[node name="TextEdit" type="TextEdit" parent="CenterContainer"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+text = "                           Paused"

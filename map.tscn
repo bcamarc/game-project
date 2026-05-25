@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=44 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -19,6 +19,8 @@
 [ext_resource type="Script" uid="uid://dagm6rnpipew" path="res://label_2.gd" id="17_a6rn7"]
 [ext_resource type="PackedScene" uid="uid://b3swrpf7cs1ve" path="res://inventory.tscn" id="18_4on3e"]
 [ext_resource type="PackedScene" uid="uid://bcnjqc2au4ndd" path="res://character_menu.tscn" id="19_bssq0"]
+[ext_resource type="PackedScene" uid="uid://c5kd0ru5w1bu6" path="res://pause_menu.tscn" id="20_jk4ss"]
+[ext_resource type="Texture2D" uid="uid://bxqbh535ukbbm" path="res://art/plains_background.jpg" id="21_r5om4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -469,3 +471,17 @@ metadata/_edit_use_anchors_ = true
 process_mode = 3
 
 [node name="CanvasLayer" parent="." instance=ExtResource("19_bssq0")]
+
+[node name="CanvasLayer2" parent="." instance=ExtResource("20_jk4ss")]
+
+[node name="Parallax2D" type="Parallax2D" parent="."]
+z_index = -9
+repeat_size = Vector2(12049, 0)
+autoscroll = Vector2(-25, 0)
+repeat_times = 234879
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D"]
+position = Vector2(99.49997, 46.5)
+scale = Vector2(4.063333, 3.8511903)
+texture = ExtResource("21_r5om4")
+centered = false
