@@ -8,6 +8,7 @@ var fireSpellDamage := 10
 var thunderSpellDamage := 37
 var iceSpellDamage := 10
 var highest_level := 1
+var world_level := 1
 var strength := 0
 var vitality := 0
 var intellegience := 0
@@ -46,10 +47,11 @@ func _ready() -> void:
 	total_health = max_health
 
 func on_next_level(tile_x, tile_y):
+	world_level = min(world_level + 1, 4)
 	var new_map = testMapScene.instantiate()
 	get_parent().add_child(new_map)
 	if new_map.has_method("set_gate_data"):
-		new_map.set_gate_data(tile_x, tile_y)
+		new_map.set_gate_data(tile_x, tile_y, world_level)
 
 func _process(_delta):
 	check_exp()
