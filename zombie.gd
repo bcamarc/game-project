@@ -10,11 +10,14 @@ var health := 50
 var floor := false
 var slime_death := false
 var died = false
+var stats: Node = null
 
 signal death(x, y)
 
 func _ready() -> void:
 	add_to_group("alien")
+	add_to_group("enemy")
+	stats = _resolve_stats()
 	if not is_on_floor():
 		floor = true
 
@@ -23,7 +26,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if has_node("../Knight"):
+	if get_tree().get_nodes_in_group("player") != null:
 
 		if ((floor and not is_on_floor()) and not died):
 			velocity.y = 5000
@@ -34,7 +37,7 @@ func _process(delta: float) -> void:
 		$ProgressBar.value = health
 		count += 1
 
-		var alien = get_node("../Knight")
+		var alien =  get_tree().get_nodes_in_group("player")[0]
 		var distance = $Sprite2D.global_position.distance_to(alien.global_position)
 		monsterPos = global_position.x
 
@@ -51,7 +54,12 @@ func _process(delta: float) -> void:
 
 			if attacking and not died:
 				if count % 40 == 0:
-					get_node("../Stats").health -= 2.5
+					var current_stats := _resolve_stats()
+					if current_stats != null:
+						if current_stats.has_method("add_hp"):
+							current_stats.add_hp(-2.5)
+						else:
+							current_stats.total_health -= 2.5
 					$AnimationPlayer.play("attack")
 			else:
 				move_and_slide()
@@ -100,25 +108,53 @@ func _process(delta: float) -> void:
 			
 		
 		queue_free()
-		get_node("../Stats").add_exp(5)
+		var current_stats := _resolve_stats()
+		if current_stats != null and current_stats.has_method("add_exp"):
+			current_stats.add_exp(5)
 		death.emit(position.x, position.y)
-
+		
+func take_damage(d):
+	health -= d
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("player"):
 		attacking = true
 
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("player"):
 		attacking = false
 
 
 func _on_ability_area_body_entered(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("player"):
 		ability = true
 
 
 func _on_ability_area_body_exited(body: Node2D) -> void:
-	if body.name == "Knight":
+	if body.is_in_group("player"):
 		ability = false
+
+
+func _resolve_stats() -> Node:
+	if is_instance_valid(stats):
+		return stats
+
+	var parent_stats := get_node_or_null("../Stats")
+	if parent_stats != null:
+		stats = parent_stats
+		return stats
+
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			stats = scene_stats
+			return stats
+
+	var singleton_stats := get_node_or_null("/root/Stats")
+	if singleton_stats != null:
+		stats = singleton_stats
+		return stats
+
+	return null

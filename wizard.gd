@@ -36,7 +36,7 @@ var holy_speed_duration := 4.0
 var holy_speed_timer := 0.0
 var holy_regen_enabled := false
 var holy_regen_per_second := 3.0
-var holy_instant_heal := 8.0
+var holy_instant_heal := 16.0
 
 const ANIM_IDLE := "idle"
 const ANIM_RUN := "run"

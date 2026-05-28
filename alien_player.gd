@@ -110,7 +110,7 @@ func _physics_process(delta):
 		var bodies = hitbox.get_overlapping_bodies()
 
 		for body in bodies:
-			if body.is_in_group("golem") or body.is_in_group("slime") or body.is_in_group("huntress"):
+			if body.is_in_group("enemy") or body.is_in_group("slime") or body.is_in_group("golem"):
 				if body.has_method("take_damage"):
 					body.take_damage(get_node("../Stats").total_damage)
 					has_hit = true

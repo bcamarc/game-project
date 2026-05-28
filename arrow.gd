@@ -3,11 +3,12 @@ extends CharacterBody2D
 
 var direction := 1
 var dying := false
-var damage := 2000.0
+var damage := 0
 var speed := 400.0
 var gravity := 700.0
 var arc_lift := 80.0
 var hitbox: Area2D
+
 
 var target_position := Vector2.ZERO
 var has_target := false
@@ -44,8 +45,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if dying:
 		return
-
-	damage = 30.0
+	damage = 16 + get_node("../Stats").total_damage
 	velocity.y += gravity * delta
 	move_and_slide()
 	rotation = velocity.angle()
