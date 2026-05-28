@@ -89,11 +89,30 @@ func _process(delta: float) -> void:
 		if not is_on_wall() and not is_on_floor() and count % 5 == 0:
 			velocity.y = 400
 
-		$RayCast2D.target_position = Vector2(35 * direction.x, -5)
+		var tile_layer := get_node_or_null("../TileMapLayer") as TileMapLayer
+		if tile_layer != null and direction.x != 0.0:
+			var block_width := 48.0
+			var block_height := 48.0
+			if tile_layer.tile_set != null:
+				block_width = float(tile_layer.tile_set.tile_size.x) * absf(tile_layer.global_scale.x)
+				block_height = float(tile_layer.tile_set.tile_size.y) * absf(tile_layer.global_scale.y)
 
-		if $RayCast2D.is_colliding() and $RayCast2D.get_collider() == get_node("../TileMapLayer"):
-			#$AnimatedSprite2D.play("Jump")
-			velocity.y = -300
+			var probe_x := global_position.x + direction.x * block_width * 0.9
+			var wall_probe_low := Vector2(probe_x, global_position.y + block_height * 0.15)
+			var wall_probe_mid := Vector2(probe_x, global_position.y - block_height * 0.35)
+			var floor_probe_near := Vector2(probe_x, global_position.y + block_height * 0.95)
+			var floor_probe_far := Vector2(probe_x, global_position.y + block_height * 1.35)
+			var wall_ahead := _has_solid_tile(tile_layer, wall_probe_low) or _has_solid_tile(tile_layer, wall_probe_mid)
+			var floor_ahead := _has_solid_tile(tile_layer, floor_probe_near) or _has_solid_tile(tile_layer, floor_probe_far)
+
+			if wall_ahead or not floor_ahead:
+				velocity.y = -300
+		else:
+			$RayCast2D.position = Vector2(7 * direction.x, 11)
+			$RayCast2D.target_position = Vector2(35 * direction.x, -5)
+			$RayCast2D.force_raycast_update()
+			if $RayCast2D.is_colliding():
+				velocity.y = -300
 
 	else:
 		print("player not found")
@@ -134,6 +153,12 @@ func _on_ability_area_body_entered(body: Node2D) -> void:
 func _on_ability_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		ability = false
+
+
+func _has_solid_tile(tile_layer: TileMapLayer, world_pos: Vector2) -> bool:
+	var local_pos := tile_layer.to_local(world_pos)
+	var cell := tile_layer.local_to_map(local_pos)
+	return tile_layer.get_cell_source_id(cell) != -1
 
 
 func _resolve_stats() -> Node:

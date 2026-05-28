@@ -24,6 +24,7 @@ func _ready() -> void:
 	rotation = 0.0
 	scale = Vector2.ONE
 	global_scale = Vector2.ONE
+	_update_damage()
 
 	hitbox = $Area2D
 	$AnimatedSprite2D.flip_h = false
@@ -45,7 +46,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if dying:
 		return
-	damage = 16 + get_node("../Stats").total_damage
+	_update_damage()
 	velocity.y += gravity * delta
 	move_and_slide()
 	rotation = velocity.angle()
@@ -60,7 +61,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if dying:
 		return
 
-	if body.is_in_group("enemy"):
+	if _is_enemy_target(body):
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
 			dying = true
@@ -68,8 +69,38 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			return
 
 		var p := body.get_parent()
-		if p != null and p.is_in_group("enemy") and p.has_method("take_damage"):
+		if p != null and _is_enemy_target(p) and p.has_method("take_damage"):
 			p.take_damage(damage)
 			dying = true
 			queue_free()
 			return
+
+
+func _update_damage() -> void:
+	var stats := _resolve_stats()
+	if stats != null:
+		damage = 16 + stats.total_damage
+	else:
+		damage = 16
+
+
+func _resolve_stats() -> Node:
+	var parent_stats := get_node_or_null("../Stats")
+	if parent_stats != null:
+		return parent_stats
+
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			return scene_stats
+
+	var singleton_stats := get_node_or_null("/root/Stats")
+	if singleton_stats != null:
+		return singleton_stats
+
+	return null
+
+
+func _is_enemy_target(body: Node) -> bool:
+	return body.is_in_group("enemy") or body.is_in_group("golem") or body.is_in_group("slime")
