@@ -7,10 +7,13 @@ var attacking := false
 var count := 0
 var ability := false
 var health := 50
-var floor := false
 var slime_death := false
 var died = false
 var stats: Node = null
+var gravity := ProjectSettings.get_setting("physics/2d/default_gravity") as float
+var jump_velocity := -300.0
+var jump_cooldown := 0.4
+var jump_timer := 0.0
 
 signal death(x, y)
 
@@ -18,8 +21,6 @@ func _ready() -> void:
 	add_to_group("alien")
 	add_to_group("enemy")
 	stats = _resolve_stats()
-	if not is_on_floor():
-		floor = true
 
 	$RayCast2D.add_exception(get_node("../Golem"))
 	$RayCast2D.add_exception(get_node("../TestMonster"))
@@ -27,12 +28,14 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if get_tree().get_nodes_in_group("player") != null:
+		if jump_timer > 0.0:
+			jump_timer -= delta
 
-		if ((floor and not is_on_floor()) and not died):
-			velocity.y = 5000
-			move_and_slide()
+		if not is_on_floor():
+			velocity.y += gravity * delta
 		else:
-			floor = false
+			if velocity.y > 0.0:
+				velocity.y = 0.0
 
 		$ProgressBar.value = health
 		count += 1
@@ -52,22 +55,8 @@ func _process(delta: float) -> void:
 
 			velocity.x = speed * direction.x
 
-			if attacking and not died:
-				if count % 40 == 0:
-					var current_stats := _resolve_stats()
-					if current_stats != null:
-						if current_stats.has_method("add_hp"):
-							current_stats.add_hp(-2.5)
-						else:
-							current_stats.total_health -= 2.5
-					$AnimationPlayer.play("attack")
-			else:
-				move_and_slide()
-				$AnimationPlayer.play("walk")
-				if not $AnimationPlayer.is_playing():
-					$AnimationPlayer.play("walk")
-
 		else:
+			velocity.x = 0.0
 			$AnimationPlayer.play("idle")
 
 		#if attacking and not died:
@@ -86,10 +75,11 @@ func _process(delta: float) -> void:
 			#$slimeFx.play("ability")
 			#get_node("../Stats").health -= 5
 
-		if not is_on_wall() and not is_on_floor() and count % 5 == 0:
-			velocity.y = 400
-
 		var tile_layer := get_node_or_null("../TileMapLayer") as TileMapLayer
+		var wall_ahead := false
+		var floor_ahead := true
+		var probe_x := global_position.x
+		var probe_y := global_position.y
 		if tile_layer != null and direction.x != 0.0:
 			var block_width := 48.0
 			var block_height := 48.0
@@ -97,22 +87,44 @@ func _process(delta: float) -> void:
 				block_width = float(tile_layer.tile_set.tile_size.x) * absf(tile_layer.global_scale.x)
 				block_height = float(tile_layer.tile_set.tile_size.y) * absf(tile_layer.global_scale.y)
 
-			var probe_x := global_position.x + direction.x * block_width * 0.9
-			var wall_probe_low := Vector2(probe_x, global_position.y + block_height * 0.15)
-			var wall_probe_mid := Vector2(probe_x, global_position.y - block_height * 0.35)
-			var floor_probe_near := Vector2(probe_x, global_position.y + block_height * 0.95)
-			var floor_probe_far := Vector2(probe_x, global_position.y + block_height * 1.35)
-			var wall_ahead := _has_solid_tile(tile_layer, wall_probe_low) or _has_solid_tile(tile_layer, wall_probe_mid)
-			var floor_ahead := _has_solid_tile(tile_layer, floor_probe_near) or _has_solid_tile(tile_layer, floor_probe_far)
+			var probe_origin = $CollisionShape2D.global_position
+			probe_x = probe_origin.x + direction.x * block_width * 0.65
+			probe_y = probe_origin.y
+			var wall_probe_low := Vector2(probe_x, probe_y + block_height * 0.15)
+			var wall_probe_mid := Vector2(probe_x, probe_y - block_height * 0.35)
+			var floor_probe_near := Vector2(probe_x, probe_y + block_height * 0.95)
+			var floor_probe_far := Vector2(probe_x, probe_y + block_height * 1.35)
+			wall_ahead = _has_solid_tile(tile_layer, wall_probe_low) or _has_solid_tile(tile_layer, wall_probe_mid)
+			floor_ahead = _has_solid_tile(tile_layer, floor_probe_near) or _has_solid_tile(tile_layer, floor_probe_far)
 
-			if wall_ahead or not floor_ahead:
-				velocity.y = -300
 		else:
 			$RayCast2D.position = Vector2(7 * direction.x, 11)
 			$RayCast2D.target_position = Vector2(35 * direction.x, -5)
 			$RayCast2D.force_raycast_update()
 			if $RayCast2D.is_colliding():
-				velocity.y = -300
+				wall_ahead = true
+
+		if is_on_floor() and jump_timer <= 0.0 and not attacking:
+			if wall_ahead:
+				velocity.y = jump_velocity
+				jump_timer = jump_cooldown
+
+		if attacking and not died:
+			if count % 40 == 0:
+				var current_stats := _resolve_stats()
+				if current_stats != null:
+					if current_stats.has_method("add_hp"):
+						current_stats.add_hp(-2.5)
+					else:
+						current_stats.total_health -= 2.5
+				$AnimationPlayer.play("attack")
+		else:
+			if distance <= 400:
+				$AnimationPlayer.play("walk")
+				if not $AnimationPlayer.is_playing():
+					$AnimationPlayer.play("walk")
+
+		move_and_slide()
 
 	else:
 		print("player not found")

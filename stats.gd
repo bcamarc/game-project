@@ -19,14 +19,16 @@ var base_damage := 10
 var base_defense := 5
 var base_speed := 250
 var base_magic := 50.0
-var total_health := 1
-var max_health := 1
+var total_health := 1.0
+var max_health := 1.0
 var total_damage := 0
 var total_defense := 0
 var total_speed := 0
 var total_magic := 0.0
 var max_magic := 0.0
 var attack_speed := 1.0
+var health_regen_per_second := 0.75
+var wizard_mana_regen_per_second := 7.5
 var testMapScene = preload("res://testmap.tscn")
 var equipment = {"weapon": null, "helmet": null, "chest": null, "boots": null}
 signal player_changed(player_name: String)
@@ -57,6 +59,7 @@ func _process(_delta):
 	check_exp()
 	if Input.is_action_just_released("stats"):
 		visible = !visible
+	_apply_passive_regen(_delta)
 	update_stats()
 
 func add_coin(a):
@@ -121,6 +124,13 @@ func update_stats():
 	max_magic += bonus_magic
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)
+
+func _apply_passive_regen(delta: float) -> void:
+	if total_health > 0.0 and total_health < max_health:
+		add_hp(health_regen_per_second * delta)
+
+	if get_tree().get_first_node_in_group("wizard") != null and total_magic < max_magic:
+		add_mp(wizard_mana_regen_per_second * delta)
 
 
 func _on_close_button_pressed() -> void:

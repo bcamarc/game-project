@@ -78,11 +78,6 @@ func respawn() -> void:
 func _physics_process(delta: float) -> void:
 	
 	var stats = _stats()
-	
-	if stats.total_magic < stats.max_magic:
-		stats.total_magic = min(stats.total_magic + 0.11, stats.max_magic)
-	if stats.total_health < stats.max_health:
-		stats.total_health = min(stats.total_health + 0.025, stats.max_health)
 
 
 	alienPos = global_position

@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://4au2q5vu11xq" path="res://Enemy_Galore_I/Slime/Slime_Spiked_Ability_FX.png" id="8_fpxwj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jmu02"]
-size = Vector2(32, 67)
+size = Vector2(28, 67)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_td46n"]
 size = Vector2(76, 84.5)
@@ -203,7 +203,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(7, 11)
-target_position = Vector2(36, 0)
+target_position = Vector2(31, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(24.000011, -18.000004)
