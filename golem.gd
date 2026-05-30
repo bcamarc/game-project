@@ -14,7 +14,8 @@ var health := 100
 var shieldHealth := 0
 var up := false
 var first := true
-var floor := false
+var spawn_drop_active := false
+var spawn_drop_speed := 1600.0
 var fps := true
 var abilityFXScene := load("res://golem_ability.tscn")
 var abilityRadius := false
@@ -37,7 +38,7 @@ func _ready() -> void:
 	add_to_group("golem")
 
 	if not is_on_floor():
-		floor = true
+		spawn_drop_active = true
 
 	$RayCast2D.add_exception(self)
 
@@ -67,13 +68,13 @@ func _physics_process(delta: float) -> void:
 		if velocity.y > 0.0:
 			velocity.y = 0.0
 
-	# Optional initial drop behavior
-	if floor and not is_on_floor():
-		velocity.y = 500.0
+	# Fast spawn-only fall so high-spawned enemies clear random terrain quickly.
+	if spawn_drop_active and not is_on_floor():
+		velocity.y = maxf(velocity.y, spawn_drop_speed)
 		move_and_slide()
 		return
 	else:
-		floor = false
+		spawn_drop_active = false
 
 	$ProgressBar.value = health
 	$ProgressBar2.value = shieldHealth

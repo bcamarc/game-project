@@ -1,5 +1,9 @@
 extends TileMapLayer
 
+const DESERT_BACKGROUND: Texture2D = preload("res://art/desert_background.webp")
+const ICE_BACKGROUND: Texture2D = preload("res://art/ice_background.jpg")
+const FIRE_BACKGROUND: Texture2D = preload("res://art/lava_background.jpg")
+
 var noise := FastNoiseLite.new()
 var slimeScene = preload("res://test_monster.tscn")
 var golemScene = preload("res://golem.tscn")
@@ -9,11 +13,9 @@ var ground_height := 20
 var safe_x := 0
 var safe_y := 0
 var world_level := 1
+@onready var background_sprite: Sprite2D = $ParallaxBackground/Sprite2D
 
 const MAX_GATE_LEVEL := 4
-const BASE_TILE_X := 0
-const TILE_X_STEP := 2
-
 func set_gate_data(x: int, y: int, level: int = 1):
 	safe_x = x
 	safe_y = y
@@ -31,9 +33,10 @@ func on_next_level():
 
 func _spawn_map():
 	clear()
+	_apply_level_theme()
 	var mob_count := 6
 	var safe_radius := 4
-	var tile_x := BASE_TILE_X + ((world_level - 1) * TILE_X_STEP)
+	var tile_x := _tile_column_for_level(world_level)
 	for x in range(map_width):
 		var distance: int = absi(x - safe_x)
 		var height: int
@@ -69,6 +72,52 @@ func _spawn_map():
 		add_child(gate)
 		gate.top_level = true
 		gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 2))
+
+func _tile_column_for_level(level: int) -> int:
+	match level:
+		2:
+			return 2
+		3:
+			return 6
+		4:
+			return 4
+		_:
+			return 0
+
+func _background_for_level(level: int) -> Texture2D:
+	match level:
+		2:
+			return DESERT_BACKGROUND
+		3:
+			return ICE_BACKGROUND
+		4:
+			return FIRE_BACKGROUND
+		_:
+			return null
+
+func _apply_level_theme() -> void:
+	if background_sprite == null or not is_instance_valid(background_sprite):
+		return
+
+	var texture: Texture2D = _background_for_level(world_level)
+	background_sprite.texture = texture
+
+	if texture == null:
+		background_sprite.visible = false
+		return
+
+	background_sprite.visible = true
+	background_sprite.z_as_relative = false
+	background_sprite.z_index = -1000
+	background_sprite.centered = true
+
+	var viewport_size := get_viewport_rect().size
+	var scale_factor: float = maxf(
+		viewport_size.x / float(texture.get_width()),
+		viewport_size.y / float(texture.get_height())
+	)
+	background_sprite.position = viewport_size * 0.5
+	background_sprite.scale = Vector2.ONE * scale_factor
 
 func _get_surface_height(x: int, safe_radius: int) -> int:
 	var distance: int = absi(x - safe_x)

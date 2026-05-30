@@ -16,7 +16,8 @@ var ability := false
 var health := 50.0
 var died := false
 var slime_death := false
-var floor_check := false
+var spawn_drop_active := false
+var spawn_drop_speed := 1600.0
 var damaged := false
 
 var gravity := ProjectSettings.get_setting("physics/2d/default_gravity") as float
@@ -33,7 +34,7 @@ func _ready() -> void:
 	add_to_group("enemy")
 
 	if not is_on_floor():
-		floor_check = true
+		spawn_drop_active = true
 
 	var golem = get_node_or_null("../Golem")
 	if golem:
@@ -84,12 +85,12 @@ func _physics_process(delta: float) -> void:
 	var monster_pos_x = global_position.x
 	var distance = global_position.distance_to(alien.global_position)
 
-	if floor_check and not is_on_floor() and not died:
-		velocity.y = 500.0
+	if spawn_drop_active and not is_on_floor() and not died:
+		velocity.y = maxf(velocity.y, spawn_drop_speed)
 		move_and_slide()
 		return
 	else:
-		floor_check = false
+		spawn_drop_active = false
 
 	if distance <= 520.0 or damaged:
 		if alien.global_position.x >= monster_pos_x:

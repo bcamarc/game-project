@@ -203,7 +203,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(7, 11)
-target_position = Vector2(31, 0)
+target_position = Vector2(24, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(24.000011, -18.000004)

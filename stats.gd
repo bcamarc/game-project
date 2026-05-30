@@ -27,7 +27,8 @@ var total_speed := 0
 var total_magic := 0.0
 var max_magic := 0.0
 var attack_speed := 1.0
-var health_regen_per_second := 0.75
+var health_regen_per_second := 0.4
+#var wizard_mana_regen_per_second := 0.15*max_magic
 var wizard_mana_regen_per_second := 7.5
 var testMapScene = preload("res://testmap.tscn")
 var equipment = {"weapon": null, "helmet": null, "chest": null, "boots": null}
@@ -108,6 +109,7 @@ func _on_int_button_2_pressed():
 		skillPoints -= 1
 
 func update_stats():
+	wizard_mana_regen_per_second = 0.15*(max_magic)
 	max_health = base_health + vitality * 10
 	total_damage = base_damage + strength * 2
 	total_defense = base_defense + vitality * 1

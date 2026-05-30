@@ -14,6 +14,8 @@ var gravity := ProjectSettings.get_setting("physics/2d/default_gravity") as floa
 var jump_velocity := -300.0
 var jump_cooldown := 0.4
 var jump_timer := 0.0
+var spawn_drop_active := false
+var spawn_drop_speed := 1600.0
 
 signal death(x, y)
 
@@ -21,6 +23,8 @@ func _ready() -> void:
 	add_to_group("alien")
 	add_to_group("enemy")
 	stats = _resolve_stats()
+	if not is_on_floor():
+		spawn_drop_active = true
 
 	$RayCast2D.add_exception(get_node("../Golem"))
 	$RayCast2D.add_exception(get_node("../TestMonster"))
@@ -36,6 +40,10 @@ func _process(delta: float) -> void:
 		else:
 			if velocity.y > 0.0:
 				velocity.y = 0.0
+			spawn_drop_active = false
+
+		if spawn_drop_active and not is_on_floor():
+			velocity.y = maxf(velocity.y, spawn_drop_speed)
 
 		$ProgressBar.value = health
 		count += 1
@@ -119,7 +127,7 @@ func _process(delta: float) -> void:
 						current_stats.total_health -= 2.5
 				$AnimationPlayer.play("attack")
 		else:
-			if distance <= 400:
+			if distance <= 800:
 				$AnimationPlayer.play("walk")
 				if not $AnimationPlayer.is_playing():
 					$AnimationPlayer.play("walk")

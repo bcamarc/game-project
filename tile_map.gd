@@ -52,4 +52,4 @@ func _spawn_map():
 		
 		add_child(mob)
 		mob.top_level = true
-		mob.global_position = map_to_local(Vector2i(x, y - 3))
+		mob.global_position = map_to_local(Vector2i(x, y - 20))
