@@ -6,10 +6,7 @@ var icon = null
 
 func _ready():
 	icon = find_child("TextureRect", true, false)
-	print("ICON NODE =", icon)
-
-	if item != null:
-		_apply_item()
+	_apply_item()
 
 
 func set_item(new_item):

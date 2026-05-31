@@ -48,6 +48,7 @@ func _spawn_map():
 			mob = golemScene.instantiate()
 		else:
 			mob = zombieScene.instantiate()
+			pass
 		
 		
 		add_child(mob)
