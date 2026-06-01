@@ -1,6 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcnjqc2au4ndd"]
+[gd_scene load_steps=12 format=3 uid="uid://bcnjqc2au4ndd"]
 
 [ext_resource type="Script" uid="uid://ne7sbe7sj7dy" path="res://character_menu.gd" id="1_5thor"]
+[ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="2_5thor"]
+[ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="3_rhfay"]
+[ext_resource type="Script" uid="uid://btp55rll0pkxh" path="res://knight.gd" id="3_yih4i"]
+[ext_resource type="PackedScene" uid="uid://tgy2wqtn8p0" path="res://wizard.tscn" id="4_yih4i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tlbt"]
 content_margin_left = 4.0
@@ -128,7 +132,25 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_yih4i")
 
 [node name="TextEdit" type="TextEdit" parent="."]
 offset_left = 405.0
-offset_top = 339.0
+offset_top = 307.0
 offset_right = 796.0
-offset_bottom = 369.0
+offset_bottom = 337.0
 text = "Knight                          Huntress                        Wizard"
+
+[node name="Knight" parent="." instance=ExtResource("2_5thor")]
+position = Vector2(430, 388)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("3_yih4i")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("3_rhfay")]
+position = Vector2(602, 397)
+collision_layer = 0
+collision_mask = 0
+script = null
+
+[node name="CharacterBody2D2" parent="." instance=ExtResource("4_yih4i")]
+position = Vector2(774, 397)
+collision_layer = 0
+collision_mask = 0
+script = null

@@ -1,6 +1,7 @@
-[gd_scene load_steps=59 format=3 uid="uid://3b33pej2irhq"]
+[gd_scene load_steps=60 format=3 uid="uid://3b33pej2irhq"]
 
 [ext_resource type="Texture2D" uid="uid://b6w758ddb6lfj" path="res://art/NightBorne.png" id="1_ddsud"]
+[ext_resource type="Script" uid="uid://cdivluctcubqj" path="res://shadow_knight.gd" id="1_r5urs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r5urs"]
 atlas = ExtResource("1_ddsud")
@@ -409,26 +410,28 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ddsud"]
-size = Vector2(25, 32.5)
+size = Vector2(32.75, 34.25)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r5urs"]
-radius = 22.0
-height = 60.0
+radius = 27.0
+height = 64.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_r5urs")
 
 [node name="animation" type="AnimatedSprite2D" parent="."]
-position = Vector2(19, 10)
+position = Vector2(79, 50)
+scale = Vector2(1.3625, 1.1625)
 sprite_frames = SubResource("SpriteFrames_47vxu")
 animation = &"attack"
-frame_progress = 0.7720296
+frame_progress = 0.07642639
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(20, 17.25)
+position = Vector2(80.625, 61.125)
 shape = SubResource("RectangleShape2D_ddsud")
 
 [node name="attack_hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attack_hitbox"]
-position = Vector2(40, 8)
+position = Vector2(112, 51)
 shape = SubResource("CapsuleShape2D_r5urs")
