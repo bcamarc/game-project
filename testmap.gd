@@ -5,6 +5,7 @@ const ICE_BACKGROUND: Texture2D = preload("res://art/ice_background.jpg")
 const FIRE_BACKGROUND: Texture2D = preload("res://art/lava_background.jpg")
 
 var noise := FastNoiseLite.new()
+var zombieScene = preload("res://zombie.tscn")
 var slimeScene = preload("res://test_monster.tscn")
 var golemScene = preload("res://golem.tscn")
 var gateScene = preload("res://gate1.tscn")
@@ -34,7 +35,7 @@ func on_next_level():
 func _spawn_map():
 	clear()
 	_apply_level_theme()
-	var mob_count := 6
+	var mob_count := 12
 	var safe_radius := 4
 	var tile_x := _tile_column_for_level(world_level)
 	for x in range(map_width):
@@ -50,18 +51,7 @@ func _spawn_map():
 			set_cell(Vector2i(x, y), 0, Vector2i(tile_x, 1))
 		set_cell(Vector2i(x, height - 1), 0, Vector2i(tile_x, 0))
 		
-	var spawned_mobs := 0
-	while spawned_mobs < mob_count:
-		var x = randi_range(0, map_width - 1)
-		if absi(x - safe_x) < 15:
-			continue
-			
-		var y = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
-		var mob = slimeScene.instantiate() if randf() < 0.5 else golemScene.instantiate()
-		add_child(mob)
-		mob.top_level = true
-		mob.global_position = map_to_local(Vector2i(x, y - 3))
-		spawned_mobs += 1
+	_spawn_enemies(mob_count)
 
 	if world_level < MAX_GATE_LEVEL:
 		var gate_x := randi_range(50, map_width - 50)
@@ -83,6 +73,40 @@ func _tile_column_for_level(level: int) -> int:
 			return 4
 		_:
 			return 0
+
+func _enemy_scene_for_level(level: int) -> PackedScene:
+	match level:
+		1:
+			return zombieScene
+		2:
+			return slimeScene
+		3:
+			return golemScene
+		4:
+			return golemScene
+		_:
+			return zombieScene
+
+func _spawn_enemies(mob_count: int) -> void:
+	var enemy_scene: PackedScene = _enemy_scene_for_level(world_level)
+	var slot_width: float = float(map_width) / float(mob_count + 1)
+
+	for i in range(mob_count):
+		var x: int = int(round(float(i + 1) * slot_width))
+		if absi(x - safe_x) < 15:
+			if x < safe_x:
+				x = maxi(0, safe_x - 20)
+			else:
+				x = mini(map_width - 1, safe_x + 20)
+
+		var y: int = int(noise.get_noise_1d(x) * 10 + ground_height / 2)
+		var mob: Node2D = enemy_scene.instantiate() as Node2D
+		if mob == null:
+			continue
+
+		add_child(mob)
+		mob.top_level = true
+		mob.global_position = map_to_local(Vector2i(x, y - 3))
 
 func _background_for_level(level: int) -> Texture2D:
 	match level:

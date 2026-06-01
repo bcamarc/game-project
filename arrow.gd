@@ -63,7 +63,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 	if _is_enemy_target(body):
 		if body.has_method("take_damage"):
-			body.take_damage(damage)
+			body.take_damage(damage - 18)
 			dying = true
 			queue_free()
 			return

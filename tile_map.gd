@@ -1,8 +1,6 @@
 extends TileMapLayer
 
 var noise := FastNoiseLite.new()
-var slimeScene = preload("res://test_monster.tscn")
-var golemScene = preload("res://golem.tscn")
 var zombieScene = preload("res://zombie.tscn")
 var gateScene = preload("res://gate1.tscn")
 
@@ -21,7 +19,7 @@ func on_next_level():
 	queue_free()
 
 func _spawn_map():
-	var mob_count := 20
+	var mob_count := 12
 	gate_x = randi_range(50, map_width - 50)
 
 	for x in range(map_width):
@@ -36,21 +34,20 @@ func _spawn_map():
 	gate.top_level = true
 	gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 10))
 
+	var slot_width: float = float(map_width) / float(mob_count + 1)
 	for i in range(mob_count):
-		var x = randi_range(0, map_width - 1)
-		var y = floor(noise.get_noise_1d(x) * 10 + ground_height / 2)
-		var random = randf()
-		#var mob = slimeScene.instantiate() if random < 0.333 elif random <0.666 golemScene.instantiate() else zombieScene.instantiate()
-		var mob
-		if random < 0.333:
-			mob = slimeScene.instantiate()
-		elif random < 0.666: 
-			mob = golemScene.instantiate()
-		else:
-			mob = zombieScene.instantiate()
-			pass
-		
-		
+		var x: int = int(round(float(i + 1) * slot_width))
+		if absi(x - gate_x) < 20:
+			if x < gate_x:
+				x = maxi(0, gate_x - 25)
+			else:
+				x = mini(map_width - 1, gate_x + 25)
+
+		var y: int = floor(noise.get_noise_1d(x) * 10 + ground_height / 2)
+		var mob: Node2D = zombieScene.instantiate() as Node2D
+		if mob == null:
+			continue
+
 		add_child(mob)
 		mob.top_level = true
 		mob.global_position = map_to_local(Vector2i(x, y - 20))

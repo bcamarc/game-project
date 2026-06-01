@@ -1,10 +1,11 @@
-[gd_scene load_steps=50 format=3 uid="uid://wji0ohqugwxm"]
+[gd_scene load_steps=52 format=3 uid="uid://wji0ohqugwxm"]
 
 [ext_resource type="Script" uid="uid://chbegw6mdi5y3" path="res://alien_player.gd" id="1_nsuie"]
 [ext_resource type="Texture2D" uid="uid://2dblqohlcv01" path="res://KnightSprites/with_outline/IDLE.png" id="2_nsuie"]
 [ext_resource type="Texture2D" uid="uid://coux7a1vf5bjq" path="res://KnightSprites/with_outline/RUN.png" id="3_26ldq"]
 [ext_resource type="Texture2D" uid="uid://yqdnpo7f3aab" path="res://KnightSprites/with_outline/ATTACK 1.png" id="4_go3up"]
 [ext_resource type="Texture2D" uid="uid://d1ex6cjl11g8k" path="res://KnightSprites/with_outline/JUMP.png" id="4_np0bx"]
+[ext_resource type="Texture2D" uid="uid://b6w7he3thovxp" path="res://KnightSprites/without_outline/RUN.png" id="6_hnm0a"]
 [ext_resource type="Texture2D" uid="uid://d3466jh54y7y" path="res://Enemy_Galore_I/Smear VFX 01/Smear VFX 01/Smear 01 Horizontal 1.png" id="6_o118k"]
 [ext_resource type="Texture2D" uid="uid://yttukg88irhh" path="res://Enemy_Galore_I/Smear VFX 01/Smear VFX 01/Smear 01 Vertical 01.png" id="7_hnm0a"]
 
@@ -119,6 +120,10 @@ region = Rect2(0, 0, 96, 84)
 atlas = ExtResource("4_np0bx")
 region = Rect2(96, 0, 96, 84)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvm6a"]
+atlas = ExtResource("6_hnm0a")
+region = Rect2(0, 0, 96, 84)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_1o34j"]
 animations = [{
 "frames": [{
@@ -231,6 +236,14 @@ animations = [{
 "loop": false,
 "name": &"jump_start",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gvm6a")
+}],
+"loop": true,
+"name": &"menu",
+"speed": 5.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6c7gf"]
@@ -342,7 +355,7 @@ shape = SubResource("RectangleShape2D_np0bx")
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0.3999877, -2.400006)
 sprite_frames = SubResource("SpriteFrames_1o34j")
-animation = &"Run"
+animation = &"menu"
 autoplay = "Idle"
 
 [node name="slash" type="AnimatedSprite2D" parent="."]
