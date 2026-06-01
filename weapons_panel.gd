@@ -3,9 +3,9 @@ extends Panel
 @onready var grid = $GridContainer
 
 var items = [
-	{"name": "Sword", "icon": preload("res://RPG Icons/Icon6.png"), "type": "weapon"},
-	{"name": "Shield", "icon": preload("res://RPG Icons/Icon184.png"), "type": "chestplate"},
-	{"name": "Potion", "icon": preload("res://RPG Icons/Icon163.png"), "type": "helmet"}
+	{"name": "Sword", "icon": preload("res://RPG Icons/Icon6.png"), "type": "weapon", "damage": 8},
+	{"name": "Shield", "icon": preload("res://RPG Icons/Icon184.png"), "type": "chestplate", "defense": 6},
+	{"name": "Potion", "icon": preload("res://RPG Icons/Icon163.png"), "type": "helmet", "magic": 10}
 ]
 var slot_count := 20
 

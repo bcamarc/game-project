@@ -20,6 +20,32 @@ func set_item(new_item):
 		icon.texture = item["icon"]
 	else:
 		icon.texture = null
+	_update_equipped_item()
+
+func _update_equipped_item() -> void:
+	var stats = _resolve_stats()
+	if stats == null:
+		return
+
+	if not stats.get("equipment") is Dictionary:
+		return
+
+	stats.equipment[slot_type] = item
+	if stats.has_method("update_stats"):
+		stats.update_stats()
+
+func _resolve_stats() -> Node:
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			return scene_stats
+
+	var stats_node := get_tree().get_first_node_in_group("stats")
+	if stats_node != null:
+		return stats_node
+
+	return get_node_or_null("/root/Stats")
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

@@ -31,7 +31,7 @@ var health_regen_per_second := 0.4
 #var wizard_mana_regen_per_second := 0.15*max_magic
 var wizard_mana_regen_per_second := 7.5
 var testMapScene = preload("res://testmap.tscn")
-var equipment = {"weapon": null, "helmet": null, "chest": null, "boots": null}
+var equipment = {"weapon": null, "helmet": null, "chestplate": null, "boots": null}
 signal player_changed(player_name: String)
 
 var current_player: String = "knight"
@@ -119,10 +119,10 @@ func update_stats():
 	var bonus_magic := 0
 	for item in equipment.values():
 		if item != null:
-			if "damage" in item: total_damage += item.damage
-			if "defense" in item: total_defense += item.defense
-			if "speed" in item: total_speed += item.speed
-			if "magic" in item: bonus_magic += item.magic
+			if item.has("damage"): total_damage += int(item["damage"])
+			if item.has("defense"): total_defense += int(item["defense"])
+			if item.has("speed"): total_speed += int(item["speed"])
+			if item.has("magic"): bonus_magic += int(item["magic"])
 	max_magic += bonus_magic
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)

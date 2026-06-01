@@ -71,7 +71,7 @@ func _spawn_map():
 		var gate = gateScene.instantiate()
 		add_child(gate)
 		gate.top_level = true
-		gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 2))
+		gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 10))
 
 func _tile_column_for_level(level: int) -> int:
 	match level:

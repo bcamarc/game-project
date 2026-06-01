@@ -34,7 +34,7 @@ func _spawn_map():
 	var gate_y = floor(noise.get_noise_1d(gate_x) * 10 + ground_height / 2)
 	add_child(gate)
 	gate.top_level = true
-	gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 2))
+	gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 10))
 
 	for i in range(mob_count):
 		var x = randi_range(0, map_width - 1)

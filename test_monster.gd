@@ -5,8 +5,8 @@ var target_player: Node2D = null
 @export var dropped_item_scene: PackedScene 
 
 var possible_drops = [
-	{"name": "Sword", "icon": preload("res://RPG Icons/Icon6.png"), "type": "weapon"},
-	{"name": "Shield", "icon": preload("res://RPG Icons/Icon184.png"), "type": "chestplate"}
+	{"name": "Sword", "icon": preload("res://RPG Icons/Icon6.png"), "type": "weapon", "damage": 8},
+	{"name": "Shield", "icon": preload("res://RPG Icons/Icon184.png"), "type": "chestplate", "defense": 6}
 ]
 var speed := 75.0
 var direction := Vector2.ZERO
