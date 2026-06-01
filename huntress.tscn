@@ -349,7 +349,8 @@ script = ExtResource("1_cr00k")
 position = Vector2(-1.0000057, 0.9999962)
 scale = Vector2(1.94, 1.94)
 sprite_frames = SubResource("SpriteFrames_ripeq")
-animation = &"death"
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3

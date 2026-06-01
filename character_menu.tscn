@@ -1,6 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcnjqc2au4ndd"]
+[gd_scene load_steps=12 format=3 uid="uid://bcnjqc2au4ndd"]
 
 [ext_resource type="Script" uid="uid://ne7sbe7sj7dy" path="res://character_menu.gd" id="1_5thor"]
+[ext_resource type="Texture2D" uid="uid://dij8qnhfq60ph" path="res://MediavelUI/MediavelUI/Mediavel.png" id="2_pi0qd"]
+[ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="3_5thor"]
+[ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="4_5thor"]
+[ext_resource type="PackedScene" uid="uid://tgy2wqtn8p0" path="res://wizard.tscn" id="5_rhfay"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tlbt"]
 content_margin_left = 4.0
@@ -92,9 +96,9 @@ layout_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 0
-offset_left = 16.0
+offset_left = -175.0
 offset_top = 115.0
-offset_right = 50.0
+offset_right = -141.0
 offset_bottom = 149.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_6tlbt")
 theme_override_styles/hover = SubResource("StyleBoxFlat_8miaq")
@@ -103,10 +107,10 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_8miaq")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 0
-offset_left = 182.0
+offset_left = 151.0
 offset_top = 117.0
-offset_right = 215.0
-offset_bottom = 145.0
+offset_right = 184.0
+offset_bottom = 147.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_pi0qd")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5thor")
 
@@ -119,16 +123,59 @@ anchor_left = 3.2670002
 anchor_top = 1.802
 anchor_right = 3.2670002
 anchor_bottom = 1.802
-offset_left = 360.0
-offset_top = 118.0
-offset_right = 390.0
-offset_bottom = 148.0
+offset_left = 486.0
+offset_top = 115.0
+offset_right = 516.0
+offset_bottom = 145.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_rhfay")
 theme_override_styles/hover = SubResource("StyleBoxFlat_yih4i")
 
-[node name="TextEdit" type="TextEdit" parent="."]
-offset_left = 405.0
-offset_top = 339.0
-offset_right = 796.0
-offset_bottom = 369.0
-text = "Knight                          Huntress                        Wizard"
+[node name="Mediavel2" type="Sprite2D" parent="Control/Panel"]
+show_behind_parent = true
+position = Vector2(209.75, 23.50004)
+scale = Vector2(16.881248, 12.140624)
+texture = ExtResource("2_pi0qd")
+region_enabled = true
+region_rect = Rect2(528, 208, 80, 64)
+
+[node name="Mediavel" type="Sprite2D" parent="."]
+position = Vector2(242, 278.5)
+scale = Vector2(5, 6.3906245)
+texture = ExtResource("2_pi0qd")
+region_enabled = true
+region_rect = Rect2(816, 384, 32, 64)
+
+[node name="Mediavel2" type="Sprite2D" parent="."]
+position = Vector2(569, 270)
+scale = Vector2(5, 6.3906245)
+texture = ExtResource("2_pi0qd")
+region_enabled = true
+region_rect = Rect2(816, 384, 32, 64)
+
+[node name="Mediavel3" type="Sprite2D" parent="."]
+position = Vector2(903, 273)
+scale = Vector2(5, 6.3906245)
+texture = ExtResource("2_pi0qd")
+region_enabled = true
+region_rect = Rect2(816, 384, 32, 64)
+
+[node name="Knight" parent="." instance=ExtResource("3_5thor")]
+position = Vector2(240.00012, 265)
+scale = Vector2(4.5, 4.5)
+collision_layer = 0
+collision_mask = 0
+script = null
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("4_5thor")]
+position = Vector2(567, 255)
+scale = Vector2(2, 2)
+collision_layer = 0
+collision_mask = 0
+script = null
+
+[node name="CharacterBody2D2" parent="." instance=ExtResource("5_rhfay")]
+position = Vector2(891, 277)
+scale = Vector2(2, 2)
+collision_layer = 0
+collision_mask = 0
+script = null
