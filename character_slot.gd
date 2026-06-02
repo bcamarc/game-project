@@ -27,10 +27,11 @@ func _update_equipped_item() -> void:
 	if stats == null:
 		return
 
-	if not stats.get("equipment") is Dictionary:
+	var equipment = stats.get("equipment")
+	if not (equipment is Dictionary):
 		return
 
-	stats.equipment[slot_type] = item
+	equipment[slot_type] = item
 	if stats.has_method("update_stats"):
 		stats.update_stats()
 

@@ -1,7 +1,14 @@
 extends Label
 
+var stats = null
+
+func _ready() -> void:
+	stats = _stats()
+
 func _process(_delta: float) -> void:
-	text = str(_stats().get_coins())
+	if stats == null or not is_instance_valid(stats):
+		stats = _stats()
+	text = str(stats.get_coins())
 
 func _stats():
 	var scene := get_tree().current_scene

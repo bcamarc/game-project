@@ -57,11 +57,9 @@ func on_next_level(tile_x, tile_y):
 		new_map.set_gate_data(tile_x, tile_y, world_level)
 
 func _process(_delta):
-	check_exp()
 	if Input.is_action_just_released("stats"):
 		visible = !visible
 	_apply_passive_regen(_delta)
-	update_stats()
 
 func add_coin(a):
 	coins += a
@@ -78,6 +76,7 @@ func check_exp():
 
 func add_exp(a):
 	exp += a
+	check_exp()
 
 func add_hp(a):
 	total_health = clamp(total_health + a, 0, max_health)
@@ -92,24 +91,27 @@ func _on_button_pressed():
 	if skillPoints > 0:
 		strength += 1
 		skillPoints -= 1
+		update_stats()
 
 func _on_vit_button_pressed():
 	if skillPoints > 0:
 		vitality += 1
 		skillPoints -= 1
+		update_stats()
 
 func _on_int_button_pressed():
 	if skillPoints > 0:
 		intellegience += 1
 		skillPoints -= 1
+		update_stats()
 
 func _on_int_button_2_pressed():
 	if skillPoints > 0:
 		dexterity += 1
 		skillPoints -= 1
+		update_stats()
 
 func update_stats():
-	wizard_mana_regen_per_second = 0.15*(max_magic)
 	max_health = base_health + vitality * 10
 	total_damage = base_damage + strength * 2
 	total_defense = base_defense + vitality * 1
@@ -119,11 +121,16 @@ func update_stats():
 	var bonus_magic := 0
 	for item in equipment.values():
 		if item != null:
-			if item.has("damage"): total_damage += int(item["damage"])
-			if item.has("defense"): total_defense += int(item["defense"])
-			if item.has("speed"): total_speed += int(item["speed"])
-			if item.has("magic"): bonus_magic += int(item["magic"])
+			if item.has("damage"):
+				total_damage += int(item["damage"])
+			if item.has("defense"):
+				total_defense += int(item["defense"])
+			if item.has("speed"):
+				total_speed += int(item["speed"])
+			if item.has("magic"):
+				bonus_magic += int(item["magic"])
 	max_magic += bonus_magic
+	wizard_mana_regen_per_second = 0.15*(max_magic)
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)
 

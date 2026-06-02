@@ -1,17 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://bcnjqc2au4ndd"]
 
 [ext_resource type="Script" uid="uid://ne7sbe7sj7dy" path="res://character_menu.gd" id="1_5thor"]
-<<<<<<< HEAD
 [ext_resource type="Texture2D" uid="uid://dij8qnhfq60ph" path="res://MediavelUI/MediavelUI/Mediavel.png" id="2_pi0qd"]
 [ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="3_5thor"]
 [ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="4_5thor"]
 [ext_resource type="PackedScene" uid="uid://tgy2wqtn8p0" path="res://wizard.tscn" id="5_rhfay"]
-=======
-[ext_resource type="PackedScene" uid="uid://wji0ohqugwxm" path="res://knight.tscn" id="2_5thor"]
-[ext_resource type="PackedScene" uid="uid://bpjo6b5j4404n" path="res://huntress.tscn" id="3_rhfay"]
-[ext_resource type="Script" uid="uid://btp55rll0pkxh" path="res://knight.gd" id="3_yih4i"]
-[ext_resource type="PackedScene" uid="uid://tgy2wqtn8p0" path="res://wizard.tscn" id="4_yih4i"]
->>>>>>> 8de9e4ee9f63dfc81f1a4044170a07597d8fdec6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tlbt"]
 content_margin_left = 4.0
@@ -137,7 +130,6 @@ offset_bottom = 145.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_rhfay")
 theme_override_styles/hover = SubResource("StyleBoxFlat_yih4i")
 
-<<<<<<< HEAD
 [node name="Mediavel2" type="Sprite2D" parent="Control/Panel"]
 show_behind_parent = true
 position = Vector2(209.75, 23.50004)
@@ -170,28 +162,10 @@ region_rect = Rect2(816, 384, 32, 64)
 [node name="Knight" parent="." instance=ExtResource("3_5thor")]
 position = Vector2(240.00012, 265)
 scale = Vector2(4.5, 4.5)
-=======
-[node name="TextEdit" type="TextEdit" parent="."]
-offset_left = 405.0
-offset_top = 307.0
-offset_right = 796.0
-offset_bottom = 337.0
-text = "Knight                          Huntress                        Wizard"
-
-[node name="Knight" parent="." instance=ExtResource("2_5thor")]
-position = Vector2(430, 388)
-collision_layer = 0
-collision_mask = 0
-script = ExtResource("3_yih4i")
-
-[node name="CharacterBody2D" parent="." instance=ExtResource("3_rhfay")]
-position = Vector2(602, 397)
->>>>>>> 8de9e4ee9f63dfc81f1a4044170a07597d8fdec6
 collision_layer = 0
 collision_mask = 0
 script = null
 
-<<<<<<< HEAD
 [node name="CharacterBody2D" parent="." instance=ExtResource("4_5thor")]
 position = Vector2(567, 255)
 scale = Vector2(2, 2)
@@ -202,10 +176,6 @@ script = null
 [node name="CharacterBody2D2" parent="." instance=ExtResource("5_rhfay")]
 position = Vector2(891, 277)
 scale = Vector2(2, 2)
-=======
-[node name="CharacterBody2D2" parent="." instance=ExtResource("4_yih4i")]
-position = Vector2(774, 397)
->>>>>>> 8de9e4ee9f63dfc81f1a4044170a07597d8fdec6
 collision_layer = 0
 collision_mask = 0
 script = null

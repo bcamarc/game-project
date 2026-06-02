@@ -3,10 +3,13 @@ extends AnimatedSprite2D
 signal gate_entered(tile_x, tile_y)
 @export var fall_speed := 220.0
 var falling := true
+var current_map = null
+@onready var collision_shape = $Area2D/CollisionShape2D
 
 func _ready() -> void:
 	$confirmation/Sprite2D.frame = 0
 	$confirmation.hide()
+	current_map = _current_map()
 	var stats = get_node_or_null("../../Stats")
 	if stats:
 		gate_entered.connect(stats.on_next_level)
@@ -44,17 +47,20 @@ func _is_touching_ground() -> bool:
 	return map.get_cell_source_id(tile_pos) != -1
 
 func _ground_probe_position() -> Vector2:
-	var collision := get_node_or_null("Area2D/CollisionShape2D") as CollisionShape2D
-	if collision != null and collision.shape is CapsuleShape2D:
-		var capsule := collision.shape as CapsuleShape2D
-		return collision.global_position + Vector2(0, capsule.height * absf(global_scale.y) * 0.5 + 4.0)
+	if collision_shape != null and collision_shape.shape is CapsuleShape2D:
+		var capsule := collision_shape.shape as CapsuleShape2D
+		return collision_shape.global_position + Vector2(0, capsule.height * absf(global_scale.y) * 0.5 + 4.0)
 
 	return global_position + Vector2(0, 88.0)
 
 func _current_map():
+	if current_map != null and is_instance_valid(current_map):
+		return current_map
+
 	var maps = get_tree().get_nodes_in_group("current_map")
 	if maps.size() > 0:
-		return maps[0]
+		current_map = maps[0]
+		return current_map
 	return null
 
 func _on_yes_button_pressed() -> void:
