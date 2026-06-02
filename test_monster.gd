@@ -4,10 +4,7 @@ extends CharacterBody2D
 var target_player: Node2D = null
 @export var dropped_item_scene: PackedScene 
 
-var possible_drops = [
-	{"name": "Sword", "icon": preload("res://RPG Icons/Icon6.png"), "type": "weapon", "damage": 8},
-	{"name": "Shield", "icon": preload("res://RPG Icons/Icon184.png"), "type": "chestplate", "defense": 6}
-]
+var possible_drops = ItemDropPool.monster_items()
 var speed := 75.0
 var direction := Vector2.ZERO
 var attacking := false
@@ -259,8 +256,14 @@ func take_damage(a) -> void:
 	health -= a
 
 func spawn_loot() -> void:
+	if dropped_item_scene == null or possible_drops.is_empty():
+		return
+
+	var dropped_item := ItemDropPool.roll_monster_item()
+	if dropped_item.is_empty():
+		return
+
 	var item_instance = dropped_item_scene.instantiate()
-	var random_item = possible_drops.pick_random()
-	item_instance.item_data = random_item
+	item_instance.item_data = dropped_item
 	get_parent().add_child(item_instance)
 	item_instance.global_position = global_position
