@@ -100,7 +100,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		play("Hit")
 		body.take_damage(damage)
 		dying = true
-		
+	
+	if body.is_in_group("enemy"):
+		play("destroyed")
+		body.take_damage(damage)
+		dying = true
 	
 	if "TileMapLayer" == body.name:
 		play("Hit")

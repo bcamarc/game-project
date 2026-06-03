@@ -35,6 +35,7 @@ extends CanvasLayer
 
 func _ready() -> void:
 	hide()
+	toggle_menu()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	knight_btn.pressed.connect(func(): select_player("knight"))
