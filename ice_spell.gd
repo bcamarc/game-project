@@ -38,6 +38,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		dying = true
 		body.speed -=3
 		
+	if body.is_in_group("shadow_knight"):
+		play("destroyed")
+		body.take_damage(damage)
+		dying = true
+		body.charge_speed *= 0.666
+		body.retreat_speed *= 0.666
 	if "TileMapLayer" == body.name:
 		dying = true
 		play("hit")

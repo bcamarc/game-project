@@ -32,6 +32,7 @@ signal death(x, y)
 func _ready() -> void:
 	add_to_group("alien")
 	add_to_group("enemy")
+	add_to_group("test")
 	stats = _resolve_stats()
 
 	if not is_on_floor():

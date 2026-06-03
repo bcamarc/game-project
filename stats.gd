@@ -115,7 +115,7 @@ func update_stats():
 	max_health = base_health + vitality * 10
 	total_damage = base_damage + strength * 2
 	total_defense = base_defense + vitality * 1
-	total_speed = base_speed + dexterity * 2
+	total_speed = base_speed + dexterity * 5
 	max_magic = base_magic + intellegience * 2
 	attack_speed = (dexterity / 100.0) + 1.0
 	var bonus_magic := 0
