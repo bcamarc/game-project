@@ -12,6 +12,7 @@
 [node name="Inventory" type="CanvasLayer"]
 process_mode = 2
 script = ExtResource("1_psafj")
+metadata/_edit_vertical_guides_ = [-746.0]
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

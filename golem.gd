@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 @onready var stats: Node = null
 var target_player: Node2D = null
+var dropped_item_scene: PackedScene = preload("res://dropped_item.tscn")
+var possible_drops = ItemDropPool.monster_items()
 
 var speed := 50.0
 var monsterPos := global_position.x
@@ -201,6 +203,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			print("Stats not found: cannot add exp")
 
+		spawn_loot()
 		queue_free()
 		return
 
@@ -274,3 +277,16 @@ func _on_ability_area_body_entered(body: Node2D) -> void:
 func _on_ability_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("alien_player"):
 		abilityRadius = false
+
+func spawn_loot() -> void:
+	if dropped_item_scene == null or possible_drops.is_empty():
+		return
+
+	var dropped_item := ItemDropPool.roll_monster_item()
+	if dropped_item.is_empty():
+		return
+
+	var item_instance = dropped_item_scene.instantiate()
+	item_instance.item_data = dropped_item
+	get_parent().add_child(item_instance)
+	item_instance.global_position = global_position
