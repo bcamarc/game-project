@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://wji0ohqugwxm"]
+[gd_scene load_steps=53 format=3 uid="uid://wji0ohqugwxm"]
 
 [ext_resource type="Script" uid="uid://chbegw6mdi5y3" path="res://alien_player.gd" id="1_nsuie"]
 [ext_resource type="Texture2D" uid="uid://2dblqohlcv01" path="res://KnightSprites/with_outline/IDLE.png" id="2_nsuie"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b6w7he3thovxp" path="res://KnightSprites/without_outline/RUN.png" id="6_hnm0a"]
 [ext_resource type="Texture2D" uid="uid://d3466jh54y7y" path="res://Enemy_Galore_I/Smear VFX 01/Smear VFX 01/Smear 01 Horizontal 1.png" id="6_o118k"]
 [ext_resource type="Texture2D" uid="uid://yttukg88irhh" path="res://Enemy_Galore_I/Smear VFX 01/Smear VFX 01/Smear 01 Vertical 01.png" id="7_hnm0a"]
+[ext_resource type="AudioStream" uid="uid://bajfx54yjhuc" path="res://GodotSound/dragon-studio-sword-slice-393847.mp3" id="9_k3kcr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_np0bx"]
 size = Vector2(12.272931, 24.084452)
@@ -375,6 +376,9 @@ collision_mask = 15
 position = Vector2(6.1392784e-06, -1.7881393e-06)
 rotation = 1.5663137
 shape = SubResource("CapsuleShape2D_o118k")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_k3kcr")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

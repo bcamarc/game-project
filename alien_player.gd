@@ -102,6 +102,7 @@ func _physics_process(delta):
 
 	if Input.is_action_just_pressed("attack") and not is_attacking and attack_timer <= 0:
 		is_attacking = true
+		$AudioStreamPlayer2D.play()
 		has_hit = false
 		sprite.play("attack1")
 		attack_timer = attack_cooldown

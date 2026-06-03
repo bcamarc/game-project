@@ -20,6 +20,7 @@ func set_item(new_item):
 		icon.texture = item["icon"]
 	else:
 		icon.texture = null
+
 	_update_equipped_item()
 
 func _update_equipped_item() -> void:
