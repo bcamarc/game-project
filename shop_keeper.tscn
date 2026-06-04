@@ -1,0 +1,98 @@
+[gd_scene load_steps=18 format=3 uid="uid://24as13qm823c"]
+
+[ext_resource type="Texture2D" uid="uid://bl80qcffv1qc5" path="res://NPCs/Idle1/1.png" id="1_c7upk"]
+[ext_resource type="Texture2D" uid="uid://bn02ab257vrlr" path="res://NPCs/Idle1/2.png" id="2_aoa24"]
+[ext_resource type="Texture2D" uid="uid://pdxi8cgm5j6r" path="res://NPCs/Idle1/3.png" id="3_r4e3j"]
+[ext_resource type="Texture2D" uid="uid://c3ul3v8xenosq" path="res://NPCs/Idle1/4.png" id="4_a1h5h"]
+[ext_resource type="Texture2D" uid="uid://dij8qnhfq60ph" path="res://MediavelUI/MediavelUI/Mediavel.png" id="5_aoa24"]
+[ext_resource type="Texture2D" uid="uid://cqkq0qowo6xcb" path="res://RPG Icons/Icon301.png" id="6_asdat"]
+[ext_resource type="Texture2D" uid="uid://cj2dhwj22qry6" path="res://RPG Icons/Icon306.png" id="7_jxt6a"]
+[ext_resource type="Texture2D" uid="uid://ckhbfdyxony6e" path="res://RPG Icons/Icon307.png" id="8_3yl0s"]
+[ext_resource type="Texture2D" uid="uid://bl0tnka06jyaj" path="res://RPG Icons/Icon302.png" id="9_ifa1p"]
+[ext_resource type="Texture2D" uid="uid://btglwis01lt7i" path="res://RPG Icons/Icon305.png" id="10_1r1g0"]
+[ext_resource type="Texture2D" uid="uid://5nit4hmrxgpw" path="res://RPG Icons/Icon310.png" id="11_53mj6"]
+[ext_resource type="Texture2D" uid="uid://ruvaxatxf8p1" path="res://No Overlap/1px.png" id="12_suexs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ta1f6"]
+atlas = ExtResource("1_c7upk")
+region = Rect2(0, 0, 94, 91)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwr3q"]
+atlas = ExtResource("2_aoa24")
+region = Rect2(0, 0, 94, 91)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kgvxe"]
+atlas = ExtResource("3_r4e3j")
+region = Rect2(0, 0, 94, 91)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fce43"]
+atlas = ExtResource("4_a1h5h")
+region = Rect2(0, 0, 94, 91)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_asdat"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ta1f6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwr3q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kgvxe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fce43")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="shopKeeper" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_asdat")
+frame_progress = 0.57881504
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Mediavel" type="Sprite2D" parent="."]
+position = Vector2(264, 237)
+scale = Vector2(2, 2)
+texture = ExtResource("5_aoa24")
+region_enabled = true
+region_rect = Rect2(416, 352, 96, 80)
+
+[node name="Icon301" type="Sprite2D" parent="."]
+position = Vector2(207, 205)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("6_asdat")
+
+[node name="Icon306" type="Sprite2D" parent="."]
+position = Vector2(246, 205)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("7_jxt6a")
+
+[node name="Icon307" type="Sprite2D" parent="."]
+position = Vector2(246.00002, 241)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("8_3yl0s")
+
+[node name="Icon302" type="Sprite2D" parent="."]
+position = Vector2(207, 241)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("9_ifa1p")
+
+[node name="Icon305" type="Sprite2D" parent="."]
+position = Vector2(208.00002, 277.00003)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("10_1r1g0")
+
+[node name="Icon310" type="Sprite2D" parent="."]
+position = Vector2(246, 277)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("11_53mj6")
+
+[node name="1Px" type="Sprite2D" parent="."]
+position = Vector2(524, 76)
+texture = ExtResource("12_suexs")
+region_enabled = true

@@ -2,9 +2,14 @@ extends RefCounted
 class_name ItemDropPool
 
 const MONSTER_DROP_CHANCE := 0.1
+const RARITY_COMMON := "Common"
+const RARITY_UNCOMMON := "Uncommon"
+const RARITY_RARE := "Rare"
+const RARITY_EPIC := "Epic"
+const RARITY_LEGENDARY := "Legendary"
 
 static func monster_items() -> Array:
-	return [
+	return _apply_rarity_to_items([
 		{"name": "Rusty Dagger", "icon": preload("res://RPG Icons/Icon1.png"), "type": "weapon", "damage": 4},
 		{"name": "Iron Sabre", "icon": preload("res://RPG Icons/Icon2.png"), "type": "weapon", "damage": 6},
 		{"name": "Blue Steel Blade", "icon": preload("res://RPG Icons/Icon3.png"), "type": "weapon", "damage": 8},
@@ -95,7 +100,7 @@ static func monster_items() -> Array:
 		{"name": "Laced Boots", "icon": preload("res://RPG Icons/Icon228.png"), "type": "boots", "speed": 10},
 		{"name": "Gold Boots", "icon": preload("res://RPG Icons/Icon229.png"), "type": "boots", "speed": 12},
 		{"name": "Iron Boots", "icon": preload("res://RPG Icons/Icon230.png"), "type": "boots", "speed": 6, "defense": 4}
-	]
+	])
 
 static func roll_monster_item(drop_chance := MONSTER_DROP_CHANCE) -> Dictionary:
 	if randf() > drop_chance:
@@ -120,15 +125,92 @@ static func weighted_random_item(items: Array) -> Dictionary:
 	return items.back()
 
 static func _drop_weight(item: Dictionary) -> float:
+	match str(item.get("rarity", RARITY_COMMON)):
+		RARITY_COMMON:
+			return 70.0
+		RARITY_UNCOMMON:
+			return 24.0
+		RARITY_RARE:
+			return 5.0
+		RARITY_EPIC:
+			return 0.8
+		RARITY_LEGENDARY:
+			return 0.12
+		_:
+			return 1.0
+
+static func _apply_rarity_to_items(items: Array) -> Array:
+	var rarity_items: Array = []
+	for item in items:
+		var rarity_item: Dictionary = item.duplicate()
+		var rarity := _rarity_for_item(rarity_item)
+		rarity_item["rarity"] = rarity
+		_boost_item_stats(rarity_item, rarity)
+		rarity_items.append(rarity_item)
+
+	return rarity_items
+
+static func _rarity_for_item(item: Dictionary) -> String:
+	var item_name := str(item.get("name", "")).to_lower()
+	var power := _base_item_power(item)
+
+	if item_name.contains("dragon") or item_name == "golden axe" or item_name == "golden lance" or item_name == "gold boots" or item_name == "crystal hammer" or item_name == "dark trident" or item_name == "gem axe" or item_name == "golden scepter":
+		return RARITY_LEGENDARY
+
+	if item_name.contains("gold") or item_name.contains("golden") or item_name.contains("crystal") or item_name.contains("dark") or item_name.contains("moon") or item_name.contains("skull") or power >= 16:
+		return RARITY_EPIC
+
+	if power >= 13:
+		return RARITY_RARE
+
+	if power >= 9:
+		return RARITY_UNCOMMON
+
+	return RARITY_COMMON
+
+static func _base_item_power(item: Dictionary) -> int:
 	var power := 0
 	power += int(item.get("damage", 0))
 	power += int(item.get("defense", 0))
 	power += int(item.get("speed", 0))
 	power += int(item.get("magic", 0)) * 2
+	return power
 
-	var weight = maxf(1.0, 30.0 - float(power))
-	var item_name := str(item.get("name", "")).to_lower()
-	if item_name.contains("gold") or item_name.contains("crystal") or item_name.contains("dragon") or item_name.contains("dark"):
-		weight *= 0.35
+static func _boost_item_stats(item: Dictionary, rarity: String) -> void:
+	var multiplier := _rarity_stat_multiplier(rarity)
+	for stat_name in ["damage", "defense", "speed", "magic"]:
+		if item.has(stat_name):
+			item[stat_name] = maxi(1, int(round(float(item[stat_name]) * multiplier)))
 
-	return weight
+	if rarity == RARITY_EPIC:
+		_add_extra_bonus(item, 3)
+	elif rarity == RARITY_LEGENDARY:
+		_add_extra_bonus(item, 8)
+
+static func _rarity_stat_multiplier(rarity: String) -> float:
+	match rarity:
+		RARITY_COMMON:
+			return 1.0
+		RARITY_UNCOMMON:
+			return 1.25
+		RARITY_RARE:
+			return 1.65
+		RARITY_EPIC:
+			return 2.2
+		RARITY_LEGENDARY:
+			return 3.75
+		_:
+			return 1.0
+
+static func _add_extra_bonus(item: Dictionary, bonus: int) -> void:
+	match str(item.get("type", "")):
+		"weapon":
+			item["magic"] = int(item.get("magic", 0)) + bonus
+			item["speed"] = int(item.get("speed", 0)) + int(ceil(float(bonus) * 0.5))
+		"helmet":
+			item["magic"] = int(item.get("magic", 0)) + bonus
+		"chestplate":
+			item["defense"] = int(item.get("defense", 0)) + bonus
+		"boots":
+			item["speed"] = int(item.get("speed", 0)) + bonus
+			item["defense"] = int(item.get("defense", 0)) + int(ceil(float(bonus) * 0.5))

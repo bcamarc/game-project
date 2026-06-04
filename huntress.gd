@@ -138,6 +138,7 @@ func _on_animation_finished() -> void:
 	if sprite.animation == ANIM_ATTACK_PRIMARY or sprite.animation == ANIM_ATTACK_FALLBACK:
 		if pending_shot:
 			_spawn_arrow()
+			$AudioStreamPlayer2D.play()
 			pending_shot = false
 
 		is_attacking = false

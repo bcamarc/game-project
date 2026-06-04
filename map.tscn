@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bmy2gw6fqet3i"]
+[gd_scene load_steps=45 format=3 uid="uid://bmy2gw6fqet3i"]
 
 [ext_resource type="Script" uid="uid://dd2rv1cdkrs43" path="res://map.gd" id="1_6qsgm"]
 [ext_resource type="Texture2D" uid="uid://dw64e6ljacdno" path="res://brackeys_platformer_assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_c7s6e"]
@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://b3swrpf7cs1ve" path="res://inventory.tscn" id="18_4on3e"]
 [ext_resource type="PackedScene" uid="uid://bcnjqc2au4ndd" path="res://character_menu.tscn" id="19_bssq0"]
 [ext_resource type="PackedScene" uid="uid://c5kd0ru5w1bu6" path="res://pause_menu.tscn" id="20_jk4ss"]
+[ext_resource type="PackedScene" uid="uid://24as13qm823c" path="res://shop_keeper.tscn" id="22_jky6x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wbpbn"]
 resource_name = "ground_tile"
@@ -486,3 +487,6 @@ z_index = -9
 repeat_size = Vector2(12049, 0)
 autoscroll = Vector2(-25, 0)
 repeat_times = 234879
+
+[node name="shopKeeper" parent="." instance=ExtResource("22_jky6x")]
+position = Vector2(4, 6)
