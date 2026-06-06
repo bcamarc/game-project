@@ -186,7 +186,7 @@ func handle_death() -> void:
 	if died and $AnimatedSprite2D.animation == "death" and not $AnimatedSprite2D.is_playing():
 		var s = get_stats(target_player)
 		if s:
-			s.add_exp(7)
+			s.add_exp(14)
 		else:
 			print("stats is broken")
 		death.emit(position.x, position.y)

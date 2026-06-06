@@ -199,7 +199,7 @@ func _physics_process(delta: float) -> void:
 
 		var s = resolve_stats(target_player)
 		if s:
-			s.add_exp(7)
+			s.add_exp(32)
 		else:
 			print("Stats not found: cannot add exp")
 
