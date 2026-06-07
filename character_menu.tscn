@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bcnjqc2au4ndd"]
+[gd_scene load_steps=12 format=3 uid="uid://bcnjqc2au4ndd"]
 
 [ext_resource type="Script" uid="uid://ne7sbe7sj7dy" path="res://character_menu.gd" id="1_5thor"]
 [ext_resource type="Texture2D" uid="uid://dij8qnhfq60ph" path="res://MediavelUI/MediavelUI/Mediavel.png" id="2_pi0qd"]
@@ -105,9 +105,9 @@ region_rect = Rect2(816, 384, 32, 64)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 0
-offset_left = 10.0
+offset_left = -178.0
 offset_top = 115.0
-offset_right = 44.0
+offset_right = -144.0
 offset_bottom = 149.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_6tlbt")
 theme_override_styles/hover = SubResource("StyleBoxFlat_8miaq")
@@ -116,9 +116,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_8miaq")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 0
-offset_left = 187.0
+offset_left = 151.0
 offset_top = 117.0
-offset_right = 220.0
+offset_right = 184.0
 offset_bottom = 147.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_pi0qd")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5thor")
@@ -132,9 +132,9 @@ anchor_left = 3.2670002
 anchor_top = 1.802
 anchor_right = 3.2670002
 anchor_bottom = 1.802
-offset_left = 358.0
+offset_left = 487.0
 offset_top = 115.0
-offset_right = 388.0
+offset_right = 517.0
 offset_bottom = 145.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_rhfay")
 theme_override_styles/hover = SubResource("StyleBoxFlat_yih4i")
