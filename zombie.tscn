@@ -155,7 +155,6 @@ _data = {
 
 [node name="TestMonster" type="CharacterBody2D" groups=["slime"]]
 position = Vector2(383, 253)
-collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_jmu02")
 
