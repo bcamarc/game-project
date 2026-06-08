@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 	if player == null:
 		player = get_tree().get_first_node_in_group("player")
 	
-	# Toggle shop with C key if in range
+	# Toggle shop with G key if in range
 	if player != null and Input.is_action_just_pressed("shop"):
 		var distance = global_position.distance_to(player.global_position)
 		if distance <= INTERACTION_DISTANCE:
