@@ -3,4 +3,4 @@ extends Label
 @onready var stats = get_node("../../..")
 
 func _process(delta: float) -> void:
-	text = str(stats.dexterity)
+	text = str(stats.total_dexterity)

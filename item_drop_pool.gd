@@ -1,7 +1,7 @@
 extends RefCounted
 class_name ItemDropPool
 
-const MONSTER_DROP_CHANCE := 0.1
+const MONSTER_DROP_CHANCE := 0.4
 const RARITY_COMMON := "Common"
 const RARITY_UNCOMMON := "Uncommon"
 const RARITY_RARE := "Rare"
@@ -29,7 +29,7 @@ static func monster_items() -> Array:
 		{"name": "Battle Mallet", "icon": preload("res://RPG Icons/Icon27.png"), "type": "weapon", "damage": 13},
 		{"name": "Crystal Hammer", "icon": preload("res://RPG Icons/Icon28.png"), "type": "weapon", "damage": 16, "magic": 3},
 		{"name": "Steel Maul", "icon": preload("res://RPG Icons/Icon29.png"), "type": "weapon", "damage": 15},
-		{"name": "Golden Scepter", "icon": preload("res://RPG Icons/Icon30.png"), "type": "weapon", "damage": 9, "magic": 8},
+		{"name": "Golden Hammer", "icon": preload("res://RPG Icons/Icon30.png"), "type": "weapon", "damage": 9, "magic": 8},
 		{"name": "Twin Axe", "icon": preload("res://RPG Icons/Icon43.png"), "type": "weapon", "damage": 12},
 		{"name": "Hooked Axe", "icon": preload("res://RPG Icons/Icon44.png"), "type": "weapon", "damage": 11},
 		{"name": "Hatchet", "icon": preload("res://RPG Icons/Icon45.png"), "type": "weapon", "damage": 9},
@@ -102,6 +102,18 @@ static func monster_items() -> Array:
 		{"name": "Iron Boots", "icon": preload("res://RPG Icons/Icon230.png"), "type": "boots", "speed": 6, "defense": 4}
 	])
 
+static func shop_items() -> Array:
+	return _apply_rarity_to_items([
+		{"name": "Small Health Potion", "icon": preload("res://RPG Icons/Icon301.png"), "type": "consumable", "use_effect": "health", "use_amount": 30},
+		{"name": "Health Potion", "icon": preload("res://RPG Icons/Icon302.png"), "type": "consumable", "use_effect": "health", "use_amount": 60},
+		{"name": "Large Health Potion", "icon": preload("res://RPG Icons/Icon305.png"), "type": "consumable", "use_effect": "health", "use_amount": 100},
+		{"name": "Small Mana Potion", "icon": preload("res://RPG Icons/Icon306.png"), "type": "consumable", "use_effect": "magic", "use_amount": 25},
+		{"name": "Mana Potion", "icon": preload("res://RPG Icons/Icon307.png"), "type": "consumable", "use_effect": "magic", "use_amount": 50},
+		{"name": "Large Mana Potion", "icon": preload("res://RPG Icons/Icon310.png"), "type": "consumable", "use_effect": "magic", "use_amount": 90},
+		{"name": "Shop Sword", "icon": preload("res://RPG Icons/Icon95.png"), "type": "weapon", "weapon_class": "melee", "damage": 12, "strength": 3},
+		{"name": "Shop Bow", "icon": preload("res://RPG Icons/Icon115.png"), "type": "weapon", "weapon_class": "bow", "damage": 10, "dexterity": 4}
+	])
+
 static func roll_monster_item(drop_chance := MONSTER_DROP_CHANCE) -> Dictionary:
 	if randf() > drop_chance:
 		return {}
@@ -124,6 +136,21 @@ static func weighted_random_item(items: Array) -> Dictionary:
 
 	return items.back()
 
+static func can_player_use_item(player_name: String, item: Dictionary) -> bool:
+	if item.get("type", "") != "weapon":
+		return true
+
+	var weapon_class := str(item.get("weapon_class", ""))
+	match player_name:
+		"knight":
+			return weapon_class == "melee"
+		"huntress":
+			return weapon_class == "bow"
+		"wizard":
+			return weapon_class == "magic"
+		_:
+			return true
+
 static func _drop_weight(item: Dictionary) -> float:
 	match str(item.get("rarity", RARITY_COMMON)):
 		RARITY_COMMON:
@@ -143,6 +170,8 @@ static func _apply_rarity_to_items(items: Array) -> Array:
 	var rarity_items: Array = []
 	for item in items:
 		var rarity_item: Dictionary = item.duplicate()
+		if rarity_item.get("type", "") == "weapon" and not rarity_item.has("weapon_class"):
+			rarity_item["weapon_class"] = _weapon_class_for_item(rarity_item)
 		var rarity := _rarity_for_item(rarity_item)
 		rarity_item["rarity"] = rarity
 		_boost_item_stats(rarity_item, rarity)
@@ -154,7 +183,7 @@ static func _rarity_for_item(item: Dictionary) -> String:
 	var item_name := str(item.get("name", "")).to_lower()
 	var power := _base_item_power(item)
 
-	if item_name.contains("dragon") or item_name == "golden axe" or item_name == "golden lance" or item_name == "gold boots" or item_name == "crystal hammer" or item_name == "dark trident" or item_name == "gem axe" or item_name == "golden scepter":
+	if item_name.contains("dragon") or item_name == "golden axe" or item_name == "golden lance" or item_name == "gold boots" or item_name == "crystal hammer" or item_name == "dark trident" or item_name == "gem axe" or item_name == "golden hammer":
 		return RARITY_LEGENDARY
 
 	if item_name.contains("gold") or item_name.contains("golden") or item_name.contains("crystal") or item_name.contains("dark") or item_name.contains("moon") or item_name.contains("skull") or power >= 16:
@@ -167,6 +196,17 @@ static func _rarity_for_item(item: Dictionary) -> String:
 		return RARITY_UNCOMMON
 
 	return RARITY_COMMON
+
+static func _weapon_class_for_item(item: Dictionary) -> String:
+	var item_name := str(item.get("name", "")).to_lower()
+
+	if item_name.contains("bow"):
+		return "bow"
+
+	if item_name.contains("wand") or item_name.contains("scepter"):
+		return "magic"
+
+	return "melee"
 
 static func _base_item_power(item: Dictionary) -> int:
 	var power := 0
