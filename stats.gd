@@ -13,6 +13,10 @@ var strength := 0
 var vitality := 0
 var intellegience := 0
 var dexterity := 0
+var total_strength := 0
+var total_vitality := 0
+var total_intellegience := 0
+var total_dexterity := 0
 var skillPoints := 50
 var base_health := 100
 var base_damage := 17
@@ -112,15 +116,41 @@ func _on_int_button_2_pressed():
 		update_stats()
 
 func update_stats():
-	max_health = base_health + vitality * 10
-	total_damage = base_damage + strength * 2
-	total_defense = base_defense + vitality * 1
-	total_speed = base_speed + dexterity * 5
-	max_magic = base_magic + intellegience * 2
-	attack_speed = (dexterity / 100.0) + 1.0
+	var bonus_strength := 0
+	var bonus_vitality := 0
+	var bonus_intellegience := 0
+	var bonus_dexterity := 0
 	var bonus_magic := 0
+
 	for item in equipment.values():
 		if item != null:
+			if not ItemDropPool.can_player_use_item(current_player, item):
+				continue
+			bonus_strength += int(item.get("strength", 0))
+			bonus_vitality += int(item.get("vitality", 0))
+			bonus_intellegience += int(item.get("intellegience", item.get("intelligence", 0)))
+			bonus_dexterity += int(item.get("dexterity", 0))
+
+	var effective_strength := strength + bonus_strength
+	var effective_vitality := vitality + bonus_vitality
+	var effective_intellegience := intellegience + bonus_intellegience
+	var effective_dexterity := dexterity + bonus_dexterity
+	total_strength = effective_strength
+	total_vitality = effective_vitality
+	total_intellegience = effective_intellegience
+	total_dexterity = effective_dexterity
+
+	max_health = base_health + effective_vitality * 10
+	total_damage = base_damage + effective_strength * 2
+	total_defense = base_defense + effective_vitality * 1
+	total_speed = base_speed + effective_dexterity * 5
+	max_magic = base_magic + effective_intellegience * 2
+	attack_speed = (effective_dexterity / 100.0) + 1.0
+
+	for item in equipment.values():
+		if item != null:
+			if not ItemDropPool.can_player_use_item(current_player, item):
+				continue
 			if item.has("damage"):
 				total_damage += int(item["damage"])
 			if item.has("defense"):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://24as13qm823c"]
+[gd_scene load_steps=26 format=3 uid="uid://24as13qm823c"]
 
 [ext_resource type="Texture2D" uid="uid://bl80qcffv1qc5" path="res://NPCs/Idle1/1.png" id="1_c7upk"]
 [ext_resource type="Texture2D" uid="uid://bn02ab257vrlr" path="res://NPCs/Idle1/2.png" id="2_aoa24"]
@@ -11,7 +11,15 @@
 [ext_resource type="Texture2D" uid="uid://bl0tnka06jyaj" path="res://RPG Icons/Icon302.png" id="9_ifa1p"]
 [ext_resource type="Texture2D" uid="uid://btglwis01lt7i" path="res://RPG Icons/Icon305.png" id="10_1r1g0"]
 [ext_resource type="Texture2D" uid="uid://5nit4hmrxgpw" path="res://RPG Icons/Icon310.png" id="11_53mj6"]
+[ext_resource type="Texture2D" uid="uid://dbrcfisj0vjsg" path="res://RPG Icons/Icon95.png" id="12_jxt6a"]
 [ext_resource type="Texture2D" uid="uid://ruvaxatxf8p1" path="res://No Overlap/1px.png" id="12_suexs"]
+[ext_resource type="Texture2D" uid="uid://ci6do26yjx0mr" path="res://RPG Icons/Icon115.png" id="13_3yl0s"]
+[ext_resource type="Script" uid="uid://cnlbql7sqjihs" path="res://shop_keeper.gd" id="14_r0p7x"]
+[ext_resource type="Texture2D" uid="uid://dolfa5gc27ung" path="res://RPG Icons/Icon175.png" id="16_aoent"]
+[ext_resource type="Texture2D" uid="uid://dd58m7tjo0jbn" path="res://RPG Icons/Icon195.png" id="17_evscs"]
+[ext_resource type="Texture2D" uid="uid://ddl5veqq8hnbu" path="res://RPG Icons/Icon235.png" id="18_c0nq6"]
+[ext_resource type="FontFile" uid="uid://xwrv7ayarg34" path="res://MediavelUI/MediavelUI/Round9x13.ttf" id="19_0wffn"]
+[ext_resource type="PackedScene" uid="uid://np6nbi542sw5" path="res://coin.tscn" id="20_x2dpv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ta1f6"]
 atlas = ExtResource("1_c7upk")
@@ -52,6 +60,7 @@ animations = [{
 [node name="shopKeeper" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_asdat")
 frame_progress = 0.57881504
+script = ExtResource("14_r0p7x")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
@@ -92,7 +101,164 @@ position = Vector2(246, 277)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("11_53mj6")
 
+[node name="Icon95" type="Sprite2D" parent="."]
+position = Vector2(284, 206)
+texture = ExtResource("12_jxt6a")
+
+[node name="Icon115" type="Sprite2D" parent="."]
+position = Vector2(284, 241.00002)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("13_3yl0s")
+
 [node name="1Px" type="Sprite2D" parent="."]
-position = Vector2(524, 76)
+position = Vector2(283.99997, 278)
+scale = Vector2(0.85, 0.7999995)
 texture = ExtResource("12_suexs")
 region_enabled = true
+region_rect = Rect2(0, 160, 24, 40)
+
+[node name="Icon175" type="Sprite2D" parent="."]
+position = Vector2(320, 205)
+texture = ExtResource("16_aoent")
+
+[node name="Icon195" type="Sprite2D" parent="."]
+position = Vector2(319.99997, 240.00002)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("17_evscs")
+
+[node name="Icon235" type="Sprite2D" parent="."]
+position = Vector2(320, 277)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("18_c0nq6")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 249.00002
+offset_top = 162.00002
+offset_right = 289.0
+offset_bottom = 185.00002
+scale = Vector2(0.7241379, 0.81856966)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "shop"
+
+[node name="Coin" parent="." instance=ExtResource("20_x2dpv")]
+position = Vector2(236.78154, 166.28366)
+scale = Vector2(0.6, 0.6)
+script = null
+
+[node name="Coin2" parent="." instance=ExtResource("20_x2dpv")]
+position = Vector2(282.78156, 166.28366)
+scale = Vector2(0.6, 0.6)
+script = null
+
+[node name="Mediavel2" type="Sprite2D" parent="."]
+position = Vector2(321, 336)
+texture = ExtResource("5_aoa24")
+region_enabled = true
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 204.0
+offset_top = 180.0
+offset_right = 214.0
+offset_bottom = 195.0
+scale = Vector2(0.7, 0.7)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "5"
+
+[node name="Label3" type="Label" parent="."]
+offset_left = 243.00002
+offset_top = 180.0
+offset_right = 253.00002
+offset_bottom = 195.0
+scale = Vector2(0.7, 0.7)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "5"
+
+[node name="Label4" type="Label" parent="."]
+offset_left = 202.00002
+offset_top = 219.00002
+offset_right = 222.00002
+offset_bottom = 234.00002
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "10"
+
+[node name="Label5" type="Label" parent="."]
+offset_left = 239.00002
+offset_top = 219.0
+offset_right = 259.0
+offset_bottom = 234.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "10"
+
+[node name="Label6" type="Label" parent="."]
+offset_left = 202.0
+offset_top = 255.0
+offset_right = 222.0
+offset_bottom = 270.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "20"
+
+[node name="Label7" type="Label" parent="."]
+offset_left = 240.00002
+offset_top = 255.00002
+offset_right = 260.0
+offset_bottom = 270.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "20"
+
+[node name="Label8" type="Label" parent="."]
+offset_left = 278.0
+offset_top = 255.00002
+offset_right = 298.0
+offset_bottom = 270.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "30"
+
+[node name="Label9" type="Label" parent="."]
+offset_left = 278.0
+offset_top = 219.0
+offset_right = 298.0
+offset_bottom = 234.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "30"
+
+[node name="Label10" type="Label" parent="."]
+offset_left = 278.0
+offset_top = 182.0
+offset_right = 298.0
+offset_bottom = 197.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "30"
+
+[node name="Label11" type="Label" parent="."]
+offset_left = 313.0
+offset_top = 182.0
+offset_right = 333.0
+offset_bottom = 197.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "30"
+
+[node name="Label12" type="Label" parent="."]
+offset_left = 314.0
+offset_top = 219.00002
+offset_right = 334.0
+offset_bottom = 234.00002
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "30"
+
+[node name="Label13" type="Label" parent="."]
+offset_left = 315.0
+offset_top = 255.0
+offset_right = 335.0
+offset_bottom = 270.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("19_0wffn")
+text = "30"

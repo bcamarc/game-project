@@ -82,7 +82,15 @@ func _can_drop_data(position, data):
 	if not incoming_item.has("type"):
 		return false
 
-	return incoming_item["type"] == slot_type
+	if incoming_item["type"] != slot_type:
+		return false
+
+	if slot_type == "weapon":
+		var stats = _resolve_stats()
+		if stats != null and not ItemDropPool.can_player_use_item(str(stats.get("current_player")), incoming_item):
+			return false
+
+	return true
 
 func _drop_data(position, data):
 	var from_slot = data["from"]
