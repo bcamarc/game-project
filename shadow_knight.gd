@@ -4,6 +4,7 @@ enum BossState {
 	IDLE,
 	CHARGING,
 	RETREATING,
+	EXPLODING,
 	HURT,
 	DEAD,
 }
@@ -17,11 +18,16 @@ enum BossState {
 @export var windup_duration := 0.45
 @export var attack_damage := 18
 @export var damage_cooldown := 0.55
-@export var exp_reward := 5984598
+@export var explosion_damage := 24
+@export var explosion_duration := 1.25
+@export var explosion_chance := 0.28
+@export var idle_retreat_chance := 0.27
+@export var exp_reward := 900
 
 @onready var sprite: AnimatedSprite2D = $animation
 @onready var attack_hitbox: Area2D = $attack_hitbox
 @onready var attack_shape: CollisionShape2D = $attack_hitbox/CollisionShape2D
+@onready var explosion_area: Area2D = get_node_or_null("explosion_ability") as Area2D
 @onready var health_bar: ProgressBar = get_node_or_null("ProgressBar") as ProgressBar
 
 var health := max_health
@@ -34,12 +40,15 @@ var players_in_attack: Array[Node2D] = []
 var stats: Node = null
 var gravity := ProjectSettings.get_setting("physics/2d/default_gravity") as float
 var initial_attack_shape_position := Vector2.ZERO
+var explosion_has_damaged := false
 
 signal death(x, y)
 
 func _ready() -> void:
 	add_to_group("enemy")
 	add_to_group("shadow_knight")
+	collision_layer = 4
+	collision_mask = 1
 
 	stats = resolve_stats()
 	health = max_health
@@ -53,6 +62,9 @@ func _ready() -> void:
 		attack_hitbox.body_exited.connect(_on_attack_hitbox_body_exited)
 	if not sprite.animation_finished.is_connected(_on_animation_finished):
 		sprite.animation_finished.connect(_on_animation_finished)
+	if explosion_area != null:
+		explosion_area.monitoring = true
+		explosion_area.collision_mask = 3
 
 func _physics_process(delta: float) -> void:
 	if state == BossState.DEAD:
@@ -66,6 +78,9 @@ func _physics_process(delta: float) -> void:
 
 	_apply_gravity(delta)
 	_update_health_bar()
+	_add_player_collision_exceptions()
+	if not is_on_floor():
+		velocity.x = 0.0
 
 	if damage_timer > 0.0:
 		damage_timer -= delta
@@ -97,6 +112,8 @@ func _physics_process(delta: float) -> void:
 			_process_charge(delta, distance)
 		BossState.RETREATING:
 			_process_retreat()
+		BossState.EXPLODING:
+			_process_explosion()
 		BossState.HURT:
 			_process_hurt()
 
@@ -113,11 +130,28 @@ func _process_idle() -> void:
 	_play_animation("idle")
 
 	if state_timer <= 0.0:
+		_choose_next_action()
+
+func _choose_next_action() -> void:
+	var roll := randf()
+	if explosion_area != null and roll < explosion_chance:
+		state = BossState.EXPLODING
+		state_timer = explosion_duration
+		explosion_has_damaged = false
+		velocity.x = 0.0
+		_play_animation("explosion")
+	elif roll < explosion_chance + idle_retreat_chance:
+		state = BossState.RETREATING
+		state_timer = retreat_duration
+	else:
 		state = BossState.CHARGING
 		state_timer = charge_duration
 
 func _process_charge(_delta: float, distance: float) -> void:
-	velocity.x = charge_speed * facing_direction
+	if is_on_floor():
+		velocity.x = charge_speed * facing_direction
+	else:
+		velocity.x = 0.0
 	_play_animation("attack")
 	_damage_players_in_attack()
 
@@ -126,8 +160,23 @@ func _process_charge(_delta: float, distance: float) -> void:
 		state_timer = retreat_duration
 
 func _process_retreat() -> void:
-	velocity.x = -retreat_speed * facing_direction
+	if is_on_floor():
+		velocity.x = -retreat_speed * facing_direction
+	else:
+		velocity.x = 0.0
 	_play_animation("run")
+
+	if state_timer <= 0.0:
+		state = BossState.IDLE
+		state_timer = windup_duration
+
+func _process_explosion() -> void:
+	velocity.x = 0.0
+	_play_animation("explosion")
+
+	if not explosion_has_damaged and state_timer <= explosion_duration * 0.65:
+		_damage_players_in_explosion()
+		explosion_has_damaged = true
 
 	if state_timer <= 0.0:
 		state = BossState.IDLE
@@ -156,6 +205,13 @@ func _nearest_player() -> Node2D:
 
 	return nearest
 
+func _add_player_collision_exceptions() -> void:
+	for player in get_tree().get_nodes_in_group("alien_player"):
+		if player is PhysicsBody2D:
+			var player_body := player as PhysicsBody2D
+			add_collision_exception_with(player_body)
+			player_body.add_collision_exception_with(self)
+
 func _update_facing(delta_x: float) -> void:
 	if delta_x == 0.0:
 		return
@@ -175,6 +231,15 @@ func _damage_players_in_attack() -> void:
 			damage_player(attack_damage)
 			damage_timer = damage_cooldown
 			return
+
+func _damage_players_in_explosion() -> void:
+	if explosion_area == null:
+		return
+
+	for body in explosion_area.get_overlapping_bodies():
+		if body is Node2D and body.is_in_group("alien_player"):
+			target_player = body as Node2D
+			damage_player(explosion_damage)
 
 	for body in attack_hitbox.get_overlapping_bodies():
 		if body is Node2D and body.is_in_group("alien_player"):

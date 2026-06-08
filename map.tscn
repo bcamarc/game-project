@@ -480,7 +480,7 @@ process_mode = 3
 
 [node name="CanvasLayer" parent="." instance=ExtResource("19_bssq0")]
 
-[node name="CanvasLayer2" parent="." instance=ExtResource("20_jk4ss")]
+[node name="PauseMenu" parent="." instance=ExtResource("20_jk4ss")]
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
 z_index = -9

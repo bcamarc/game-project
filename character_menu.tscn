@@ -92,13 +92,22 @@ offset_bottom = 360.0
 [node name="Panel" type="Panel" parent="Control"]
 layout_mode = 0
 
+[node name="Mediavel" type="Sprite2D" parent="Control/Panel"]
+visible = false
+show_behind_parent = true
+position = Vector2(242, 278.5)
+scale = Vector2(5, 6.3906245)
+texture = ExtResource("2_pi0qd")
+region_enabled = true
+region_rect = Rect2(816, 384, 32, 64)
+
 [node name="KnightButton" type="Button" parent="Control/Panel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 0
-offset_left = -175.0
+offset_left = -178.0
 offset_top = 115.0
-offset_right = -141.0
+offset_right = -144.0
 offset_bottom = 149.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_6tlbt")
 theme_override_styles/hover = SubResource("StyleBoxFlat_8miaq")
@@ -123,9 +132,9 @@ anchor_left = 3.2670002
 anchor_top = 1.802
 anchor_right = 3.2670002
 anchor_bottom = 1.802
-offset_left = 486.0
+offset_left = 487.0
 offset_top = 115.0
-offset_right = 516.0
+offset_right = 517.0
 offset_bottom = 145.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_rhfay")
 theme_override_styles/hover = SubResource("StyleBoxFlat_yih4i")

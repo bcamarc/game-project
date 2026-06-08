@@ -1,7 +1,8 @@
-[gd_scene load_steps=61 format=3 uid="uid://3b33pej2irhq"]
+[gd_scene load_steps=78 format=3 uid="uid://3b33pej2irhq"]
 
 [ext_resource type="Texture2D" uid="uid://b6w758ddb6lfj" path="res://art/NightBorne.png" id="1_ddsud"]
 [ext_resource type="Script" uid="uid://cdivluctcubqj" path="res://shadow_knight.gd" id="1_r5urs"]
+[ext_resource type="Texture2D" uid="uid://d0a0ti3koo3o0" path="res://NightBorne/NightBorne.png" id="3_htnqh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r5urs"]
 atlas = ExtResource("1_ddsud")
@@ -138,6 +139,66 @@ region = Rect2(1600, 320, 80, 80)
 [sub_resource type="AtlasTexture" id="AtlasTexture_sitmp"]
 atlas = ExtResource("1_ddsud")
 region = Rect2(1680, 320, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47vxu"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(0, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7s6gj"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(80, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vgli"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(160, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35qn1"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(240, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdwd4"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(320, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slrvh"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(400, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sso4h"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(480, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bk4k3"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(560, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_424mi"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(640, 0, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uclba"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(800, 320, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21h3j"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(880, 320, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ataox"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(960, 320, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqusn"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(1040, 320, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c223u"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(1120, 320, 80, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_snbqa"]
+atlas = ExtResource("3_htnqh")
+region = Rect2(1200, 320, 80, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ems4"]
 atlas = ExtResource("1_ddsud")
@@ -335,6 +396,56 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_47vxu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7s6gj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vgli")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35qn1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdwd4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slrvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sso4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bk4k3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_424mi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uclba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21h3j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ataox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqusn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c223u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snbqa")
+}],
+"loop": true,
+"name": &"explosion",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3ems4")
 }, {
 "duration": 1.0,
@@ -419,15 +530,19 @@ height = 210.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5urs"]
 bg_color = Color(0.70277196, 0.1763106, 0.21831653, 1)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dfl2y"]
+size = Vector2(251, 197)
+
 [node name="ShadowKnight" type="CharacterBody2D"]
+collision_layer = 4
 script = ExtResource("1_r5urs")
 
 [node name="animation" type="AnimatedSprite2D" parent="."]
 position = Vector2(154.375, 280.375)
 scale = Vector2(3.565625, 3.259375)
 sprite_frames = SubResource("SpriteFrames_47vxu")
-animation = &"attack"
-frame_progress = 0.77547526
+animation = &"explosion"
+frame_progress = 0.02701108
 
 [node name="hitbox" type="CollisionShape2D" parent="."]
 position = Vector2(157.8125, 307.5625)
@@ -450,3 +565,9 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_r5urs")
 max_value = 650.0
 value = 650.0
 show_percentage = false
+
+[node name="explosion_ability" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="explosion_ability"]
+position = Vector2(148.5, 307.5)
+shape = SubResource("RectangleShape2D_dfl2y")

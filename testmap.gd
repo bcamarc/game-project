@@ -18,8 +18,12 @@ var world_level := 1
 @onready var background_sprite: Sprite2D = $ParallaxBackground/Sprite2D
 
 const MAX_GATE_LEVEL := 4
-const LEVEL_FOUR_BOSS_OFFSET := 18
+const LEVEL_FOUR_MAP_WIDTH := 90
+const LEVEL_FOUR_BOSS_SPAWN_HEIGHT := 6
 const LEVEL_FOUR_BARRIER_HEIGHT := 26
+const LEVEL_FOUR_FLOOR_PAD := 4
+const LEVEL_FOUR_SURFACE_Y := 20
+const LEVEL_FOUR_PLAYER_OFFSET := 18
 
 func set_gate_data(x: int, y: int, level: int = 1):
 	safe_x = x
@@ -43,10 +47,10 @@ func _spawn_map():
 	var mob_count := 1 if world_level == MAX_GATE_LEVEL else 12
 	var safe_radius := 4
 	var tile_x := _tile_column_for_level(world_level)
-	for x in range(map_width):
+	for x in range(_level_map_start_x(), _level_map_end_x()):
 		var distance: int = absi(x - safe_x)
 		var height: int
-		if world_level == MAX_GATE_LEVEL:
+		if world_level == 4:
 			height = _level_four_surface_height()
 		elif distance <= safe_radius:
 			height = safe_y + 4
@@ -59,6 +63,7 @@ func _spawn_map():
 		set_cell(Vector2i(x, height - 1), 0, Vector2i(tile_x, 0))
 
 	if world_level == MAX_GATE_LEVEL:
+		_place_players_for_level_four()
 		_spawn_level_four_barriers()
 
 	_spawn_enemies(mob_count)
@@ -127,19 +132,76 @@ func _spawn_shadow_knight() -> void:
 	if boss == null:
 		return
 
-	var offset := LEVEL_FOUR_BOSS_OFFSET
-	if safe_x > map_width / 2:
-		offset = -LEVEL_FOUR_BOSS_OFFSET
-
-	var boss_x := clampi(safe_x + offset, 4, map_width - 5)
+	var boss_x := _level_four_arena_center_x()
 	var boss_y := _level_four_surface_height()
+	_ensure_level_four_floor_span(boss_x)
+	var boss_spawn := _level_four_spawn_position(boss, boss_x, boss_y)
 
 	add_child(boss)
 	boss.top_level = true
-	boss.global_position = map_to_local(Vector2i(boss_x, boss_y - 5))
+	boss.global_position = boss_spawn
 
 func _level_four_surface_height() -> int:
-	return clampi(safe_y + 4, 4, ground_height + 12)
+	return LEVEL_FOUR_SURFACE_Y
+
+func _level_four_arena_center_x() -> int:
+	return _level_map_start_x() + int(round(float(LEVEL_FOUR_MAP_WIDTH) * 0.5))
+
+func _level_four_anchor_x() -> int:
+	var player := get_tree().get_first_node_in_group("alien_player") as Node2D
+	if player != null:
+		return local_to_map(to_local(player.global_position)).x
+
+	return safe_x
+
+func _level_four_anchor_y() -> int:
+	var player := get_tree().get_first_node_in_group("alien_player") as Node2D
+	if player != null:
+		return local_to_map(to_local(player.global_position)).y
+
+	return safe_y
+
+func _level_map_start_x() -> int:
+	if world_level == MAX_GATE_LEVEL:
+		return int(round(float(map_width - LEVEL_FOUR_MAP_WIDTH) * 0.5))
+
+	return 0
+
+func _level_map_end_x() -> int:
+	if world_level == MAX_GATE_LEVEL:
+		return _level_map_start_x() + LEVEL_FOUR_MAP_WIDTH
+
+	return map_width
+
+func _ensure_level_four_floor_span(tile_x: int) -> void:
+	var tile_x_source := _tile_column_for_level(world_level)
+	var surface_y := _level_four_surface_height()
+	for x in range(tile_x - LEVEL_FOUR_FLOOR_PAD, tile_x + LEVEL_FOUR_FLOOR_PAD + 1):
+		for y in range(surface_y, ground_height + 20):
+			set_cell(Vector2i(x, y), 0, Vector2i(tile_x_source, 1))
+		set_cell(Vector2i(x, surface_y - 1), 0, Vector2i(tile_x_source, 0))
+
+func _place_players_for_level_four() -> void:
+	var player_x := _level_four_arena_center_x() - LEVEL_FOUR_PLAYER_OFFSET
+	var player_y := _level_four_surface_height() - LEVEL_FOUR_BOSS_SPAWN_HEIGHT
+	var player_position := _map_cell_to_world(Vector2i(player_x, player_y))
+	for player in get_tree().get_nodes_in_group("alien_player"):
+		if player is Node2D:
+			(player as Node2D).global_position = player_position
+
+func _level_four_spawn_position(boss: Node2D, tile_x: int, tile_y: int) -> Vector2:
+	var spawn_pos := _map_cell_to_world(Vector2i(tile_x, tile_y))
+	var hitbox := boss.get_node_or_null("hitbox") as CollisionShape2D
+	if hitbox != null and hitbox.shape is RectangleShape2D:
+		var shape := hitbox.shape as RectangleShape2D
+		var grounded_offset := hitbox.position + Vector2(0.0, shape.size.y * 0.5)
+		spawn_pos -= grounded_offset
+		return spawn_pos
+
+	return spawn_pos - Vector2(0.0, LEVEL_FOUR_BOSS_SPAWN_HEIGHT)
+
+func _map_cell_to_world(cell: Vector2i) -> Vector2:
+	return to_global(map_to_local(cell))
 
 func _spawn_level_four_barriers() -> void:
 	var tile_size := Vector2(48.0, 48.0)
@@ -152,8 +214,8 @@ func _spawn_level_four_barriers() -> void:
 	var barrier_center_y := barrier_top_y + int(round(float(barrier_tiles) * 0.5))
 	var barrier_shape_size := Vector2(tile_size.x, tile_size.y * float(barrier_tiles))
 
-	_create_level_four_barrier("Level4LeftBarrier", Vector2i(-1, barrier_center_y), barrier_shape_size)
-	_create_level_four_barrier("Level4RightBarrier", Vector2i(map_width, barrier_center_y), barrier_shape_size)
+	_create_level_four_barrier("Level4LeftBarrier", Vector2i(_level_map_start_x() - 1, barrier_center_y), barrier_shape_size)
+	_create_level_four_barrier("Level4RightBarrier", Vector2i(_level_map_end_x(), barrier_center_y), barrier_shape_size)
 
 func _create_level_four_barrier(node_name: String, tile_position: Vector2i, shape_size: Vector2) -> void:
 	var body := StaticBody2D.new()
