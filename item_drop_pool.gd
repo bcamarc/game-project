@@ -104,14 +104,17 @@ static func monster_items() -> Array:
 
 static func shop_items() -> Array:
 	return _apply_rarity_to_items([
-		{"name": "Small Health Potion", "icon": preload("res://RPG Icons/Icon301.png"), "type": "consumable", "use_effect": "health", "use_amount": 30},
-		{"name": "Health Potion", "icon": preload("res://RPG Icons/Icon302.png"), "type": "consumable", "use_effect": "health", "use_amount": 60},
-		{"name": "Large Health Potion", "icon": preload("res://RPG Icons/Icon305.png"), "type": "consumable", "use_effect": "health", "use_amount": 100},
-		{"name": "Small Mana Potion", "icon": preload("res://RPG Icons/Icon306.png"), "type": "consumable", "use_effect": "magic", "use_amount": 25},
-		{"name": "Mana Potion", "icon": preload("res://RPG Icons/Icon307.png"), "type": "consumable", "use_effect": "magic", "use_amount": 50},
-		{"name": "Large Mana Potion", "icon": preload("res://RPG Icons/Icon310.png"), "type": "consumable", "use_effect": "magic", "use_amount": 90},
-		{"name": "Shop Sword", "icon": preload("res://RPG Icons/Icon95.png"), "type": "weapon", "weapon_class": "melee", "damage": 12, "strength": 3},
-		{"name": "Shop Bow", "icon": preload("res://RPG Icons/Icon115.png"), "type": "weapon", "weapon_class": "bow", "damage": 10, "dexterity": 4}
+		{"name": "Small Health Potion", "icon": preload("res://RPG Icons/Icon301.png"), "type": "consumable", "use_effect": "health", "use_amount": 10, "cost": 5},
+		{"name": "Health Potion", "icon": preload("res://RPG Icons/Icon302.png"), "type": "consumable", "use_effect": "health", "use_amount": 15, "cost": 10},
+		{"name": "Large Health Potion", "icon": preload("res://RPG Icons/Icon305.png"), "type": "consumable", "use_effect": "health", "use_amount": 35, "cost": 20},
+		{"name": "Small Mana Potion", "icon": preload("res://RPG Icons/Icon306.png"), "type": "consumable", "use_effect": "magic", "use_amount": 10, "cost": 5},
+		{"name": "Mana Potion", "icon": preload("res://RPG Icons/Icon307.png"), "type": "consumable", "use_effect": "magic", "use_amount": 15, "cost": 10},
+		{"name": "Large Mana Potion", "icon": preload("res://RPG Icons/Icon310.png"), "type": "consumable", "use_effect": "magic", "use_amount": 35, "cost": 20},
+		{"name": "Shop Sword", "icon": preload("res://RPG Icons/Icon95.png"), "type": "weapon", "weapon_class": "melee", "damage": 12, "strength": 3, "cost": 30},
+		{"name": "Shop Bow", "icon": preload("res://RPG Icons/Icon115.png"), "type": "weapon", "weapon_class": "bow", "damage": 10, "dexterity": 4, "cost": 30},
+		{"name": "Shop Helm", "icon": preload("res://RPG Icons/Icon175.png"), "type": "helmet", "defense": 6, "cost": 30},
+		{"name": "Shop Armor", "icon": preload("res://RPG Icons/Icon195.png"), "type": "chestplate", "defense": 8, "cost": 30},
+		{"name": "Shop Boots", "icon": preload("res://RPG Icons/Icon235.png"), "type": "boots", "speed": 7, "cost": 30}
 	])
 
 static func roll_monster_item(drop_chance := MONSTER_DROP_CHANCE) -> Dictionary:

@@ -71,6 +71,16 @@ func add_coin(a):
 func get_coins() -> int:
 	return coins
 
+func can_afford(cost: int) -> bool:
+	return coins >= cost
+
+func spend_coins(cost: int) -> bool:
+	if not can_afford(cost):
+		return false
+
+	coins -= cost
+	return true
+
 func check_exp():
 	if exp >= expNeeded:
 		level += 1

@@ -45,16 +45,33 @@ func _use_consumable(item: Dictionary) -> bool:
 	if amount <= 0.0:
 		return false
 
+	var stats = _resolve_stats()
+	if stats == null:
+		return false
+
 	match str(item.get("use_effect", "")):
 		"health":
-			if Stats.total_health >= Stats.max_health:
+			if stats.total_health >= stats.max_health:
 				return false
-			Stats.add_hp(amount)
+			stats.add_hp(amount)
 			return true
 		"magic", "mana", "mp":
-			if Stats.total_magic >= Stats.max_magic:
+			if stats.total_magic >= stats.max_magic:
 				return false
-			Stats.add_mp(amount)
+			stats.add_mp(amount)
 			return true
 		_:
 			return false
+
+func _resolve_stats() -> Node:
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			return scene_stats
+
+	var stats_node := get_tree().get_first_node_in_group("stats")
+	if stats_node != null:
+		return stats_node
+
+	return get_node_or_null("/root/Stats")
