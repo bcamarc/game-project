@@ -18,7 +18,11 @@ var count4 := 0
 var count5 := 500
 
 var is_attacking := false
-var pending_shot := false
+var queued_shots := 0
+var queued_shot_timer := 0.0
+
+const BURST_SHOT_INTERVAL := 0.15
+const BURST_LEVEL_REQUIREMENT := 5
 
 var attack_cooldown := 0.2
 var attack_timer := 0.0
@@ -53,7 +57,9 @@ func _ready() -> void:
 		cam.drag_vertical_enabled = false
 
 func respawn() -> void:
-	get_node("../Stats").total_health = 100
+	var stats := _resolve_stats()
+	if stats != null:
+		stats.total_health = 100
 	global_position = Vector2.ZERO
 	velocity = Vector2.ZERO
 
@@ -66,9 +72,14 @@ func _physics_process(delta: float) -> void:
 	count5 += 1
 
 	attack_timer -= delta
+	if is_attacking and queued_shots > 0 and queued_shot_timer > 0.0:
+		queued_shot_timer -= delta
+		if queued_shot_timer <= 0.0:
+			_fire_queued_shot()
 
 	var left_pressed := _is_move_left_pressed()
 	var right_pressed := _is_move_right_pressed()
+	var stats := _resolve_stats()
 
 	var direction_x := 0.0
 	if left_pressed and not right_pressed:
@@ -78,7 +89,10 @@ func _physics_process(delta: float) -> void:
 		direction_x = 1.25
 		sprite.flip_h = false
 
-	velocity.x = direction_x * get_node("../Stats").total_speed
+	if stats != null:
+		velocity.x = direction_x * stats.total_speed
+	else:
+		velocity.x = 0.0
 
 	if is_on_floor():
 		jump_count = 0
@@ -104,13 +118,14 @@ func _physics_process(delta: float) -> void:
 		if not is_attacking and direction_x != 0.0 and jump_count == 0:
 			_play_if_exists(ANIM_RUN)
 
-	if _is_attack_just_pressed() and not is_attacking and attack_timer <= 0.0:
-		is_attacking = true
-		pending_shot = true
-		attack_timer = attack_cooldown
-		_play_attack_anim()
+	if not is_attacking and attack_timer <= 0.0:
+		if _is_attack_just_pressed():
+			_start_attack(1)
+		elif _is_burst_attack_just_pressed() and _get_level() >= BURST_LEVEL_REQUIREMENT:
+			_resolve_stats().total_health *= 0.95
+			_start_attack(3)
 
-	if get_node("../Stats").total_health <= 0:
+	if stats != null and stats.total_health <= 0:
 		respawn()
 
 	move_and_slide()
@@ -136,20 +151,41 @@ func _play_attack_anim() -> void:
 
 func _on_animation_finished() -> void:
 	if sprite.animation == ANIM_ATTACK_PRIMARY or sprite.animation == ANIM_ATTACK_FALLBACK:
-		if pending_shot:
-			_spawn_arrow()
-			$AudioStreamPlayer2D.play()
-			pending_shot = false
+		_fire_queued_shot()
 
-		is_attacking = false
+func _start_attack(shot_count: int) -> void:
+	is_attacking = true
+	queued_shots = shot_count
+	queued_shot_timer = 0.0
+	attack_timer = attack_cooldown
+	_play_attack_anim()
 
-		if not is_on_floor():
-			_play_if_exists(ANIM_JUMP)
+func _fire_queued_shot() -> void:
+	if queued_shots <= 0:
+		_finish_attack()
+		return
+
+	_spawn_arrow()
+	$AudioStreamPlayer2D.play()
+	queued_shots -= 1
+
+	if queued_shots > 0:
+		queued_shot_timer = BURST_SHOT_INTERVAL
+	else:
+		_finish_attack()
+
+func _finish_attack() -> void:
+	is_attacking = false
+	queued_shots = 0
+	queued_shot_timer = 0.0
+
+	if not is_on_floor():
+		_play_if_exists(ANIM_JUMP)
+	else:
+		if abs(velocity.x) > 0.0:
+			_play_if_exists(ANIM_RUN)
 		else:
-			if abs(velocity.x) > 0.0:
-				_play_if_exists(ANIM_RUN)
-			else:
-				_play_if_exists(ANIM_IDLE)
+			_play_if_exists(ANIM_IDLE)
 
 func _play_if_exists(anim_name: String) -> void:
 	if sprite.sprite_frames.has_animation(anim_name):
@@ -173,3 +209,29 @@ func _is_jump_just_pressed() -> bool:
 
 func _is_attack_just_pressed() -> bool:
 	return _action_just_pressed_if_exists(&"attack")
+
+func _is_burst_attack_just_pressed() -> bool:
+	return _action_just_pressed_if_exists(&"attack_burst")
+
+func _get_level() -> int:
+	var stats := _resolve_stats()
+	if stats != null:
+		return int(stats.level)
+	return 1
+
+func _resolve_stats() -> Node:
+	var parent_stats := get_node_or_null("../Stats")
+	if parent_stats != null:
+		return parent_stats
+
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			return scene_stats
+
+	var singleton_stats := get_node_or_null("/root/Stats")
+	if singleton_stats != null:
+		return singleton_stats
+
+	return null

@@ -140,9 +140,8 @@ func _physics_process(delta: float) -> void:
 			_start_attack_with_spell(thunderSpell)
 		elif _is_ice_just_pressed():
 			_start_attack_with_spell(iceSpell)
-		elif _is_holy_just_pressed():
+		elif _is_holy_just_pressed() and stats.level > 4:
 			_start_attack_with_spell(holySpell)
-
 	if stats.total_health <= 0:
 		respawn()
 
@@ -150,7 +149,7 @@ func _physics_process(delta: float) -> void:
 
 func _get_spell_mana_cost(spell_scene: PackedScene) -> float:
 	if spell_scene == holySpell:
-		return 75.0
+		return 40.0
 	if spell_scene == thunderSpell:
 		return 40.0
 	if spell_scene == iceSpell:
