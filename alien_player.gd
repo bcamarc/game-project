@@ -20,10 +20,29 @@ var count5 = 500
 
 var boosted = false
 var is_attacking := false
+var is_defending := false
 var has_hit := false
 
 var attack_cooldown := 0.2
 var attack_timer := 0.0
+var defense_cooldown := 1.5
+var defense_timer := 0.0
+
+const DEFENSE_LEVEL_REQUIREMENT := 5
+const DEFENSE_ANIMATIONS := [
+	&"defend",
+	&"defense",
+	&"defend",
+	&"shield",
+	&"block",
+	&"guard",
+	&"Defence",
+	&"Defense",
+	&"Defend",
+	&"Shield",
+	&"Block",
+	&"Guard",
+]
 
 @onready var sprite = $KnightSprite
 @onready var hitbox = $Area2D
@@ -48,6 +67,7 @@ func _physics_process(delta):
 	count5 += 1
 
 	attack_timer -= delta
+	defense_timer -= delta
 
 	
 
@@ -78,34 +98,37 @@ func _physics_process(delta):
 			velocity.y = -jump_force
 			jumpCount = 1
 			jumpEnded = false
-			if not is_attacking:
+			if not _is_busy():
 				sprite.play("jump_start")
 
 		elif direction.x != 0:
-			if not is_attacking:
+			if not _is_busy():
 				sprite.play("Run")
 		else:
-			if not is_attacking:
+			if not _is_busy():
 				sprite.play("Idle")
 
 	else:
 		velocity.y += gravity * delta
 
 		if jumpCount == 1 and not jumpEnded and velocity.y > 0:
-			if not is_attacking:
+			if not _is_busy():
 				sprite.play("jump_end")
 			jumpEnded = true
 
 		elif direction.x != 0 and jumpCount == 0:
-			if not is_attacking:
+			if not _is_busy():
 				sprite.play("Run")
 
-	if Input.is_action_just_pressed("attack") and not is_attacking and attack_timer <= 0:
+	if Input.is_action_just_pressed("attack") and not _is_busy() and attack_timer <= 0:
 		is_attacking = true
 		$AudioStreamPlayer2D.play()
 		has_hit = false
 		sprite.play("attack1")
 		attack_timer = attack_cooldown
+
+	if _is_defense_just_pressed() and _can_start_defense():
+		_start_defense()
 
 	if is_attacking and not has_hit:
 		var bodies = hitbox.get_overlapping_bodies()
@@ -180,3 +203,68 @@ func _on_animation_finished():
 				sprite.play("Run")
 			else:
 				sprite.play("Idle")
+
+	elif is_defending and sprite.animation == _get_defense_animation():
+		_finish_defense()
+
+func is_immune_to_damage() -> bool:
+	return is_defending
+
+func _is_busy() -> bool:
+	return is_attacking or is_defending
+
+func _is_defense_just_pressed() -> bool:
+	return InputMap.has_action(&"attack_burst") and Input.is_action_just_pressed(&"attack_burst")
+
+func _can_start_defense() -> bool:
+	return not is_attacking and not is_defending and defense_timer <= 0.0 and _get_level() >= DEFENSE_LEVEL_REQUIREMENT and _get_defense_animation() != &""
+
+func _start_defense() -> void:
+	is_defending = true
+	defense_timer = defense_cooldown
+	sprite.speed_scale = 1.0
+	sprite.play(_get_defense_animation())
+
+func _finish_defense() -> void:
+	is_defending = false
+
+	if not is_on_floor():
+		if velocity.y < 0:
+			sprite.play("jump_start")
+		else:
+			sprite.play("jump_end")
+	else:
+		if velocity.x != 0:
+			sprite.play("Run")
+		else:
+			sprite.play("Idle")
+
+func _get_level() -> int:
+	var stats := _resolve_stats()
+	if stats != null:
+		return int(stats.level)
+	return 1
+
+func _get_defense_animation() -> StringName:
+	for animation_name in DEFENSE_ANIMATIONS:
+		if sprite.sprite_frames.has_animation(animation_name):
+			return animation_name
+
+	return &""
+
+func _resolve_stats() -> Node:
+	var parent_stats := get_node_or_null("../Stats")
+	if parent_stats != null:
+		return parent_stats
+
+	var scene := get_tree().current_scene
+	if scene != null:
+		var scene_stats := scene.get_node_or_null("Stats")
+		if scene_stats != null:
+			return scene_stats
+
+	var singleton_stats := get_node_or_null("/root/Stats")
+	if singleton_stats != null:
+		return singleton_stats
+
+	return null

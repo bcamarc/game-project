@@ -249,6 +249,9 @@ func _damage_players_in_explosion() -> void:
 			return
 
 func damage_player(amount: int) -> void:
+	if _is_player_immune(target_player):
+		return
+
 	var resolved_stats := resolve_stats(target_player)
 	if resolved_stats == null:
 		print("Stats not found: cannot damage player")
@@ -258,6 +261,9 @@ func damage_player(amount: int) -> void:
 		resolved_stats.add_hp(-amount)
 	else:
 		resolved_stats.total_health -= amount
+
+func _is_player_immune(player: Node2D) -> bool:
+	return player != null and is_instance_valid(player) and player.has_method("is_immune_to_damage") and bool(player.call("is_immune_to_damage"))
 
 func resolve_stats(player: Node2D = null) -> Node:
 	if player != null and is_instance_valid(player):

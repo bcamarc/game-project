@@ -223,6 +223,9 @@ func _has_solid_tile(tile_layer: TileMapLayer, world_pos: Vector2) -> bool:
 	return tile_layer.get_cell_source_id(cell) != -1
 
 func damage_player(amount: int) -> void:
+	if _is_player_immune(target_player):
+		return
+
 	var s = get_stats(target_player)
 	if s:
 		if s.has_method("add_hp"):
@@ -231,6 +234,9 @@ func damage_player(amount: int) -> void:
 			s.total_health -= amount
 	else:
 		print("hp is broken")
+
+func _is_player_immune(player: Node2D) -> bool:
+	return player != null and is_instance_valid(player) and player.has_method("is_immune_to_damage") and bool(player.call("is_immune_to_damage"))
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group("alien_player"):
