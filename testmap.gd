@@ -17,6 +17,23 @@ var safe_y := 0
 var world_level := 1
 @onready var background_sprite: Sprite2D = $ParallaxBackground/Sprite2D
 
+const DECORATION_SOURCE_ID := 0
+const DECORATION_CHANCE := 0.08
+const DECORATION_ATLAS_COORDS := [
+	Vector2i(5, 6),
+	Vector2i(6, 6),
+	Vector2i(5, 7),
+	Vector2i(6, 7),
+	Vector2i(7, 5),
+	Vector2i(7, 6),
+	Vector2i(7, 7),
+	Vector2i(7, 8),
+	Vector2i(8, 5),
+	Vector2i(8, 6),
+	Vector2i(8, 7),
+	Vector2i(8, 8)
+]
+
 const MAX_GATE_LEVEL := 4
 const LEVEL_FOUR_MAP_WIDTH := 90
 const LEVEL_FOUR_BOSS_SPAWN_HEIGHT := 6
@@ -61,6 +78,7 @@ func _spawn_map():
 		for y in range(height, ground_height + 20):
 			set_cell(Vector2i(x, y), 0, Vector2i(tile_x, 1))
 		set_cell(Vector2i(x, height - 1), 0, Vector2i(tile_x, 0))
+		_try_place_decoration(x, height)
 
 	if world_level == MAX_GATE_LEVEL:
 		_place_players_for_level_four()
@@ -88,6 +106,21 @@ func _tile_column_for_level(level: int) -> int:
 			return 4
 		_:
 			return 0
+
+func _try_place_decoration(x: int, surface_height: int) -> void:
+	if world_level == MAX_GATE_LEVEL:
+		return
+	if absi(x - safe_x) <= 6:
+		return
+	if randf() > DECORATION_CHANCE:
+		return
+
+	var decoration_cell := Vector2i(x, surface_height - 2)
+	if get_cell_source_id(decoration_cell) != -1:
+		return
+
+	var decoration_coords: Vector2i = DECORATION_ATLAS_COORDS.pick_random()
+	set_cell(decoration_cell, DECORATION_SOURCE_ID, decoration_coords)
 
 func _enemy_scene_for_level(level: int) -> PackedScene:
 	match level:

@@ -8,6 +8,23 @@ var map_width := 700
 var ground_height := 12
 var gate_x := 0
 
+const DECORATION_SOURCE_ID := 0
+const DECORATION_CHANCE := 0.08
+const DECORATION_ATLAS_COORDS := [
+	Vector2i(5, 6),
+	Vector2i(6, 6),
+	Vector2i(5, 7),
+	Vector2i(6, 7),
+	Vector2i(7, 5),
+	Vector2i(7, 6),
+	Vector2i(7, 7),
+	Vector2i(7, 8),
+	Vector2i(8, 5),
+	Vector2i(8, 6),
+	Vector2i(8, 7),
+	Vector2i(8, 8)
+]
+
 func _ready() -> void:
 	add_to_group("current_map")
 	randomize()
@@ -27,6 +44,7 @@ func _spawn_map():
 		for y in range(height, ground_height):
 			set_cell(Vector2i(x, y - 1), 0, Vector2i(0, 1), 0)
 		set_cell(Vector2i(x, height - 2), 0, Vector2i(0, 0), 0)
+		_try_place_decoration(x, height)
 
 	var gate = gateScene.instantiate()
 	var gate_y = floor(noise.get_noise_1d(gate_x) * 10 + ground_height / 2)
@@ -51,3 +69,16 @@ func _spawn_map():
 		add_child(mob)
 		mob.top_level = true
 		mob.global_position = map_to_local(Vector2i(x, y - 20))
+
+func _try_place_decoration(x: int, surface_height: int) -> void:
+	if absi(x - gate_x) <= 6:
+		return
+	if randf() > DECORATION_CHANCE:
+		return
+
+	var decoration_cell := Vector2i(x, surface_height - 3)
+	if get_cell_source_id(decoration_cell) != -1:
+		return
+
+	var decoration_coords: Vector2i = DECORATION_ATLAS_COORDS.pick_random()
+	set_cell(decoration_cell, DECORATION_SOURCE_ID, decoration_coords)
