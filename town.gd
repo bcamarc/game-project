@@ -3,7 +3,7 @@ extends Node2D
 const EXIT_GATE_POSITION := Vector2(500.0, 25.0)
 const TOWN_PLAYER_SCALE := Vector2.ONE
 const TOWN_CAMERA_ZOOM := Vector2(3.0, 3.0)
-const NEXT_LEVEL_GATE_SCALE := Vector2(0.45, 0.45)
+const NEXT_LEVEL_GATE_SCALE := Vector2(2, 2)
 const NEXT_LEVEL_PROMPT_POSITION := Vector2(5.0, -18.0)
 const NEXT_LEVEL_PROMPT_SCALE := Vector2(0.55, 0.55)
 
