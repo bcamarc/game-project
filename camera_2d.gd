@@ -10,6 +10,8 @@ var target: Node2D = null
 func _process(delta: float) -> void:
 	if not is_instance_valid(target):
 		target = get_tree().get_first_node_in_group("player") as Node2D
+		if not is_instance_valid(target):
+			target = get_tree().get_first_node_in_group("alien_player") as Node2D
 
 	if is_instance_valid(target):
 		global_position = target.global_position

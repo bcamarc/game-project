@@ -489,4 +489,5 @@ autoscroll = Vector2(-25, 0)
 repeat_times = 234879
 
 [node name="shopKeeper" parent="." instance=ExtResource("22_jky6x")]
+visible = false
 position = Vector2(4, 6)

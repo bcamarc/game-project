@@ -35,6 +35,7 @@ var health_regen_per_second := 0.4
 #var wizard_mana_regen_per_second := 0.15*max_magic
 var wizard_mana_regen_per_second := 7.5
 var testMapScene = preload("res://testmap.tscn")
+var townScene = preload("res://town.tscn")
 var equipment = {"weapon": null, "helmet": null, "chestplate": null, "boots": null}
 signal player_changed(player_name: String)
 
@@ -59,6 +60,19 @@ func on_next_level(tile_x, tile_y):
 	get_parent().add_child(new_map)
 	if new_map.has_method("set_gate_data"):
 		new_map.set_gate_data(tile_x, tile_y, world_level)
+
+func enter_town(_tile_x, _tile_y):
+	var parent := get_parent()
+	if parent == null:
+		return
+
+	var existing_town := parent.get_node_or_null("Town")
+	if existing_town != null:
+		return
+
+	var town = townScene.instantiate()
+	town.name = "Town"
+	parent.add_child(town)
 
 func _process(_delta):
 	if Input.is_action_just_released("stats"):

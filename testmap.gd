@@ -1,6 +1,6 @@
 extends TileMapLayer
 
-const DESERT_BACKGROUND: Texture2D = preload("res://art/desert_background.webp")
+const DESERT_BACKGROUND: Texture2D = preload("res://art/desesrt_background.jpg")
 const ICE_BACKGROUND: Texture2D = preload("res://art/ice_background.jpg")
 const FIRE_BACKGROUND: Texture2D = preload("res://art/lava_background.jpg")
 
