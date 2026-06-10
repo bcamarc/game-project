@@ -21,6 +21,7 @@ var gravity := ProjectSettings.get_setting("physics/2d/default_gravity") as floa
 var jump_velocity := -300.0
 var jump_cooldown := 0.35
 var jump_timer := 0.0
+const MELEE_STOP_DISTANCE := 42.0
 
 signal death(x, y)
 
@@ -81,6 +82,7 @@ func _physics_process(delta: float) -> void:
 
 	var monster_pos_x = global_position.x
 	var distance = global_position.distance_to(alien.global_position)
+	var player_delta_x: float = alien.global_position.x - monster_pos_x
 
 	if spawn_drop_active and not is_on_floor() and not died:
 		velocity.y = maxf(velocity.y, spawn_drop_speed)
@@ -90,14 +92,17 @@ func _physics_process(delta: float) -> void:
 		spawn_drop_active = false
 
 	if distance <= 520.0 or damaged:
-		if alien.global_position.x >= monster_pos_x:
+		if player_delta_x >= 0.0:
 			direction.x = 1.0
 			$AnimatedSprite2D.flip_h = false
 		else:
 			direction.x = -1.0
 			$AnimatedSprite2D.flip_h = true
 
-		velocity.x = speed * direction.x
+		if attacking or absf(player_delta_x) <= MELEE_STOP_DISTANCE:
+			velocity.x = 0.0
+		else:
+			velocity.x = speed * direction.x
 
 		if attacking and not died:
 			if count % 20 == 0 and not $AnimatedSprite2D.is_playing():

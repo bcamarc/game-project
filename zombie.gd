@@ -26,6 +26,7 @@ var attack_timer := 0.0
 var ability_damage := 5.0
 var ability_chance_per_second := 0.15
 var chase_distance := 500.0
+const MELEE_STOP_DISTANCE := 42.0
 
 signal death(x, y)
 
@@ -119,12 +120,17 @@ func _find_nearest_player() -> Node2D:
 	return nearest
 
 func _move_toward_player(player: Node2D) -> void:
-	if player.global_position.x >= global_position.x:
+	var delta_x: float = player.global_position.x - global_position.x
+	if delta_x >= 0.0:
 		direction.x = 1.0
 		$Sprite2D.flip_h = true
 	else:
 		direction.x = -1.0
 		$Sprite2D.flip_h = false
+
+	if attacking or absf(delta_x) <= MELEE_STOP_DISTANCE:
+		velocity.x = 0.0
+		return
 
 	velocity.x = speed * direction.x
 

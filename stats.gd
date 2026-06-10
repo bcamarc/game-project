@@ -40,10 +40,12 @@ var equipment = {"weapon": null, "helmet": null, "chestplate": null, "boots": nu
 signal player_changed(player_name: String)
 
 var current_player: String = "knight"
+@onready var skill_unlock_label: Label = $Control/Panel/SkillUnlockLabel
 
 func set_player(player_name: String) -> void:
 	current_player = player_name
 	print("Stats changed to:", current_player) 
+	_update_skill_unlock_label()
 	player_changed.emit(player_name)
 
 func _ready() -> void:
@@ -53,6 +55,7 @@ func _ready() -> void:
 	update_stats()
 	total_magic = max_magic
 	total_health = max_health
+	_update_skill_unlock_label()
 
 func on_next_level(tile_x, tile_y):
 	world_level = min(world_level + 1, 4)
@@ -77,6 +80,7 @@ func enter_town(_tile_x, _tile_y):
 func _process(_delta):
 	if Input.is_action_just_released("stats"):
 		visible = !visible
+	_update_skill_unlock_label()
 	_apply_passive_regen(_delta)
 
 func add_coin(a):
@@ -101,6 +105,7 @@ func check_exp():
 		exp = 0
 		expNeeded = expNeeded * 1.2
 		skillPoints += 2
+		_update_skill_unlock_label()
 
 func add_exp(a):
 	exp += a
@@ -187,6 +192,23 @@ func update_stats():
 	wizard_mana_regen_per_second = 0.15*(max_magic)
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)
+	_update_skill_unlock_label()
+
+func _update_skill_unlock_label() -> void:
+	if skill_unlock_label == null:
+		return
+
+	if level < 5:
+		skill_unlock_label.text = ""
+		return
+
+	match current_player:
+		"huntress":
+			skill_unlock_label.text = "Skill Unlocked:\nTriple Shot"
+		"wizard":
+			skill_unlock_label.text = "Skill Unlocked:\nHoly Spell"
+		_:
+			skill_unlock_label.text = "Skill Unlocked:\nShield"
 
 func _apply_passive_regen(delta: float) -> void:
 	if total_health > 0.0 and total_health < max_health:
