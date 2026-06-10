@@ -387,7 +387,6 @@ offset_top = -23.0
 offset_right = 19.0
 offset_bottom = -19.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_bg0vc")
-max_value = 50.0
 show_percentage = false
 
 [node name="RayCast2D" type="RayCast2D" parent="."]

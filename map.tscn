@@ -464,11 +464,11 @@ script = ExtResource("12_6qsgm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="Knight/Camera2D"]
-offset_left = -219.2
-offset_top = -121.600006
-offset_right = -179.2
-offset_bottom = -98.600006
-scale = Vector2(1.8, 1.8)
+offset_left = -223.60004
+offset_top = -119.600006
+offset_right = -183.60004
+offset_bottom = -96.600006
+scale = Vector2(1.5, 1.5)
 text = "1"
 label_settings = SubResource("LabelSettings_4on3e")
 script = ExtResource("17_a6rn7")
