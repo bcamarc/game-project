@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://djxmtycproxvm"]
+[gd_scene load_steps=19 format=3 uid="uid://djxmtycproxvm"]
 
 [ext_resource type="Script" uid="uid://b1ximvd4rs866" path="res://stats.gd" id="1_qkx3n"]
 [ext_resource type="Texture2D" uid="uid://6vptby3n8jbw" path="res://baseStats.png" id="2_tgj6n"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://c57xr88sio4q2" path="res://spd.gd" id="10_tj6r6"]
 [ext_resource type="Script" uid="uid://dcjc5k5qsc332" path="res://jmp.gd" id="11_1gw14"]
 [ext_resource type="Script" uid="uid://c834sis47h5kc" path="res://mag.gd" id="12_5mqph"]
+[ext_resource type="FontFile" uid="uid://xwrv7ayarg34" path="res://MediavelUI/MediavelUI/Round9x13.ttf" id="13_skill"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgj6n"]
 
@@ -207,6 +208,20 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_r4or0")
 theme_override_font_sizes/font_size = 30
 script = ExtResource("12_5mqph")
+
+[node name="SkillUnlockLabel" type="Label" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 52.0
+offset_right = 526.0
+offset_bottom = 132.0
+scale = Vector2(0.5872658, 0.5216272)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_skill")
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="closeButton" type="Button" parent="Control/Panel"]
 layout_mode = 0

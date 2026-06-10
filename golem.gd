@@ -33,6 +33,7 @@ var attack_damage := 5
 var attack_frame := 4
 var attack_cooldown := 0.8
 var attack_timer := 0.0
+const MELEE_STOP_DISTANCE := 72.0
 
 func _ready() -> void:
 	stats = resolve_stats()
@@ -106,16 +107,20 @@ func _physics_process(delta: float) -> void:
 
 	var distance = global_position.distance_to(alien.global_position)
 	monsterPos = global_position.x
+	var player_delta_x: float = alien.global_position.x - monsterPos
 
 	if distance <= 550.0:
-		if alien.global_position.x >= monsterPos:
+		if player_delta_x >= 0.0:
 			direction.x = 1.0
 			$AnimatedSprite2D.flip_h = false
 		else:
 			direction.x = -1.0
 			$AnimatedSprite2D.flip_h = true
 
-		velocity.x = speed * direction.x
+		if attacking or absf(player_delta_x) <= MELEE_STOP_DISTANCE:
+			velocity.x = 0.0
+		else:
+			velocity.x = speed * direction.x
 	else:
 		velocity.x = 0.0
 		if not $AnimatedSprite2D.is_playing() or $AnimatedSprite2D.animation != "Idle":
