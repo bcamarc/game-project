@@ -4,8 +4,8 @@ var noise := FastNoiseLite.new()
 var zombieScene = preload("res://zombie.tscn")
 var gateScene = preload("res://gate1.tscn")
 
-var map_width := 700
-var ground_height := 12
+var map_width := 2100
+var ground_height := 30 
 var gate_x := 0
 
 const DECORATION_SOURCE_ID := 0
@@ -36,13 +36,15 @@ func on_next_level():
 	queue_free()
 
 func _spawn_map():
-	var mob_count := 12
+	var mob_count := 36
 	gate_x = randi_range(50, map_width - 50)
 
 	for x in range(map_width):
 		var height = floor(noise.get_noise_1d(x) * 10 + ground_height / 2)
+		
 		for y in range(height, ground_height):
 			set_cell(Vector2i(x, y - 1), 0, Vector2i(0, 1), 0)
+			
 		set_cell(Vector2i(x, height - 2), 0, Vector2i(0, 0), 0)
 		_try_place_decoration(x, height)
 
@@ -52,9 +54,15 @@ func _spawn_map():
 	gate.top_level = true
 	gate.global_position = map_to_local(Vector2i(gate_x, gate_y - 10))
 
-	var slot_width: float = float(map_width) / float(mob_count + 1)
+	var slot_width: float = float(map_width) / float(mob_count)
 	for i in range(mob_count):
-		var x: int = int(round(float(i + 1) * slot_width))
+		var slot_start := int(i * slot_width)
+		var slot_end := int((i + 1) * slot_width)
+		
+		var x: int = randi_range(slot_start, slot_end - 1)
+		
+		x = clampi(x, 0, map_width - 1)
+
 		if absi(x - gate_x) < 20:
 			if x < gate_x:
 				x = maxi(0, gate_x - 25)

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var coins := 0
+var coins := 60
 var exp := 0
 var level := 1
 var expNeeded := 10.0
@@ -17,7 +17,7 @@ var total_strength := 0
 var total_vitality := 0
 var total_intellegience := 0
 var total_dexterity := 0
-var skillPoints := 0
+var skillPoints := 5
 var base_health := 100
 var base_damage := 17
 var base_defense := 5
@@ -170,7 +170,7 @@ func update_stats():
 	total_dexterity = effective_dexterity
 
 	max_health = base_health + effective_vitality * 10
-	total_damage = base_damage + effective_strength * 2
+	total_damage = base_damage + effective_strength * 1
 	total_defense = base_defense + effective_vitality * 1
 	total_speed = base_speed + effective_dexterity * 5
 	max_magic = base_magic + effective_intellegience * 2
