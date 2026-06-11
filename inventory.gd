@@ -24,6 +24,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("inventory"):
 		toggle_menu()
 		get_viewport().set_input_as_handled()
+	elif visible and event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_SPACE:
+		consume_hovered_consumable()
+		get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_9:
 		consume_first_consumable()
 		get_viewport().set_input_as_handled()
@@ -40,4 +43,9 @@ func add_item(item_data: Dictionary) -> bool:
 func consume_first_consumable() -> bool:
 	if weapons_panel != null and weapons_panel.has_method("consume_first_consumable"):
 		return weapons_panel.consume_first_consumable()
+	return false
+
+func consume_hovered_consumable() -> bool:
+	if weapons_panel != null and weapons_panel.has_method("consume_hovered_consumable"):
+		return weapons_panel.consume_hovered_consumable()
 	return false

@@ -24,19 +24,32 @@ func add_item(item_data: Dictionary) -> bool:
 
 func consume_first_consumable() -> bool:
 	for slot in grid.get_children():
-		if not slot.has_method("set_item"):
-			continue
-
-		var item = slot.get("item")
-		if item == null or not (item is Dictionary):
-			continue
-
-		if item.get("type", "") != "consumable":
-			continue
-
-		if _use_consumable(item):
-			slot.set_item(null)
+		if consume_slot(slot):
 			return true
+
+	return false
+
+func consume_hovered_consumable() -> bool:
+	var hovered_slot := _slot_under_mouse()
+	if hovered_slot == null:
+		return false
+
+	return consume_slot(hovered_slot)
+
+func consume_slot(slot: Node) -> bool:
+	if slot == null or not slot.has_method("set_item"):
+		return false
+
+	var item = slot.get("item")
+	if item == null or not (item is Dictionary):
+		return false
+
+	if item.get("type", "") != "consumable":
+		return false
+
+	if _use_consumable(item):
+		slot.set_item(null)
+		return true
 
 	return false
 
@@ -75,3 +88,11 @@ func _resolve_stats() -> Node:
 		return stats_node
 
 	return get_node_or_null("/root/Stats")
+
+func _slot_under_mouse() -> Node:
+	var mouse_position := get_global_mouse_position()
+	for slot in grid.get_children():
+		if slot is Control and slot.get_global_rect().has_point(mouse_position):
+			return slot
+
+	return null

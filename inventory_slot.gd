@@ -45,6 +45,13 @@ func _get_drag_data(position):
 		"from": self
 	}
 
+func _gui_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var grid := get_parent()
+		var weapons_panel = grid.get_parent() if grid != null else null
+		if weapons_panel != null and weapons_panel.has_method("consume_slot") and weapons_panel.consume_slot(self):
+			accept_event()
+
 
 func _can_drop_data(position, data):
 	return typeof(data) == TYPE_DICTIONARY and data.has("item")

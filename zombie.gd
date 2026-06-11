@@ -148,15 +148,29 @@ func _try_jump_over_terrain(player: Node2D) -> void:
 
 	if tile_layer != null and direction.x != 0.0:
 		var probe_origin: Vector2 = $CollisionShape2D.global_position
-		var probe_x := probe_origin.x + direction.x * block_width * 0.65
-		var probe_y := probe_origin.y
-		var wall_probe_low := Vector2(probe_x, probe_y + block_height * 0.15)
-		var wall_probe_mid := Vector2(probe_x, probe_y - block_height * 0.35)
-		var floor_probe_near := Vector2(probe_x, probe_y + block_height * 0.95)
-		var floor_probe_far := Vector2(probe_x, probe_y + block_height * 1.35)
+		var collision_half_width := block_width * 0.35
+		var collision_shape: Shape2D = $CollisionShape2D.shape
+		if collision_shape is RectangleShape2D:
+			collision_half_width = (collision_shape as RectangleShape2D).size.x * absf($CollisionShape2D.global_scale.x) * 0.5
 
-		wall_ahead = _has_solid_tile(tile_layer, wall_probe_low) or _has_solid_tile(tile_layer, wall_probe_mid)
-		floor_ahead = _has_solid_tile(tile_layer, floor_probe_near) or _has_solid_tile(tile_layer, floor_probe_far)
+		var front_edge_x := probe_origin.x + direction.x * collision_half_width
+		var probe_y := probe_origin.y
+		var probe_distances := [
+			block_width * 0.2,
+			block_width * 0.5,
+			block_width * 0.85
+		]
+
+		wall_ahead = false
+		floor_ahead = false
+		for distance_ahead in probe_distances:
+			var probe_x: float = front_edge_x + direction.x * float(distance_ahead)
+			var wall_probe_low := Vector2(probe_x, probe_y + block_height * 0.15)
+			var wall_probe_mid := Vector2(probe_x, probe_y - block_height * 0.35)
+			var floor_probe := Vector2(probe_x, probe_y + block_height * 1.1)
+
+			wall_ahead = wall_ahead or _has_solid_tile(tile_layer, wall_probe_low) or _has_solid_tile(tile_layer, wall_probe_mid)
+			floor_ahead = floor_ahead or _has_solid_tile(tile_layer, floor_probe)
 	elif direction.x != 0.0:
 		$RayCast2D.position = Vector2(7.0 * direction.x, 11.0)
 		$RayCast2D.target_position = Vector2(35.0 * direction.x, -5.0)
