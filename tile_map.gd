@@ -4,7 +4,7 @@ var noise := FastNoiseLite.new()
 var zombieScene = preload("res://zombie.tscn")
 var gateScene = preload("res://gate1.tscn")
 
-var map_width := 2100
+var map_width := 1000
 var ground_height := 30 
 var gate_x := 0
 
@@ -36,7 +36,7 @@ func on_next_level():
 	queue_free()
 
 func _spawn_map():
-	var mob_count := 36
+	var mob_count := 12
 	gate_x = randi_range(50, map_width - 50)
 
 	for x in range(map_width):

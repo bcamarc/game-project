@@ -17,7 +17,7 @@ var total_strength := 0
 var total_vitality := 0
 var total_intellegience := 0
 var total_dexterity := 0
-var skillPoints := 5
+var skillPoints := 500
 var base_health := 100
 var base_damage := 17
 var base_defense := 5
@@ -45,6 +45,7 @@ var current_player: String = "knight"
 func set_player(player_name: String) -> void:
 	current_player = player_name
 	print("Stats changed to:", current_player) 
+	_unequip_invalid_items_for_current_player()
 	_update_skill_unlock_label()
 	player_changed.emit(player_name)
 
@@ -193,6 +194,24 @@ func update_stats():
 	total_health = clamp(total_health, 0, max_health)
 	total_magic = clamp(total_magic, 0, max_magic)
 	_update_skill_unlock_label()
+
+func _unequip_invalid_items_for_current_player() -> void:
+	for slot_type in equipment.keys():
+		var item = equipment[slot_type]
+		if item == null:
+			continue
+		if ItemDropPool.can_player_use_item(current_player, item):
+			continue
+
+		equipment[slot_type] = null
+		_return_unequipped_item_to_inventory(item)
+
+	update_stats()
+
+func _return_unequipped_item_to_inventory(item: Dictionary) -> void:
+	var inventory := get_tree().get_first_node_in_group("inventory")
+	if inventory != null and inventory.has_method("add_item"):
+		inventory.add_item(item)
 
 func _update_skill_unlock_label() -> void:
 	if skill_unlock_label == null:

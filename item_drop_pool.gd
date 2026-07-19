@@ -133,16 +133,17 @@ static func can_player_use_item(player_name: String, item: Dictionary) -> bool:
 	if item.get("type", "") != "weapon":
 		return true
 
-	var weapon_class := str(item.get("weapon_class", ""))
+	var weapon_class := _weapon_class_for_item(item)
+
 	match player_name:
 		"knight":
 			return weapon_class == "melee"
-		"huntress":
+		"huntress", "archer":
 			return weapon_class == "bow"
 		"wizard":
 			return weapon_class == "magic"
 		_:
-			return true
+			return false
 
 static func _drop_weight(item: Dictionary) -> float:
 	match str(item.get("rarity", RARITY_COMMON)):
@@ -192,12 +193,16 @@ static func _rarity_for_item(item: Dictionary) -> String:
 
 static func _weapon_class_for_item(item: Dictionary) -> String:
 	var item_name := str(item.get("name", "")).to_lower()
+	var weapon_class := str(item.get("weapon_class", "")).to_lower()
 
 	if item_name.contains("bow"):
 		return "bow"
 
 	if item_name.contains("wand") or item_name.contains("scepter"):
 		return "magic"
+
+	if weapon_class != "":
+		return weapon_class
 
 	return "melee"
 
