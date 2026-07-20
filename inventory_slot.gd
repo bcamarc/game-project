@@ -22,6 +22,47 @@ func _apply_item():
 	else:
 		icon.texture = null
 
+	tooltip_text = _build_item_tooltip()
+	var panel := find_child("Panel", true, false) as Control
+	if panel != null:
+		panel.tooltip_text = tooltip_text
+	if icon is Control:
+		icon.tooltip_text = tooltip_text
+		icon.mouse_filter = Control.MOUSE_FILTER_PASS
+
+func _build_item_tooltip() -> String:
+	if not (item is Dictionary):
+		return ""
+
+	var lines: Array[String] = []
+	var item_name := str(item.get("name", "Unknown Item"))
+	var rarity := str(item.get("rarity", ""))
+	lines.append(item_name if rarity.is_empty() else rarity + " " + item_name)
+
+	var item_type := str(item.get("type", ""))
+	if not item_type.is_empty():
+		lines.append(item_type.capitalize())
+
+	for stat_name in ["damage", "defense", "speed", "magic", "strength", "vitality", "intellegience", "intelligence", "dexterity"]:
+		if item.has(stat_name):
+			var display_name: String = "Intelligence" if stat_name == "intellegience" else stat_name.capitalize()
+			lines.append("+" + str(item[stat_name]) + " " + display_name)
+
+	if item_type == "consumable":
+		var use_effect := str(item.get("use_effect", ""))
+		var use_amount: Variant = item.get("use_amount", 0)
+		lines.append("Use: +" + str(use_amount) + " " + use_effect.capitalize())
+		lines.append("Left click to use")
+	elif item_type == "weapon":
+		var weapon_class := str(item.get("weapon_class", ""))
+		if not weapon_class.is_empty():
+			lines.append("Class: " + weapon_class.capitalize())
+		lines.append("Drag to weapon slot")
+	else:
+		lines.append("Drag to matching equipment slot")
+
+	return "\n".join(lines)
+
 
 func _get_drag_data(position):
 	if item == null:

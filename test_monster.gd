@@ -233,7 +233,9 @@ func damage_player(amount: int) -> void:
 
 	var s = get_stats(target_player)
 	if s:
-		if s.has_method("add_hp"):
+		if s.has_method("take_damage"):
+			s.take_damage(amount)
+		elif s.has_method("add_hp"):
 			s.add_hp(-amount)
 		else:
 			s.total_health -= amount

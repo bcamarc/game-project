@@ -8,6 +8,9 @@ var speed := 400.0
 var gravity := 700.0
 var arc_lift := 80.0
 var hitbox: Area2D
+var damage_multiplier := 1.0
+var pierces_remaining := 0
+var hit_targets: Array[Node] = []
 
 
 var target_position := Vector2.ZERO
@@ -61,19 +64,19 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if dying:
 		return
 
-	if _is_enemy_target(body):
-		if body.has_method("take_damage"):
-			body.take_damage(damage - 18)
-			dying = true
-			queue_free()
-			return
+	var target := _enemy_target_from(body)
+	if target == null or hit_targets.has(target) or not target.has_method("take_damage"):
+		return
 
-		var p := body.get_parent()
-		if p != null and _is_enemy_target(p) and p.has_method("take_damage"):
-			p.take_damage(damage)
-			dying = true
-			queue_free()
-			return
+	hit_targets.append(target)
+	var base_damage := maxf(1.0, float(damage - 18))
+	target.take_damage(int(round(base_damage * damage_multiplier)))
+	if pierces_remaining > 0:
+		pierces_remaining -= 1
+		return
+
+	dying = true
+	queue_free()
 
 
 func _update_damage() -> void:
@@ -103,4 +106,12 @@ func _resolve_stats() -> Node:
 
 
 func _is_enemy_target(body: Node) -> bool:
-	return body.is_in_group("enemy") or body.is_in_group("golem") or body.is_in_group("slime")
+	return body.is_in_group("enemy") or body.is_in_group("golem") or body.is_in_group("slime") or body.is_in_group("shadow_knight")
+
+func _enemy_target_from(body: Node) -> Node:
+	if _is_enemy_target(body):
+		return body
+	var parent := body.get_parent()
+	if parent != null and _is_enemy_target(parent):
+		return parent
+	return null

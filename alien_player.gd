@@ -27,7 +27,12 @@ var attack_cooldown := 0.2
 var attack_timer := 0.0
 var defense_cooldown := 1.5
 var defense_timer := 0.0
+var cleave_cooldown := 3.0
+var cleave_timer := 0.0
 
+const CLEAVE_LEVEL_REQUIREMENT := 3
+const CLEAVE_RANGE := 110.0
+const CLEAVE_DAMAGE_MULTIPLIER := 1.75
 const DEFENSE_LEVEL_REQUIREMENT := 5
 const DEFENSE_ANIMATIONS := [
 	&"defend",
@@ -68,6 +73,7 @@ func _physics_process(delta):
 
 	attack_timer -= delta
 	defense_timer -= delta
+	cleave_timer -= delta
 
 	
 
@@ -129,6 +135,8 @@ func _physics_process(delta):
 
 	if _is_defense_just_pressed() and _can_start_defense():
 		_start_defense()
+	if _is_class_skill_just_pressed() and _can_cleave():
+		_use_cleave()
 
 	if is_attacking and not has_hit:
 		var bodies = hitbox.get_overlapping_bodies()
@@ -175,6 +183,27 @@ func _is_busy() -> bool:
 
 func _is_defense_just_pressed() -> bool:
 	return InputMap.has_action(&"attack_burst") and Input.is_action_just_pressed(&"attack_burst")
+
+func _is_class_skill_just_pressed() -> bool:
+	return InputMap.has_action(&"class_skill") and Input.is_action_just_pressed(&"class_skill")
+
+func _can_cleave() -> bool:
+	return not _is_busy() and cleave_timer <= 0.0 and _get_level() >= CLEAVE_LEVEL_REQUIREMENT
+
+func _use_cleave() -> void:
+	cleave_timer = cleave_cooldown
+	is_attacking = true
+	has_hit = true
+	sprite.play("attack1")
+	$AudioStreamPlayer2D.play()
+	var stats := _resolve_stats()
+	if stats == null:
+		return
+
+	var damage := int(round(float(stats.total_damage) * CLEAVE_DAMAGE_MULTIPLIER))
+	for enemy in get_tree().get_nodes_in_group("enemy") + get_tree().get_nodes_in_group("slime") + get_tree().get_nodes_in_group("golem") + get_tree().get_nodes_in_group("shadow_knight"):
+		if enemy is Node2D and global_position.distance_to((enemy as Node2D).global_position) <= CLEAVE_RANGE and enemy.has_method("take_damage"):
+			enemy.take_damage(damage)
 
 func _can_start_defense() -> bool:
 	return not is_attacking and not is_defending and defense_timer <= 0.0 and _get_level() >= DEFENSE_LEVEL_REQUIREMENT and _get_defense_animation() != &""

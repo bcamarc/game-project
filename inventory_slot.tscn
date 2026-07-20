@@ -18,6 +18,7 @@ script = ExtResource("1_42eed")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 1
 script = ExtResource("2_bfyh4")
 
 [node name="TextureRect" type="TextureRect" parent="Panel"]
@@ -32,6 +33,6 @@ offset_bottom = 212.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.35, 0.35)
-mouse_filter = 2
+mouse_filter = 1
 texture = ExtResource("2_f5bh6")
 stretch_mode = 5

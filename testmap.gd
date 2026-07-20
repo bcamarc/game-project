@@ -10,6 +10,7 @@ var slimeScene = preload("res://test_monster.tscn")
 var golemScene = preload("res://golem.tscn")
 var shadowKnightScene = preload("res://shadow_knight.tscn")
 var gateScene = preload("res://gate1.tscn")
+var eliteModifierScript = preload("res://elite_modifier.gd")
 var map_width := 700
 var ground_height := 20
 var safe_x := 0
@@ -35,6 +36,11 @@ const DECORATION_ATLAS_COORDS := [
 ]
 
 const MAX_GATE_LEVEL := 4
+const ELITE_CHANCE_BY_LEVEL := {
+	1: 0.12,
+	2: 0.18,
+	3: 0.24,
+}
 const LEVEL_FOUR_MAP_WIDTH := 90
 const LEVEL_FOUR_BOSS_SPAWN_HEIGHT := 6
 const LEVEL_FOUR_BARRIER_HEIGHT := 26
@@ -159,6 +165,15 @@ func _spawn_enemies(mob_count: int) -> void:
 		add_child(mob)
 		mob.top_level = true
 		mob.global_position = map_to_local(Vector2i(x, y - 3))
+		_try_make_elite(mob)
+
+func _try_make_elite(mob: Node2D) -> void:
+	var elite_chance: float = float(ELITE_CHANCE_BY_LEVEL.get(world_level, 0.0))
+	if randf() > elite_chance:
+		return
+
+	var modifier: Node = eliteModifierScript.new()
+	mob.add_child(modifier)
 
 func _spawn_shadow_knight() -> void:
 	var boss := shadowKnightScene.instantiate() as Node2D

@@ -29,6 +29,13 @@ var holy_key_was_down := false
 
 var attack_cooldown := 0.2
 var attack_timer := 0.0
+var volley_timer := 0.0
+
+const VOLLEY_LEVEL_REQUIREMENT := 3
+const VOLLEY_COOLDOWN := 4.0
+const VOLLEY_MANA_COST := 35.0
+const VOLLEY_DAMAGE_MULTIPLIER := 0.8
+const VOLLEY_ANGLES := [-0.24, 0.0, 0.24]
 
 # Holy buffs
 var holy_speed_multiplier := 1.35
@@ -88,6 +95,7 @@ func _physics_process(delta: float) -> void:
 	count5 += 1
 
 	attack_timer -= delta
+	volley_timer -= delta
 	if holy_speed_timer > 0.0:
 		holy_speed_timer -= delta
 
@@ -136,6 +144,8 @@ func _physics_process(delta: float) -> void:
 	if not is_attacking and attack_timer <= 0.0:
 		if _is_attack_just_pressed():
 			_start_attack_with_spell(spell)
+		elif _is_class_skill_just_pressed() and stats.level >= VOLLEY_LEVEL_REQUIREMENT and volley_timer <= 0.0:
+			_start_arcane_volley()
 		elif _is_thunder_just_pressed():
 			_start_attack_with_spell(thunderSpell)
 		elif _is_ice_just_pressed():
@@ -173,6 +183,37 @@ func _start_attack_with_spell(spell_scene: PackedScene) -> void:
 	pending_spell = spell_scene
 	attack_timer = attack_cooldown
 	_play_attack_anim()
+
+func _start_arcane_volley() -> void:
+	if stats_missing_or_insufficient_mana(VOLLEY_MANA_COST):
+		return
+	var stats = _stats()
+	stats.total_magic -= VOLLEY_MANA_COST
+	volley_timer = VOLLEY_COOLDOWN
+	is_attacking = true
+	attack_timer = 0.5
+	_spawn_arcane_volley()
+	_play_attack_anim()
+
+func stats_missing_or_insufficient_mana(cost: float) -> bool:
+	var stats = _stats()
+	return stats == null or stats.total_magic < cost
+
+func _spawn_arcane_volley() -> void:
+	var spawn_pos: Vector2 = $arrow_spawn.global_position
+	var target_pos: Vector2 = get_global_mouse_position()
+	var aim := target_pos - spawn_pos
+	if aim.length_squared() < 0.0001:
+		aim = Vector2.LEFT if sprite.flip_h else Vector2.RIGHT
+	else:
+		aim = aim.normalized()
+
+	for angle in VOLLEY_ANGLES:
+		var projectile = spell.instantiate()
+		projectile.global_position = spawn_pos
+		projectile.damage_multiplier = VOLLEY_DAMAGE_MULTIPLIER
+		projectile.set_target_position(spawn_pos + aim.rotated(angle) * 600.0)
+		get_tree().current_scene.add_child(projectile)
 
 func _spawn_spell(spell_scene: PackedScene) -> void:
 	if spell_scene == null:
@@ -332,6 +373,9 @@ func _is_holy_just_pressed() -> bool:
 	var just_pressed := key_down and not holy_key_was_down
 	holy_key_was_down = key_down
 	return just_pressed
+
+func _is_class_skill_just_pressed() -> bool:
+	return _action_just_pressed_if_exists(&"class_skill")
 
 func _stats():
 	var scene := get_tree().current_scene

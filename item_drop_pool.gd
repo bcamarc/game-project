@@ -1,7 +1,7 @@
 extends RefCounted
 class_name ItemDropPool
 
-const MONSTER_DROP_CHANCE := 0.4
+const MONSTER_DROP_CHANCE := 1
 const RARITY_COMMON := "Common"
 const RARITY_UNCOMMON := "Uncommon"
 const RARITY_RARE := "Rare"
@@ -60,6 +60,21 @@ static func monster_items() -> Array:
 		{"name": "Black Bow", "icon": preload("res://RPG Icons/Icon108.png"), "type": "weapon", "damage": 12},
 		{"name": "Forest Bow", "icon": preload("res://RPG Icons/Icon109.png"), "type": "weapon", "damage": 11, "speed": 3},
 		{"name": "Blue Bow", "icon": preload("res://RPG Icons/Icon110.png"), "type": "weapon", "damage": 12, "magic": 2},
+		{"name": "Ashwood Short Bow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon1_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 8, "dexterity": 1},
+		{"name": "Birch Hunting Bow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon2_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 9, "dexterity": 2},
+		{"name": "Reinforced Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon3_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 10},
+		{"name": "Carved Longbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon4_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 11, "dexterity": 2},
+		{"name": "Scout Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon6_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 12, "speed": 1},
+		{"name": "Ranger Bow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon8_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 12, "dexterity": 3},
+		{"name": "Twin-Limb Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon12_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 13},
+		{"name": "Hornwood Bow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon13_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 13, "speed": 2},
+		{"name": "Falcon Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon14_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 14, "dexterity": 2},
+		{"name": "Warbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon15_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 15},
+		{"name": "Gilded Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon16_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 15, "magic": 2},
+		{"name": "Moonstring Bow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon19_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 16, "magic": 3},
+		{"name": "Ironwood Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon20_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 16, "defense": 1},
+		{"name": "Stormcurve Bow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon21_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 17, "speed": 3},
+		{"name": "Royal Crossbow", "icon": preload("res://Free Bow and Crossbow Icons/PNG/Transperent/Icon22_no_effect.png"), "type": "weapon", "weapon_class": "bow", "damage": 18, "dexterity": 4},
 		{"name": "Red Hood", "icon": preload("res://RPG Icons/Icon161.png"), "type": "helmet", "defense": 2},
 		{"name": "Leather Cap", "icon": preload("res://RPG Icons/Icon162.png"), "type": "helmet", "defense": 3},
 		{"name": "Brown Helmet", "icon": preload("res://RPG Icons/Icon163.png"), "type": "helmet", "defense": 4},

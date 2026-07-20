@@ -20,12 +20,19 @@ var count5 := 500
 var is_attacking := false
 var queued_shots := 0
 var queued_shot_timer := 0.0
+var queued_damage_multiplier := 1.0
+var queued_pierces := 0
 
 const BURST_SHOT_INTERVAL := 0.15
 const BURST_LEVEL_REQUIREMENT := 5
+const PIERCING_LEVEL_REQUIREMENT := 3
+const PIERCING_COOLDOWN := 3.0
+const PIERCING_DAMAGE_MULTIPLIER := 2.0
+const PIERCING_EXTRA_HITS := 2
 
 var attack_cooldown := 0.2
 var attack_timer := 0.0
+var piercing_timer := 0.0
 
 const ANIM_IDLE := "idle"
 const ANIM_RUN := "run"
@@ -72,6 +79,7 @@ func _physics_process(delta: float) -> void:
 	count5 += 1
 
 	attack_timer -= delta
+	piercing_timer -= delta
 	if is_attacking and queued_shots > 0 and queued_shot_timer > 0.0:
 		queued_shot_timer -= delta
 		if queued_shot_timer <= 0.0:
@@ -121,6 +129,9 @@ func _physics_process(delta: float) -> void:
 	if not is_attacking and attack_timer <= 0.0:
 		if _is_attack_just_pressed():
 			_start_attack(1)
+		elif _is_class_skill_just_pressed() and _get_level() >= PIERCING_LEVEL_REQUIREMENT and piercing_timer <= 0.0:
+			piercing_timer = PIERCING_COOLDOWN
+			_start_attack(1, PIERCING_DAMAGE_MULTIPLIER, PIERCING_EXTRA_HITS)
 		elif _is_burst_attack_just_pressed() and _get_level() >= BURST_LEVEL_REQUIREMENT:
 			_resolve_stats().total_health *= 0.95
 			_start_attack(3)
@@ -130,7 +141,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-func _spawn_arrow() -> void:
+func _spawn_arrow(damage_multiplier := 1.0, pierces := 0) -> void:
 	var arrow = arrows.instantiate()
 	var spawn_pos: Vector2 = $arrow_spawn.global_position
 	var mouse_world: Vector2 = get_global_mouse_position()
@@ -138,6 +149,8 @@ func _spawn_arrow() -> void:
 	
 	arrow.global_position = spawn_pos
 	arrow.direction = -1 if mouse_world.x < spawn_pos.x else 1
+	arrow.damage_multiplier = damage_multiplier
+	arrow.pierces_remaining = pierces
 	if arrow.has_method("set_target_position"):
 		arrow.set_target_position(mouse_world)
 
@@ -153,10 +166,12 @@ func _on_animation_finished() -> void:
 	if sprite.animation == ANIM_ATTACK_PRIMARY or sprite.animation == ANIM_ATTACK_FALLBACK:
 		_fire_queued_shot()
 
-func _start_attack(shot_count: int) -> void:
+func _start_attack(shot_count: int, damage_multiplier := 1.0, pierces := 0) -> void:
 	is_attacking = true
 	queued_shots = shot_count
 	queued_shot_timer = 0.0
+	queued_damage_multiplier = damage_multiplier
+	queued_pierces = pierces
 	attack_timer = attack_cooldown
 	_play_attack_anim()
 
@@ -165,7 +180,7 @@ func _fire_queued_shot() -> void:
 		_finish_attack()
 		return
 
-	_spawn_arrow()
+	_spawn_arrow(queued_damage_multiplier, queued_pierces)
 	$AudioStreamPlayer2D.play()
 	queued_shots -= 1
 
@@ -178,6 +193,8 @@ func _finish_attack() -> void:
 	is_attacking = false
 	queued_shots = 0
 	queued_shot_timer = 0.0
+	queued_damage_multiplier = 1.0
+	queued_pierces = 0
 
 	if not is_on_floor():
 		_play_if_exists(ANIM_JUMP)
@@ -212,6 +229,9 @@ func _is_attack_just_pressed() -> bool:
 
 func _is_burst_attack_just_pressed() -> bool:
 	return _action_just_pressed_if_exists(&"attack_burst")
+
+func _is_class_skill_just_pressed() -> bool:
+	return _action_just_pressed_if_exists(&"class_skill")
 
 func _get_level() -> int:
 	var stats := _resolve_stats()

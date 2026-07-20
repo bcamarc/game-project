@@ -278,7 +278,9 @@ func _damage_player(amount: float) -> void:
 	if current_stats == null:
 		return
 
-	if current_stats.has_method("add_hp"):
+	if current_stats.has_method("take_damage"):
+		current_stats.take_damage(amount)
+	elif current_stats.has_method("add_hp"):
 		current_stats.add_hp(-amount)
 	else:
 		current_stats.total_health -= amount

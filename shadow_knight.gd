@@ -257,7 +257,9 @@ func damage_player(amount: int) -> void:
 		print("Stats not found: cannot damage player")
 		return
 
-	if resolved_stats.has_method("add_hp"):
+	if resolved_stats.has_method("take_damage"):
+		resolved_stats.take_damage(amount)
+	elif resolved_stats.has_method("add_hp"):
 		resolved_stats.add_hp(-amount)
 	else:
 		resolved_stats.total_health -= amount

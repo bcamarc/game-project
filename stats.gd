@@ -43,11 +43,13 @@ var current_player: String = "knight"
 @onready var skill_unlock_label: Label = $Control/Panel/SkillUnlockLabel
 
 func set_player(player_name: String) -> void:
-	current_player = player_name
+	current_player = player_name.to_lower()
+	if current_player == "archer":
+		current_player = "huntress"
 	print("Stats changed to:", current_player) 
 	_unequip_invalid_items_for_current_player()
 	_update_skill_unlock_label()
-	player_changed.emit(player_name)
+	player_changed.emit(current_player)
 
 func _ready() -> void:
 	add_to_group("stats")
@@ -114,6 +116,17 @@ func add_exp(a):
 
 func add_hp(a):
 	total_health = clamp(total_health + a, 0, max_health)
+
+func take_damage(raw_damage: float) -> float:
+	if raw_damage <= 0.0:
+		return 0.0
+
+	# Diminishing returns keep defense valuable without allowing armor to
+	# completely remove damage. At 50 defense, incoming damage is reduced by 50%.
+	var mitigation := float(total_defense) / (float(total_defense) + 50.0)
+	var final_damage := maxf(1.0, floorf(raw_damage * (1.0 - mitigation)))
+	add_hp(-final_damage)
+	return final_damage
 
 func add_mp(a):
 	total_magic = clamp(total_magic + a, 0, max_magic)
@@ -217,17 +230,23 @@ func _update_skill_unlock_label() -> void:
 	if skill_unlock_label == null:
 		return
 
-	if level < 5:
+	if level < 3:
 		skill_unlock_label.text = ""
 		return
 
 	match current_player:
-		"huntress":
-			skill_unlock_label.text = "Skill Unlocked:\nTriple Shot"
+		"huntress", "archer":
+			skill_unlock_label.text = "Skill Unlocked:\nPiercing Shot (Q)"
+			if level >= 5:
+				skill_unlock_label.text += "\nTriple Shot (Right Click)"
 		"wizard":
-			skill_unlock_label.text = "Skill Unlocked:\nHoly Spell"
+			skill_unlock_label.text = "Skill Unlocked:\nArcane Volley (Q)"
+			if level >= 5:
+				skill_unlock_label.text += "\nHoly Spell (4)"
 		_:
-			skill_unlock_label.text = "Skill Unlocked:\nShield"
+			skill_unlock_label.text = "Skill Unlocked:\nCleave (Q)"
+			if level >= 5:
+				skill_unlock_label.text += "\nShield (Right Click)"
 
 func _apply_passive_regen(delta: float) -> void:
 	if total_health > 0.0 and total_health < max_health:
