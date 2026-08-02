@@ -13,19 +13,20 @@ func _ready():
 
 	# connect hover signals (TextureRect is a Control)
 	if icon is Control:
-		if not icon.is_connected("mouse_entered", self, "_on_icon_mouse_entered"):
-			icon.connect("mouse_entered", self, "_on_icon_mouse_entered")
-		if not icon.is_connected("mouse_exited", self, "_on_icon_mouse_exited"):
-			icon.connect("mouse_exited", self, "_on_icon_mouse_exited")
+		var enter_cb := Callable(self, "_on_icon_mouse_entered")
+		var exit_cb := Callable(self, "_on_icon_mouse_exited")
+		if not icon.is_connected("mouse_entered", enter_cb):
+			icon.connect("mouse_entered", enter_cb)
+		if not icon.is_connected("mouse_exited", exit_cb):
+			icon.connect("mouse_exited", exit_cb)
 
 func set_item(new_item) -> void:
 	item = new_item
-
 	if icon != null:
 		_apply_item()
 
 func _apply_item() -> void:
-	if item and item.has("icon"):
+	if item is Dictionary and item.has("icon"):
 		if icon != null:
 			icon.texture = item["icon"]
 	else:
@@ -33,7 +34,7 @@ func _apply_item() -> void:
 			icon.texture = null
 
 	var tooltip_text = _build_item_tooltip()
-	var panel := find_child("Panel", true, false) as Control
+	var panel = find_child("Panel", true, false)
 	if panel != null:
 		panel.tooltip_text = tooltip_text
 	if icon is Control:
@@ -49,7 +50,11 @@ func _build_item_tooltip() -> String:
 	var lines = []
 	var item_name = str(it.get("name", "Unknown Item"))
 	var rarity = str(it.get("rarity", ""))
-	lines.append(item_name if rarity == "" else rarity + " " + item_name)
+
+	if rarity == "":
+		lines.append(item_name)
+	else:
+		lines.append(rarity + " " + item_name)
 
 	var item_type = str(it.get("type", ""))
 	if item_type != "":
@@ -125,9 +130,11 @@ func _drop_data(position, data):
 func _on_icon_mouse_entered() -> void:
 	if item == null:
 		return
-	# create tooltip if needed
+	# create tooltip if needed (avoid calling .new() on Script resource)
 	if _tooltip_instance == null:
-		_tooltip_instance = ItemTooltipScript.new()
+		var t = Control.new()
+		t.set_script(ItemTooltipScript)
+		_tooltip_instance = t
 		var root = get_tree().current_scene
 		if root == null:
 			root = get_tree().root

@@ -1,97 +1,153 @@
 extends Control
 
-# A small hover tooltip that follows the mouse showing item details.
-# Create with: var t = preload("res://item_tooltip.gd").new(); parent.add_child(t); t.populate(item); t.show_at(position)
+var item = null
+var icon = null
 
-@onready var _panel: Panel = null
-@onready var _name_label: Label = null
-@onready var _classes_label: Label = null
-@onready var _rarity_label: Label = null
-@onready var _stats_vbox: VBoxContainer = null
+# Tooltip support
+var ItemTooltipScript := preload("res://item_tooltip.gd")
+var _tooltip_instance = null
 
-var follow_cursor := true
-var offset := Vector2(18, 18)
+func _ready():
+	icon = find_child("TextureRect", true, false)
+	_apply_item()
 
-func _init():
-	# Build UI programmatically so this script can be instanced without a .tscn
-	_panel = Panel.new()
-	_panel.custom_minimum_size = Vector2(220, 96)
-	add_child(_panel)
+	# connect hover signals (TextureRect is a Control)
+	if icon is Control:
+		var enter_cb := Callable(self, "_on_icon_mouse_entered")
+		var exit_cb := Callable(self, "_on_icon_mouse_exited")
+		if not icon.is_connected("mouse_entered", enter_cb):
+			icon.connect("mouse_entered", enter_cb)
+		if not icon.is_connected("mouse_exited", exit_cb):
+			icon.connect("mouse_exited", exit_cb)
 
-	var vbox := VBoxContainer.new()
-	vbox.anchor_left = 0.0
-	vbox.anchor_top = 0.0
-	vbox.anchor_right = 1.0
-	vbox.anchor_bottom = 1.0
-	vbox.margin_left = 6
-	vbox.margin_top = 6
-	vbox.margin_right = -6
-	vbox.margin_bottom = -6
-	_panel.add_child(vbox)
+func set_item(new_item) -> void:
+	item = new_item
 
-	_name_label = Label.new()
-	_name_label.add_theme_font_size_override("font_size", 16)
-	_name_label.add_theme_color_override("font_color", Color(1, 0.9, 0.6))
-	vbox.add_child(_name_label)
+	if icon != null:
+		_apply_item()
 
-	_rarity_label = Label.new()
-	_rarity_label.add_theme_font_size_override("font_size", 12)
-	_rarity_label.add_theme_color_override("font_color", Color(0.9, 0.8, 0.6))
-	vbox.add_child(_rarity_label)
-
-	_classes_label = Label.new()
-	_classes_label.add_theme_font_size_override("font_size", 12)
-	_classes_label.add_theme_color_override("font_color", Color(0.8, 0.9, 1.0))
-	vbox.add_child(_classes_label)
-
-	var sep := HSeparator.new()
-	vbox.add_child(sep)
-
-	_stats_vbox = VBoxContainer.new()
-	vbox.add_child(_stats_vbox)
-
-	visible = false
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-func _process(_delta: float) -> void:
-	if visible and follow_cursor:
-		global_position = get_global_mouse_position() + offset
-
-func populate(item: Dictionary) -> void:
-	# populate fields from an item dictionary
-	if not (item is Dictionary):
-		_name_label.text = "Unknown"
-		_rarity_label.text = ""
-		_classes_label.text = ""
-		_stats_vbox.clear()
-		return
-
-	var name := str(item.get("name", "Unknown Item"))
-	var rarity := str(item.get("rarity", "Common"))
-	var allowed := item.get("classes", [])
-
-	_name_label.text = name
-	_rarity_label.text = "Rarity: " + rarity
-
-	if typeof(allowed) == TYPE_ARRAY and allowed.size() > 0:
-		_classes_label.text = "Classes: " + ", ".join(allowed)
+func _apply_item() -> void:
+	if item and item.has("icon"):
+		if icon != null:
+			icon.texture = item["icon"]
 	else:
-		_classes_label.text = "Classes: All"
+		if icon != null:
+			icon.texture = null
 
-	# stats
-	_stats_vbox.clear()
-	var stats_order := ["damage", "defense", "speed", "magic", "strength", "vitality", "intelligence", "dexterity"]
-	for s in stats_order:
-		if item.has(s):
-			var lbl := Label.new()
-			lbl.text = "+%s %s" % [str(item[s]), s.capitalize()]
-			lbl.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95))
-			_stats_vbox.add_child(lbl)
+	var tooltip_text = _build_item_tooltip()
+	var panel := find_child("Panel", true, false) as Control
+	if panel != null:
+		panel.tooltip_text = tooltip_text
+	if icon is Control:
+		icon.tooltip_text = tooltip_text
+		icon.mouse_filter = Control.MOUSE_FILTER_PASS
 
-func show_at(global_pos: Vector2) -> void:
-	visible = true
-	_process(0)
-	global_position = global_pos + offset
+func _build_item_tooltip() -> String:
+	# ensure item is a Dictionary before treating it as one
+	if not (item is Dictionary):
+		return ""
 
-func hide_tooltip() -> void:
-	visible = false
+	var it = item as Dictionary
+	var lines = []
+	var item_name = str(it.get("name", "Unknown Item"))
+	var rarity = str(it.get("rarity", ""))
+
+	if rarity == "":
+		lines.append(item_name)
+	else:
+		lines.append(rarity + " " + item_name)
+
+	var item_type = str(it.get("type", ""))
+	if item_type != "":
+		lines.append(item_type.capitalize())
+
+	for stat_name in ["damage", "defense", "speed", "magic", "strength", "vitality", "intellegience", "intelligence", "dexterity"]:
+		if it.has(stat_name):
+			var display_name = ("Intelligence" if stat_name == "intellegience" else stat_name.capitalize())
+			lines.append("+" + str(it[stat_name]) + " " + display_name)
+
+	if item_type == "consumable":
+		var use_effect = str(it.get("use_effect", ""))
+		var use_amount = int(it.get("use_amount", 0))
+		lines.append("Use: +" + str(use_amount) + " " + use_effect.capitalize())
+		lines.append("Left click to use")
+	elif item_type == "weapon":
+		var weapon_class = str(it.get("weapon_class", ""))
+		if weapon_class != "":
+			lines.append("Class: " + weapon_class.capitalize())
+		lines.append("Drag to weapon slot")
+	else:
+		lines.append("Drag to matching equipment slot")
+
+	return "\n".join(lines)
+
+func _get_drag_data(position):
+	if item == null:
+		return null
+
+	# hide tooltip while dragging
+	if _tooltip_instance != null:
+		_tooltip_instance.hide_tooltip()
+
+	var container = PanelContainer.new()
+	container.custom_minimum_size = Vector2(100, 100)
+
+	var preview = TextureRect.new()
+	preview.texture = icon.texture if icon != null else null
+	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	preview.custom_minimum_size = Vector2(100, 100)
+
+	container.add_child(preview)
+
+	set_drag_preview(container)
+
+	return {
+		"item": item,
+		"from": self
+	}
+
+func _gui_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var grid := get_parent()
+		var weapons_panel = grid.get_parent() if grid != null else null
+		if weapons_panel != null and weapons_panel.has_method("consume_slot") and weapons_panel.consume_slot(self):
+			accept_event()
+
+func _can_drop_data(position, data):
+	return typeof(data) == TYPE_DICTIONARY and data.has("item")
+
+func _drop_data(position, data):
+	var from_slot = data["from"]
+	var incoming_item = data["item"]
+
+	var temp = item
+	set_item(incoming_item)
+
+	if from_slot and from_slot != self:
+		from_slot.set_item(temp)
+
+# Tooltip hover handlers
+func _on_icon_mouse_entered() -> void:
+	if item == null:
+		return
+	# create tooltip if needed
+	if _tooltip_instance == null:
+		_tooltip_instance = ItemTooltipScript.new()
+		var root = get_tree().current_scene
+		if root == null:
+			root = get_tree().root
+		root.add_child(_tooltip_instance)
+	# populate and show it at the cursor position (it will follow)
+	_tooltip_instance.populate(item)
+	_tooltip_instance.show_at(get_viewport().get_mouse_position())
+
+func _on_icon_mouse_exited() -> void:
+	if _tooltip_instance != null:
+		_tooltip_instance.hide_tooltip()
+
+func _exit_tree() -> void:
+	# ensure tooltip doesn't leak if slot is removed
+	if _tooltip_instance != null:
+		_tooltip_instance.queue_free()
+		_tooltip_instance = null

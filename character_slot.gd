@@ -1,156 +1,151 @@
 extends Control
 
-var item: Dictionary | null = null
-@onready var icon: TextureRect = $TextureRect
-@export var slot_type = "" 
+var item = null
+var icon = null
+
+# Tooltip support
+var ItemTooltipScript := preload("res://item_tooltip.gd")
+var _tooltip_instance = null
 
 func _ready():
-	custom_minimum_size = Vector2(48,48)
-	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	icon.texture = null
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	var stats = _resolve_stats()
-	if stats != null and stats.has_signal("player_changed"):
-		stats.connect("player_changed", Callable(self, "_on_player_changed"))
-	refresh_from_stats()
+	icon = find_child("TextureRect", true, false)
+	_apply_item()
 
-func set_item(new_item: Dictionary | null) -> bool:
-	if new_item != null and not _can_equip_item(new_item):
-		return false
+	# connect hover signals (TextureRect is a Control)
+	if icon is Control:
+		if not icon.is_connected("mouse_entered", self, "_on_icon_mouse_entered"):
+			icon.connect("mouse_entered", self, "_on_icon_mouse_entered")
+		if not icon.is_connected("mouse_exited", self, "_on_icon_mouse_exited"):
+			icon.connect("mouse_exited", self, "_on_icon_mouse_exited")
 
-	_set_item_unchecked(new_item)
-	return true
-
-func _set_item_unchecked(new_item: Dictionary | null) -> void:
+func set_item(new_item) -> void:
 	item = new_item
 
-	if item != null and item.has("icon"):
-		icon.texture = item["icon"]
+	if icon != null:
+		_apply_item()
+
+func _apply_item() -> void:
+	if item and item.has("icon"):
+		if icon != null:
+			icon.texture = item["icon"]
 	else:
-		icon.texture = null
+		if icon != null:
+			icon.texture = null
 
-	_update_equipped_item()
+	var tooltip_text = _build_item_tooltip()
+	var panel := find_child("Panel", true, false) as Control
+	if panel != null:
+		panel.tooltip_text = tooltip_text
+	if icon is Control:
+		icon.tooltip_text = tooltip_text
+		icon.mouse_filter = Control.MOUSE_FILTER_PASS
 
-func _update_equipped_item() -> void:
-	var stats = _resolve_stats()
-	if stats == null:
-		return
+func _build_item_tooltip() -> String:
+	# ensure item is a Dictionary before treating it as one
+	if not (item is Dictionary):
+		return ""
 
-	var equipment = stats.get("equipment")
-	if not (equipment is Dictionary):
-		return
+	var it = item as Dictionary
+	var lines = []
+	var item_name = str(it.get("name", "Unknown Item"))
+	var rarity = str(it.get("rarity", ""))
 
-	equipment[slot_type] = item
-	if stats.has_method("update_stats"):
-		stats.update_stats()
+	if rarity == "":
+		lines.append(item_name)
+	else:
+		lines.append(rarity + " " + item_name)
 
-func refresh_from_stats() -> void:
-	var stats = _resolve_stats()
-	if stats == null:
-		return
+	var item_type = str(it.get("type", ""))
+	if item_type != "":
+		lines.append(item_type.capitalize())
 
-	var equipment = stats.get("equipment")
-	if not (equipment is Dictionary):
-		return
+	for stat_name in ["damage", "defense", "speed", "magic", "strength", "vitality", "intellegience", "intelligence", "dexterity"]:
+		if it.has(stat_name):
+			var display_name = ("Intelligence" if stat_name == "intellegience" else stat_name.capitalize())
+			lines.append("+" + str(it[stat_name]) + " " + display_name)
 
-	if not equipment.has(slot_type):
-		return
+	if item_type == "consumable":
+		var use_effect = str(it.get("use_effect", ""))
+		var use_amount = int(it.get("use_amount", 0))
+		lines.append("Use: +" + str(use_amount) + " " + use_effect.capitalize())
+		lines.append("Left click to use")
+	elif item_type == "weapon":
+		var weapon_class = str(it.get("weapon_class", ""))
+		if weapon_class != "":
+			lines.append("Class: " + weapon_class.capitalize())
+		lines.append("Drag to weapon slot")
+	else:
+		lines.append("Drag to matching equipment slot")
 
-	_set_item_unchecked(equipment[slot_type])
-
-func _resolve_stats() -> Node:
-	var global_stats := get_node_or_null("/root/Stats")
-	if global_stats != null:
-		return global_stats
-
-	var scene := get_tree().current_scene
-	if scene != null:
-		var scene_stats := scene.get_node_or_null("Stats")
-		if scene_stats != null:
-			return scene_stats
-
-	var stats_node := get_tree().get_first_node_in_group("stats")
-	if stats_node != null:
-		return stats_node
-
-	return null
-
-func _gui_input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_get_drag_data(event.position)
+	return "\n".join(lines)
 
 func _get_drag_data(position):
 	if item == null:
 		return null
 
+	# hide tooltip while dragging
+	if _tooltip_instance != null:
+		_tooltip_instance.hide_tooltip()
+
+	var container = PanelContainer.new()
+	container.custom_minimum_size = Vector2(100, 100)
+
 	var preview = TextureRect.new()
 	preview.texture = icon.texture if icon != null else null
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	preview.custom_minimum_size = Vector2(48, 48)
+	preview.custom_minimum_size = Vector2(100, 100)
 
-	set_drag_preview(preview)
+	container.add_child(preview)
+
+	set_drag_preview(container)
 
 	return {
 		"item": item,
 		"from": self
 	}
 
+func _gui_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var grid := get_parent()
+		var weapons_panel = grid.get_parent() if grid != null else null
+		if weapons_panel != null and weapons_panel.has_method("consume_slot") and weapons_panel.consume_slot(self):
+			accept_event()
+
 func _can_drop_data(position, data):
-	if typeof(data) != TYPE_DICTIONARY:
-		return false
-
-	if not data.has("item"):
-		return false
-
-	var incoming_item = data["item"]
-
-	return _can_equip_item(incoming_item)
+	return typeof(data) == TYPE_DICTIONARY and data.has("item")
 
 func _drop_data(position, data):
-	if not _can_drop_data(position, data):
-		return
-
 	var from_slot = data["from"]
 	var incoming_item = data["item"]
 
 	var temp = item
-	if not set_item(incoming_item):
-		return
+	set_item(incoming_item)
 
 	if from_slot and from_slot != self:
 		from_slot.set_item(temp)
 
-func _can_equip_item(incoming_item) -> bool:
-	if not (incoming_item is Dictionary):
-		return false
-
-	if not incoming_item.has("type"):
-		return false
-
-	if incoming_item["type"] != slot_type:
-		return false
-
-	if slot_type != "weapon":
-		return true
-
-	var stats = _resolve_stats()
-	if stats == null:
-		return false
-
-	return ItemDropPool.can_player_use_item(str(stats.get("current_player")), incoming_item)
-
-func _on_player_changed(_player_name: String) -> void:
-	refresh_from_stats()
-
-	if item == null or _can_equip_item(item):
+# Tooltip hover handlers
+func _on_icon_mouse_entered() -> void:
+	if item == null:
 		return
+	# create tooltip if needed
+	if _tooltip_instance == null:
+		_tooltip_instance = ItemTooltipScript.new()
+		var root = get_tree().current_scene
+		if root == null:
+			root = get_tree().root
+		root.add_child(_tooltip_instance)
+	# populate and show it at the cursor position (it will follow)
+	_tooltip_instance.populate(item)
+	_tooltip_instance.show_at(get_viewport().get_mouse_position())
 
-	var removed_item = item
-	_set_item_unchecked(null)
+func _on_icon_mouse_exited() -> void:
+	if _tooltip_instance != null:
+		_tooltip_instance.hide_tooltip()
 
-	var inventory := get_tree().get_first_node_in_group("inventory")
-	if inventory == null or not inventory.has_method("add_item") or not inventory.add_item(removed_item):
-		_set_item_unchecked(removed_item)
+func _exit_tree() -> void:
+	# ensure tooltip doesn't leak if slot is removed
+	if _tooltip_instance != null:
+		_tooltip_instance.queue_free()
+		_tooltip_instance = null
