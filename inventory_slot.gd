@@ -3,18 +3,26 @@ extends Control
 var item = null
 var icon = null
 
+# Tooltip support
+var ItemTooltipScript := preload("res://item_tooltip.gd")
+var _tooltip_instance: Control = null
 
 func _ready():
 	icon = find_child("TextureRect", true, false)
 	_apply_item()
 
+	# connect hover signals (TextureRect is a Control)
+	if icon is Control:
+		if not icon.is_connected("mouse_entered", self, "_on_icon_mouse_entered"):
+			icon.connect("mouse_entered", self, "_on_icon_mouse_entered")
+		if not icon.is_connected("mouse_exited", self, "_on_icon_mouse_exited"):
+			icon.connect("mouse_exited", self, "_on_icon_mouse_exited")
 
 func set_item(new_item):
 	item = new_item
 
 	if icon != null:
 		_apply_item()
-
 
 func _apply_item():
 	if item and item.has("icon"):
@@ -63,10 +71,13 @@ func _build_item_tooltip() -> String:
 
 	return "\n".join(lines)
 
-
 func _get_drag_data(position):
 	if item == null:
 		return null
+
+	# hide tooltip while dragging
+	if _tooltip_instance != null:
+		_tooltip_instance.hide_tooltip()
 
 	var container = PanelContainer.new()
 	container.custom_minimum_size = Vector2(100, 100)
@@ -93,10 +104,8 @@ func _gui_input(event):
 		if weapons_panel != null and weapons_panel.has_method("consume_slot") and weapons_panel.consume_slot(self):
 			accept_event()
 
-
 func _can_drop_data(position, data):
 	return typeof(data) == TYPE_DICTIONARY and data.has("item")
-
 
 func _drop_data(position, data):
 	var from_slot = data["from"]
@@ -107,3 +116,28 @@ func _drop_data(position, data):
 
 	if from_slot and from_slot != self:
 		from_slot.set_item(temp)
+
+# Tooltip hover handlers
+func _on_icon_mouse_entered() -> void:
+	if item == null:
+		return
+	# create tooltip if needed
+	if _tooltip_instance == null:
+		_tooltip_instance = ItemTooltipScript.new()
+		var root = get_tree().current_scene
+		if root == null:
+			root = get_tree().root
+		root.add_child(_tooltip_instance)
+	# populate and show it at the cursor position (it will follow)
+	_tooltip_instance.populate(item)
+	_tooltip_instance.show_at(get_viewport().get_mouse_position())
+
+func _on_icon_mouse_exited() -> void:
+	if _tooltip_instance != null:
+		_tooltip_instance.hide_tooltip()
+
+func _exit_tree() -> void:
+	# ensure tooltip doesn't leak if slot is removed
+	if _tooltip_instance != null:
+		_tooltip_instance.queue_free()
+		_tooltip_instance = null
