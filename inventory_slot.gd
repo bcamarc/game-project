@@ -1,13 +1,13 @@
 extends Control
 
-var item = null
-var icon = null
+var item: Dictionary = null
+var icon: TextureRect = null
 
 # Tooltip support
 var ItemTooltipScript := preload("res://item_tooltip.gd")
 var _tooltip_instance: Control = null
 
-func _ready():
+func _ready() -> void:
 	icon = find_child("TextureRect", true, false)
 	_apply_item()
 
@@ -18,13 +18,13 @@ func _ready():
 		if not icon.is_connected("mouse_exited", self, "_on_icon_mouse_exited"):
 			icon.connect("mouse_exited", self, "_on_icon_mouse_exited")
 
-func set_item(new_item):
+func set_item(new_item: Dictionary) -> void:
 	item = new_item
 
 	if icon != null:
 		_apply_item()
 
-func _apply_item():
+func _apply_item() -> void:
 	if item and item.has("icon"):
 		icon.texture = item["icon"]
 	else:
