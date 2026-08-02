@@ -20,7 +20,7 @@ func spawn_things():
 			#node.connect("death", Callable(self, "_on_test_monster_death2"))
 	for node in get_tree().get_nodes_in_group("alien"):
 		if node.has_signal("death"):
-		
+			
 			if not node.is_connected("death", Callable(self, "_on_test_monster_death2")):
 				node.connect("death", Callable(self, "_on_test_monster_death2"))
 
