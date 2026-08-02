@@ -49,7 +49,7 @@ func spawn_mob(scene: PackedScene, offset: Vector2 = Vector2.ZERO) -> void:
 	# Connect a cleanup handler so we remove it from mobs when it leaves the tree.
 	if inst.has_method("connect"):
 		# bind the instance so we know which node was removed
-		inst.connect("tree_exited", Callable(self, "_on_mob_removed"), [inst])
+		inst.connect("tree_exited", Callable(self, "_on_mob_removed").bind(inst))
 
 func _on_mob_removed(node) -> void:
 	if mobs.has(node):
