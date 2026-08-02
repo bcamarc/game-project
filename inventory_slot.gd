@@ -1,11 +1,11 @@
 extends Control
 
-var item: Dictionary = null
-var icon: TextureRect = null
+var item: Dictionary | null = null
+var icon: TextureRect | null = null
 
 # Tooltip support
 var ItemTooltipScript := preload("res://item_tooltip.gd")
-var _tooltip_instance: Control = null
+var _tooltip_instance: Control | null = null
 
 func _ready() -> void:
 	icon = find_child("TextureRect", true, false)
@@ -18,7 +18,7 @@ func _ready() -> void:
 		if not icon.is_connected("mouse_exited", self, "_on_icon_mouse_exited"):
 			icon.connect("mouse_exited", self, "_on_icon_mouse_exited")
 
-func set_item(new_item: Dictionary) -> void:
+func set_item(new_item: Dictionary | null) -> void:
 	item = new_item
 
 	if icon != null:
@@ -26,9 +26,11 @@ func set_item(new_item: Dictionary) -> void:
 
 func _apply_item() -> void:
 	if item and item.has("icon"):
-		icon.texture = item["icon"]
+		if icon != null:
+			icon.texture = item["icon"]
 	else:
-		icon.texture = null
+		if icon != null:
+			icon.texture = null
 
 	tooltip_text = _build_item_tooltip()
 	var panel := find_child("Panel", true, false) as Control
@@ -58,7 +60,7 @@ func _build_item_tooltip() -> String:
 
 	if item_type == "consumable":
 		var use_effect := str(item.get("use_effect", ""))
-		var use_amount: Variant = item.get("use_amount", 0)
+		var use_amount: int = int(item.get("use_amount", 0))
 		lines.append("Use: +" + str(use_amount) + " " + use_effect.capitalize())
 		lines.append("Left click to use")
 	elif item_type == "weapon":
@@ -83,7 +85,7 @@ func _get_drag_data(position):
 	container.custom_minimum_size = Vector2(100, 100)
 
 	var preview = TextureRect.new()
-	preview.texture = icon.texture
+	preview.texture = icon.texture if icon != null else null
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	preview.custom_minimum_size = Vector2(100, 100)
