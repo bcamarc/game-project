@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://mapscene"]
 
 [ext_resource type="Script" uid="uid://map_ui_script" path="res://map_ui.gd" id="1_mapui"]
+[ext_resource type="Texture2D" uid="uid://improvedArt" path="res://improvedArt.png" id="2_map_tex"]
 
 [node name="MapScene" type="Control"]
 script = ExtResource("1_mapui")
@@ -8,5 +9,6 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+map_texture = ExtResource("2_map_tex")
 
-; map_texture exported property left unset so you can assign it in the editor
+; map_texture assigned to res://improvedArt.png
