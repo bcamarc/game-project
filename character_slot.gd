@@ -1,11 +1,10 @@
 extends Control
 
-var item = null
-@onready var icon = $TextureRect
+var item: Dictionary | null = null
+@onready var icon: TextureRect = $TextureRect
 @export var slot_type = "" 
 
 func _ready():
-	
 	custom_minimum_size = Vector2(48,48)
 	size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -17,14 +16,14 @@ func _ready():
 		stats.connect("player_changed", Callable(self, "_on_player_changed"))
 	refresh_from_stats()
 
-func set_item(new_item):
+func set_item(new_item: Dictionary | null) -> bool:
 	if new_item != null and not _can_equip_item(new_item):
 		return false
 
 	_set_item_unchecked(new_item)
 	return true
 
-func _set_item_unchecked(new_item) -> void:
+func _set_item_unchecked(new_item: Dictionary | null) -> void:
 	item = new_item
 
 	if item != null and item.has("icon"):
@@ -87,7 +86,7 @@ func _get_drag_data(position):
 		return null
 
 	var preview = TextureRect.new()
-	preview.texture = icon.texture
+	preview.texture = icon.texture if icon != null else null
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	preview.custom_minimum_size = Vector2(48, 48)

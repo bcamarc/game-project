@@ -32,7 +32,7 @@ func _apply_item() -> void:
 		if icon != null:
 			icon.texture = null
 
-	tooltip_text = _build_item_tooltip()
+	var tooltip_text := _build_item_tooltip()
 	var panel := find_child("Panel", true, false) as Control
 	if panel != null:
 		panel.tooltip_text = tooltip_text
