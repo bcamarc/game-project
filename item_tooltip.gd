@@ -1,17 +1,17 @@
+class_name ItemTooltip
 extends Control
 
 var item = null
 var icon = null
 
-# Tooltip support
-var ItemTooltipScript := preload("res://item_tooltip.gd")
+# Tooltip support (expects item_tooltip.gd to declare `class_name ItemTooltip`)
 var _tooltip_instance = null
 
 func _ready():
 	icon = find_child("TextureRect", true, false)
 	_apply_item()
 
-	# connect hover signals (TextureRect is a Control)
+	# connect hover signals (TextureRect is a Control) using Callable (2-arg form)
 	if icon is Control:
 		var enter_cb := Callable(self, "_on_icon_mouse_entered")
 		var exit_cb := Callable(self, "_on_icon_mouse_exited")
@@ -22,12 +22,11 @@ func _ready():
 
 func set_item(new_item) -> void:
 	item = new_item
-
 	if icon != null:
 		_apply_item()
 
 func _apply_item() -> void:
-	if item and item.has("icon"):
+	if item is Dictionary and item.has("icon"):
 		if icon != null:
 			icon.texture = item["icon"]
 	else:
@@ -35,7 +34,7 @@ func _apply_item() -> void:
 			icon.texture = null
 
 	var tooltip_text = _build_item_tooltip()
-	var panel := find_child("Panel", true, false) as Control
+	var panel = find_child("Panel", true, false)
 	if panel != null:
 		panel.tooltip_text = tooltip_text
 	if icon is Control:
@@ -43,7 +42,6 @@ func _apply_item() -> void:
 		icon.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _build_item_tooltip() -> String:
-	# ensure item is a Dictionary before treating it as one
 	if not (item is Dictionary):
 		return ""
 
@@ -85,8 +83,7 @@ func _get_drag_data(position):
 	if item == null:
 		return null
 
-	# hide tooltip while dragging
-	if _tooltip_instance != null:
+	if _tooltip_instance != null and _tooltip_instance.has_method("hide_tooltip"):
 		_tooltip_instance.hide_tooltip()
 
 	var container = PanelContainer.new()
@@ -99,7 +96,6 @@ func _get_drag_data(position):
 	preview.custom_minimum_size = Vector2(100, 100)
 
 	container.add_child(preview)
-
 	set_drag_preview(container)
 
 	return {
@@ -131,23 +127,24 @@ func _drop_data(position, data):
 func _on_icon_mouse_entered() -> void:
 	if item == null:
 		return
-	# create tooltip if needed
+	# create tooltip if needed using the named class (safe instantiation)
 	if _tooltip_instance == null:
-		_tooltip_instance = ItemTooltipScript.new()
+		# Ensure item_tooltip.gd contains: `class_name ItemTooltip`
+		_tooltip_instance = ItemTooltip.new()
 		var root = get_tree().current_scene
 		if root == null:
 			root = get_tree().root
 		root.add_child(_tooltip_instance)
-	# populate and show it at the cursor position (it will follow)
-	_tooltip_instance.populate(item)
-	_tooltip_instance.show_at(get_viewport().get_mouse_position())
+	if _tooltip_instance.has_method("populate"):
+		_tooltip_instance.populate(item)
+	if _tooltip_instance.has_method("show_at"):
+		_tooltip_instance.show_at(get_viewport().get_mouse_position())
 
 func _on_icon_mouse_exited() -> void:
-	if _tooltip_instance != null:
+	if _tooltip_instance != null and _tooltip_instance.has_method("hide_tooltip"):
 		_tooltip_instance.hide_tooltip()
 
 func _exit_tree() -> void:
-	# ensure tooltip doesn't leak if slot is removed
 	if _tooltip_instance != null:
 		_tooltip_instance.queue_free()
 		_tooltip_instance = null
